@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FortniteOverlay", "src\FortniteOverlay.csproj", "{1EC0C8EB-F9C1-438A-95EA-F0C4085E71A9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1EC0C8EB-F9C1-438A-95EA-F0C4085E71A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EC0C8EB-F9C1-438A-95EA-F0C4085E71A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EC0C8EB-F9C1-438A-95EA-F0C4085E71A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EC0C8EB-F9C1-438A-95EA-F0C4085E71A9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FA77D963-659C-4990-AAF5-BF65AE5D3E19}
+	EndGlobalSection
+EndGlobal
