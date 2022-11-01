@@ -17,6 +17,7 @@ using System.Drawing.Imaging;
 using Newtonsoft.Json;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
+using Microsoft.Win32.SafeHandles;
 
 namespace FortniteOverlay
 {
@@ -58,6 +59,11 @@ namespace FortniteOverlay
                 pixelPositions.Add(InterpolateResolution(Screen.GetBounds(Point.Empty).Width, Screen.GetBounds(Point.Empty).Height));
             }
 
+            if(!IsBorderlessFullscreen())
+            {
+                MessageBox.Show("Fortnite is not borderless windowed - I haven't tested this.", "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
@@ -95,10 +101,10 @@ namespace FortniteOverlay
         public static async Task UploadGear()
         {
             if(!FortniteFocused()) { return; }
-            form.Log($"Uploading gear...");
 
             var screen = TakeScreenshot();
             if (!InGame(screen)) { return; }
+            //form.Log($"Uploading gear...");
             var gearBitmap = RenderGear(screen, 0, 0);
 
             var base64Name = Convert.ToBase64String(Encoding.UTF8.GetBytes(hostName));
@@ -140,7 +146,7 @@ namespace FortniteOverlay
                 DateTime lastMod = DateTime.Parse(match["mtime"].ToString().Substring(5));
                 if (lastMod != fort.GearModified)
                 {
-                    form.Log("Downloading gear for " + fort.Name);
+                    //form.Log("Downloading gear for " + fort.Name);
                     string gearUrl = config.ImageLocation + "/" + fort.NameBase64 + ".png";
                     response = await httpClient.GetAsync(gearUrl);
                     var stream = await response.Content.ReadAsStreamAsync();
@@ -192,17 +198,6 @@ namespace FortniteOverlay
 
         public static Bitmap RenderGear(Bitmap screenshot, int screenWidth, int screenHeight)
         {
-            //if (!IsAlive(screenshot))
-            //{
-            //    Bitmap skullBitmap = null;
-            //    using (var image = new Bitmap("imdead.png"))
-            //    {
-            //        skullBitmap = new Bitmap(image);
-            //    }
-            //
-            //    return skullBitmap;
-            //}
-
             Color pureWhite = Color.FromArgb(255, 255, 255);
             Color fadedWhite = Color.FromArgb(127, 127, 127);
 
@@ -219,17 +214,26 @@ namespace FortniteOverlay
                 }
             }
 
-            Bitmap bitmap = new Bitmap(520 + 169, 104);
+            Bitmap bitmap = new Bitmap((pos.SlotSize * 6), pos.SlotSize);
             using (Graphics g = Graphics.FromImage(bitmap))
             {
                 for (int i = 0; i < pos.Slots.Length; i++)
                 {
                     var ofs = (slotSelected == i + 1) ? pos.SelectedSlotOffset : 0;
-                    g.DrawImage(screenshot, new Rectangle(i * 104, 0, 104, 104), new Rectangle(pos.Slots[i][0], pos.Slots[i][1] + ofs, 104, 104), GraphicsUnit.Pixel);
+                    g.DrawImage(screenshot, new Rectangle(i * pos.SlotSize, 0, pos.SlotSize, pos.SlotSize), new Rectangle(pos.Slots[i][0], pos.Slots[i][1] + ofs, pos.SlotSize, pos.SlotSize), GraphicsUnit.Pixel);
                 }
 
                 // keys
-                g.DrawImage(screenshot, new Rectangle(520, 0, 169, 104), new Rectangle(2365, 945, 169, 104), GraphicsUnit.Pixel);
+                Color yellowish = Color.FromArgb(244, 219, 93);
+                var pix = screenshot.GetPixel(pos.CrownPos[0], pos.CrownPos[1]);
+                if (yellowish.GetHue() - 10 < pix.GetHue() && yellowish.GetHue() + 10 > pix.GetHue())
+                {
+                    g.DrawImage(screenshot, new Rectangle(pos.SlotSize * 5, 0, pos.SlotSize, pos.SlotSize), new Rectangle(pos.KeyPosCrown[0], pos.KeyPosCrown[1], pos.SlotSize, pos.SlotSize), GraphicsUnit.Pixel);
+                }
+                else
+                {
+                    g.DrawImage(screenshot, new Rectangle(pos.SlotSize * 5, 0, pos.SlotSize, pos.SlotSize), new Rectangle(pos.KeyPos[0], pos.KeyPos[1], pos.SlotSize, pos.SlotSize), GraphicsUnit.Pixel);
+                }
             }
 
             return bitmap;
@@ -238,6 +242,21 @@ namespace FortniteOverlay
         public static bool FortniteFocused()
         {
             if(GetActiveWindow().ProcessName == "FortniteClient-Win64-Shipping")
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static bool IsBorderlessFullscreen()
+        {
+            string configDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\FortniteGame\\Saved\\Config\\WindowsClient";
+            string configFile = "GameUserSettings.ini";
+            if(!File.Exists(Path.Combine(configDir, configFile))) { return false; }
+            string configText = File.ReadAllText(Path.Combine(configDir, configFile));
+            int index = configText.IndexOf("PreferredFullscreenMode=");
+            if (index == -1) { return false; }
+            if(configText.Substring(index + 24, 1) == "1")
             {
                 return true;
             }
@@ -268,7 +287,7 @@ namespace FortniteOverlay
             }
         }
 
-        public static async Task ProcessLine(string line)
+        public static void ProcessLine(string line)
         {
             var match = Regex.Match(line, FortniteLogRegex.LoggedIn);
             if (match.Success)
@@ -337,6 +356,7 @@ namespace FortniteOverlay
             {
                 Resolution = new int[2] { width, height },
                 SelectedSlotOffset = (int)((double)reference.SelectedSlotOffset / (double)reference.Resolution[1] * height),
+                SlotSize = (int)((double)reference.SlotSize / (double)reference.Resolution[0] * width),
                 Slots = new int[5][]
                 {
                     new int[] { (int)((double)reference.Slots[0][0] / (double)reference.Resolution[0] * width), (int)((double)reference.Slots[0][1] / (double)reference.Resolution[1] * height) },
@@ -351,6 +371,20 @@ namespace FortniteOverlay
                     new int[] { (int)((double)reference.Map[1][0] / (double)reference.Resolution[0] * width), (int)((double)reference.Map[1][1] / (double)reference.Resolution[1] * height) },
                     new int[] { (int)((double)reference.Map[2][0] / (double)reference.Resolution[0] * width), (int)((double)reference.Map[2][1] / (double)reference.Resolution[1] * height) },
                 },
+                KeyPos = new int[2] {
+                    (int)((double)reference.KeyPos[0] / (double)reference.Resolution[0] * width),
+                    (int)((double)reference.KeyPos[1] / (double)reference.Resolution[1] * height),
+                },
+                KeyPosCrown = new int[2]
+                {
+                    (int)((double)reference.KeyPosCrown[0] / (double)reference.Resolution[0] * width),
+                    (int)((double)reference.KeyPosCrown[1] / (double)reference.Resolution[1] * height),
+                },
+                CrownPos = new int[2]
+                {
+                    (int)((double)reference.CrownPos[0] / (double)reference.Resolution[0] * width),
+                    (int)((double)reference.CrownPos[1] / (double)reference.Resolution[1] * height),
+                }
             };
         }
 
@@ -361,6 +395,7 @@ namespace FortniteOverlay
             {
                 Resolution = new int[2] { 2560, 1440 },
                 SelectedSlotOffset = -13,
+                SlotSize = 104,
                 Slots = new int[5][]
                 {
                     new int[] { 2009, 1227 },
@@ -375,12 +410,16 @@ namespace FortniteOverlay
                     new int[] { 2538, 31 },
                     new int[] { 2511, 45 }
                 },
+                KeyPos = new int[2] { 2456, 927  },
+                KeyPosCrown = new int[2] { 2350, 944 },
+                CrownPos = new int[2] { 2490, 1000 },
             });
             
             positions.Add(new PixelPositions
             {
                 Resolution = new int[2] { 1920, 1080 },
                 SelectedSlotOffset = -11,
+                SlotSize = 78,
                 Slots = new int[5][]
                 {
                     new int[] { 1507, 920 },
@@ -395,6 +434,9 @@ namespace FortniteOverlay
                     new int[] { 1904, 23 },
                     new int[] { 1883, 33 }
                 },
+                KeyPos = new int[2] { 1842, 694 },
+                KeyPosCrown = new int[2] { 1762, 707 },
+                CrownPos = new int[2] { 1866, 750 },
             });
 
             return positions;
@@ -420,8 +462,12 @@ namespace FortniteOverlay
     {
         public int[] Resolution { get; set; }
         public int SelectedSlotOffset { get; set; }
+        public int SlotSize { get; set; }
         public int[][] Slots { get; set; }
         public int[][] Map { get; set; }
+        public int[] KeyPos { get; set; }
+        public int[] KeyPosCrown { get; set; }
+        public int[] CrownPos { get; set; }
     }
 
     public static class FortniteLogRegex

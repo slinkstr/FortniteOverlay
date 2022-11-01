@@ -28,7 +28,14 @@ namespace FortniteOverlay
         public void Log(string message)
         {
             message = $"[{DateTime.Now}] {message.Replace("\n", Environment.NewLine)}" + Environment.NewLine;
-            setControlProperty(textBox1, "Text", textBox1.Text + message);
+            if (textBox1.InvokeRequired)
+            {
+                textBox1.Invoke(new MethodInvoker(delegate { textBox1.AppendText(message); }));
+            }
+            else
+            {
+                textBox1.AppendText(message);
+            }
         }
 
         public int GetUpFreq()
@@ -139,6 +146,7 @@ namespace FortniteOverlay
             this.squadmateNameTextBox1 = new System.Windows.Forms.Label();
             this.squadmateNameTextBox2 = new System.Windows.Forms.Label();
             this.squadmateNameTextBox3 = new System.Windows.Forms.Label();
+            this.showConsoleCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.UpFreq)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DownFreq)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selfGearPictureBox1)).BeginInit();
@@ -215,6 +223,7 @@ namespace FortniteOverlay
             // 
             this.enableOverlayCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.enableOverlayCheckbox.AutoSize = true;
+            this.enableOverlayCheckbox.Enabled = false;
             this.enableOverlayCheckbox.Location = new System.Drawing.Point(686, 12);
             this.enableOverlayCheckbox.Name = "enableOverlayCheckbox";
             this.enableOverlayCheckbox.Size = new System.Drawing.Size(98, 17);
@@ -227,12 +236,12 @@ namespace FortniteOverlay
             this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(12, 209);
+            this.textBox1.Location = new System.Drawing.Point(12, 238);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox1.Size = new System.Drawing.Size(776, 229);
+            this.textBox1.Size = new System.Drawing.Size(776, 200);
             this.textBox1.TabIndex = 6;
             this.textBox1.WordWrap = false;
             // 
@@ -241,7 +250,7 @@ namespace FortniteOverlay
             this.hostNameTextBox.Location = new System.Drawing.Point(68, 70);
             this.hostNameTextBox.Name = "hostNameTextBox";
             this.hostNameTextBox.ReadOnly = true;
-            this.hostNameTextBox.Size = new System.Drawing.Size(224, 20);
+            this.hostNameTextBox.Size = new System.Drawing.Size(300, 20);
             this.hostNameTextBox.TabIndex = 7;
             // 
             // hostIdTextBox
@@ -249,7 +258,7 @@ namespace FortniteOverlay
             this.hostIdTextBox.Location = new System.Drawing.Point(68, 96);
             this.hostIdTextBox.Name = "hostIdTextBox";
             this.hostIdTextBox.ReadOnly = true;
-            this.hostIdTextBox.Size = new System.Drawing.Size(224, 20);
+            this.hostIdTextBox.Size = new System.Drawing.Size(300, 20);
             this.hostIdTextBox.TabIndex = 8;
             // 
             // label3
@@ -277,15 +286,15 @@ namespace FortniteOverlay
             this.currentSquadTextBox.Location = new System.Drawing.Point(68, 122);
             this.currentSquadTextBox.Name = "currentSquadTextBox";
             this.currentSquadTextBox.ReadOnly = true;
-            this.currentSquadTextBox.Size = new System.Drawing.Size(224, 20);
+            this.currentSquadTextBox.Size = new System.Drawing.Size(300, 20);
             this.currentSquadTextBox.TabIndex = 11;
             // 
             // selfGearPictureBox1
             // 
             this.selfGearPictureBox1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.selfGearPictureBox1.Location = new System.Drawing.Point(68, 163);
+            this.selfGearPictureBox1.Location = new System.Drawing.Point(68, 182);
             this.selfGearPictureBox1.Name = "selfGearPictureBox1";
-            this.selfGearPictureBox1.Size = new System.Drawing.Size(224, 40);
+            this.selfGearPictureBox1.Size = new System.Drawing.Size(300, 50);
             this.selfGearPictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.selfGearPictureBox1.TabIndex = 12;
             this.selfGearPictureBox1.TabStop = false;
@@ -302,9 +311,9 @@ namespace FortniteOverlay
             // 
             // label6
             // 
-            this.label6.Location = new System.Drawing.Point(12, 163);
+            this.label6.Location = new System.Drawing.Point(12, 182);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(50, 40);
+            this.label6.Size = new System.Drawing.Size(50, 50);
             this.label6.TabIndex = 14;
             this.label6.Text = "Preview:";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -314,9 +323,10 @@ namespace FortniteOverlay
             // 
             this.squadmateGearPictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.squadmateGearPictureBox1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.squadmateGearPictureBox1.Location = new System.Drawing.Point(560, 71);
+            this.squadmateGearPictureBox1.Location = new System.Drawing.Point(488, 70);
             this.squadmateGearPictureBox1.Name = "squadmateGearPictureBox1";
-            this.squadmateGearPictureBox1.Size = new System.Drawing.Size(224, 40);
+            this.squadmateGearPictureBox1.Size = new System.Drawing.Size(300, 50);
+            this.squadmateGearPictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.squadmateGearPictureBox1.TabIndex = 15;
             this.squadmateGearPictureBox1.TabStop = false;
             // 
@@ -324,9 +334,10 @@ namespace FortniteOverlay
             // 
             this.squadmateGearPictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.squadmateGearPictureBox2.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.squadmateGearPictureBox2.Location = new System.Drawing.Point(560, 117);
+            this.squadmateGearPictureBox2.Location = new System.Drawing.Point(488, 126);
             this.squadmateGearPictureBox2.Name = "squadmateGearPictureBox2";
-            this.squadmateGearPictureBox2.Size = new System.Drawing.Size(224, 40);
+            this.squadmateGearPictureBox2.Size = new System.Drawing.Size(300, 50);
+            this.squadmateGearPictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.squadmateGearPictureBox2.TabIndex = 16;
             this.squadmateGearPictureBox2.TabStop = false;
             // 
@@ -334,9 +345,10 @@ namespace FortniteOverlay
             // 
             this.squadmateGearPictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.squadmateGearPictureBox3.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.squadmateGearPictureBox3.Location = new System.Drawing.Point(560, 163);
+            this.squadmateGearPictureBox3.Location = new System.Drawing.Point(488, 182);
             this.squadmateGearPictureBox3.Name = "squadmateGearPictureBox3";
-            this.squadmateGearPictureBox3.Size = new System.Drawing.Size(224, 40);
+            this.squadmateGearPictureBox3.Size = new System.Drawing.Size(300, 50);
+            this.squadmateGearPictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.squadmateGearPictureBox3.TabIndex = 17;
             this.squadmateGearPictureBox3.TabStop = false;
             // 
@@ -346,6 +358,7 @@ namespace FortniteOverlay
             this.minimizeTrayCheckbox.AutoSize = true;
             this.minimizeTrayCheckbox.Checked = true;
             this.minimizeTrayCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.minimizeTrayCheckbox.Enabled = false;
             this.minimizeTrayCheckbox.Location = new System.Drawing.Point(686, 35);
             this.minimizeTrayCheckbox.Name = "minimizeTrayCheckbox";
             this.minimizeTrayCheckbox.Size = new System.Drawing.Size(98, 17);
@@ -356,9 +369,9 @@ namespace FortniteOverlay
             // squadmateNameTextBox1
             // 
             this.squadmateNameTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.squadmateNameTextBox1.Location = new System.Drawing.Point(454, 71);
+            this.squadmateNameTextBox1.Location = new System.Drawing.Point(382, 70);
             this.squadmateNameTextBox1.Name = "squadmateNameTextBox1";
-            this.squadmateNameTextBox1.Size = new System.Drawing.Size(100, 40);
+            this.squadmateNameTextBox1.Size = new System.Drawing.Size(100, 50);
             this.squadmateNameTextBox1.TabIndex = 19;
             this.squadmateNameTextBox1.Text = "(none)";
             this.squadmateNameTextBox1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -366,9 +379,9 @@ namespace FortniteOverlay
             // squadmateNameTextBox2
             // 
             this.squadmateNameTextBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.squadmateNameTextBox2.Location = new System.Drawing.Point(454, 117);
+            this.squadmateNameTextBox2.Location = new System.Drawing.Point(382, 126);
             this.squadmateNameTextBox2.Name = "squadmateNameTextBox2";
-            this.squadmateNameTextBox2.Size = new System.Drawing.Size(100, 40);
+            this.squadmateNameTextBox2.Size = new System.Drawing.Size(100, 50);
             this.squadmateNameTextBox2.TabIndex = 20;
             this.squadmateNameTextBox2.Text = "(none)";
             this.squadmateNameTextBox2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -376,12 +389,25 @@ namespace FortniteOverlay
             // squadmateNameTextBox3
             // 
             this.squadmateNameTextBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.squadmateNameTextBox3.Location = new System.Drawing.Point(454, 163);
+            this.squadmateNameTextBox3.Location = new System.Drawing.Point(382, 182);
             this.squadmateNameTextBox3.Name = "squadmateNameTextBox3";
-            this.squadmateNameTextBox3.Size = new System.Drawing.Size(100, 40);
+            this.squadmateNameTextBox3.Size = new System.Drawing.Size(100, 50);
             this.squadmateNameTextBox3.TabIndex = 21;
             this.squadmateNameTextBox3.Text = "(none)";
             this.squadmateNameTextBox3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // showConsoleCheckBox
+            // 
+            this.showConsoleCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.showConsoleCheckBox.AutoSize = true;
+            this.showConsoleCheckBox.Checked = true;
+            this.showConsoleCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showConsoleCheckBox.Location = new System.Drawing.Point(587, 12);
+            this.showConsoleCheckBox.Name = "showConsoleCheckBox";
+            this.showConsoleCheckBox.Size = new System.Drawing.Size(93, 17);
+            this.showConsoleCheckBox.TabIndex = 22;
+            this.showConsoleCheckBox.Text = "Show console";
+            this.showConsoleCheckBox.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -389,6 +415,7 @@ namespace FortniteOverlay
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.showConsoleCheckBox);
             this.Controls.Add(this.squadmateNameTextBox3);
             this.Controls.Add(this.squadmateNameTextBox2);
             this.Controls.Add(this.squadmateNameTextBox1);
@@ -447,6 +474,7 @@ namespace FortniteOverlay
         private Label squadmateNameTextBox1;
         private Label squadmateNameTextBox2;
         private Label squadmateNameTextBox3;
+        private CheckBox showConsoleCheckBox;
     }
 }
 
