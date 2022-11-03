@@ -28,14 +28,15 @@ namespace FortniteOverlay
         public void Log(string message)
         {
             message = $"[{DateTime.Now}] {message.Replace("\n", Environment.NewLine)}" + Environment.NewLine;
-            if (textBox1.InvokeRequired)
+            if (consoleLogTextBox.InvokeRequired)
             {
-                textBox1.Invoke(new MethodInvoker(delegate { textBox1.AppendText(message); }));
+                consoleLogTextBox.Invoke(new MethodInvoker(delegate { consoleLogTextBox.AppendText(message); }));
             }
             else
             {
-                textBox1.AppendText(message);
+                consoleLogTextBox.AppendText(message);
             }
+            Console.Write(message);
         }
 
         public int GetUpFreq()
@@ -130,7 +131,7 @@ namespace FortniteOverlay
             this.DownFreq = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.enableOverlayCheckbox = new System.Windows.Forms.CheckBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.consoleLogTextBox = new System.Windows.Forms.TextBox();
             this.hostNameTextBox = new System.Windows.Forms.TextBox();
             this.hostIdTextBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -185,7 +186,6 @@ namespace FortniteOverlay
             this.label1.Size = new System.Drawing.Size(120, 13);
             this.label1.TabIndex = 2;
             this.label1.Text = "Upload Frequency (sec)";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // DownFreq
             // 
@@ -208,7 +208,6 @@ namespace FortniteOverlay
             0,
             0,
             0});
-            this.DownFreq.ValueChanged += new System.EventHandler(this.DownFreq_ValueChanged);
             // 
             // label2
             // 
@@ -231,19 +230,19 @@ namespace FortniteOverlay
             this.enableOverlayCheckbox.Text = "Enable Overlay";
             this.enableOverlayCheckbox.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // consoleLogTextBox
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.consoleLogTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(12, 238);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox1.Size = new System.Drawing.Size(776, 200);
-            this.textBox1.TabIndex = 6;
-            this.textBox1.WordWrap = false;
+            this.consoleLogTextBox.Location = new System.Drawing.Point(12, 238);
+            this.consoleLogTextBox.Multiline = true;
+            this.consoleLogTextBox.Name = "consoleLogTextBox";
+            this.consoleLogTextBox.ReadOnly = true;
+            this.consoleLogTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.consoleLogTextBox.Size = new System.Drawing.Size(776, 200);
+            this.consoleLogTextBox.TabIndex = 6;
+            this.consoleLogTextBox.WordWrap = false;
             // 
             // hostNameTextBox
             // 
@@ -269,7 +268,6 @@ namespace FortniteOverlay
             this.label3.TabIndex = 9;
             this.label3.Text = "User:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label4
             // 
@@ -279,7 +277,6 @@ namespace FortniteOverlay
             this.label4.TabIndex = 10;
             this.label4.Text = "User ID:";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // currentSquadTextBox
             // 
@@ -307,7 +304,6 @@ namespace FortniteOverlay
             this.label5.TabIndex = 13;
             this.label5.Text = "Squad:";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // label6
             // 
@@ -317,7 +313,6 @@ namespace FortniteOverlay
             this.label6.TabIndex = 14;
             this.label6.Text = "Preview:";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // squadmateGearPictureBox1
             // 
@@ -408,6 +403,7 @@ namespace FortniteOverlay
             this.showConsoleCheckBox.TabIndex = 22;
             this.showConsoleCheckBox.Text = "Show console";
             this.showConsoleCheckBox.UseVisualStyleBackColor = true;
+            this.showConsoleCheckBox.CheckedChanged += new System.EventHandler(this.showConsoleCheckBox_CheckedChanged);
             // 
             // Form1
             // 
@@ -431,7 +427,7 @@ namespace FortniteOverlay
             this.Controls.Add(this.label3);
             this.Controls.Add(this.hostIdTextBox);
             this.Controls.Add(this.hostNameTextBox);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.consoleLogTextBox);
             this.Controls.Add(this.enableOverlayCheckbox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.DownFreq);
@@ -458,7 +454,7 @@ namespace FortniteOverlay
         private System.Windows.Forms.NumericUpDown DownFreq;
         private System.Windows.Forms.Label label2;
         private CheckBox enableOverlayCheckbox;
-        private TextBox textBox1;
+        private TextBox consoleLogTextBox;
         private TextBox hostNameTextBox;
         private TextBox hostIdTextBox;
         private Label label3;
