@@ -17,18 +17,37 @@ namespace FortniteOverlay
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void showConsoleCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             var visible = ((CheckBox)sender).Checked;
             var textBoxHeight = consoleLogTextBox.Size.Height;
             consoleLogTextBox.Visible = visible;
 
-            Size = new Size(Size.Width, Size.Height + (visible ? 200 : textBoxHeight*-1));
+            Size = new Size(Size.Width, Size.Height + (visible ? 200 : textBoxHeight * -1));
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized && minimizeTrayCheckbox.Checked)
+            {
+                Hide();
+                notifyIcon.Visible = true;
+            }
+        }
+
+        private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Left)
+            {
+                Show();
+                this.WindowState = FormWindowState.Normal;
+                notifyIcon.Visible = false;
+            }
+        }
+
+        private void form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            notifyIcon.Icon = null;
         }
     }
 }

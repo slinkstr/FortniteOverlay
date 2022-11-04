@@ -18,6 +18,8 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using Microsoft.Win32.SafeHandles;
+using System.Web;
+using System.Web.UI;
 
 namespace FortniteOverlay
 {
@@ -30,6 +32,7 @@ namespace FortniteOverlay
         public static Dictionary<string, string> logRegex = new Dictionary<string, string>();
         public static string hostName;
         public static string hostId;
+        public static bool inGame = false;
         public static List<Fortniter> fortniters = new List<Fortniter>();
         public static ProgramConfig config;
         public static HttpClient httpClient = new HttpClient();
@@ -55,13 +58,8 @@ namespace FortniteOverlay
             if (!pixelPositions.Any(x => x.Resolution[0] == Screen.GetBounds(Point.Empty).Width &&
                                          x.Resolution[1] == Screen.GetBounds(Point.Empty).Height))
             {
-                MessageBox.Show("Screen resolution not supported - program may not function as expected.", "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"Screen resolution {Screen.GetBounds(Point.Empty).Size} not supported - program may not function as expected.", "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 pixelPositions.Add(InterpolateResolution(Screen.GetBounds(Point.Empty).Width, Screen.GetBounds(Point.Empty).Height));
-            }
-
-            if(!IsBorderlessFullscreen())
-            {
-                MessageBox.Show("Fortnite is not borderless windowed - I haven't tested this.", "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
             Application.EnableVisualStyles();
@@ -93,6 +91,9 @@ namespace FortniteOverlay
             {
                 tasks.Add(DownloadGear());
             }
+
+            MarkStaleImages();
+
             await Task.WhenAll(tasks);
 
             updateTimer.Start();
@@ -101,19 +102,18 @@ namespace FortniteOverlay
         public static async Task UploadGear()
         {
             if(!FortniteFocused()) { return; }
-
             var screen = TakeScreenshot();
             if (!InGame(screen)) { return; }
-            //form.Log($"Uploading gear...");
-            var gearBitmap = RenderGear(screen, 0, 0);
+            form.Log($"Uploading gear...");
+            var gearBitmap = RenderGear(screen);
 
-            var base64Name = Convert.ToBase64String(Encoding.UTF8.GetBytes(hostName));
+            var urlFriendlyName = HttpUtility.UrlEncode(hostName);
             var stream = new MemoryStream();
             gearBitmap.Save(stream, ImageFormat.Bmp);
             stream.Seek(0, SeekOrigin.Begin);
             var formData = new MultipartFormDataContent();
             formData.Add(new StringContent(config.SecretKey), "secret");
-            formData.Add(new StringContent(base64Name), "filename");
+            formData.Add(new StringContent(urlFriendlyName), "filename");
             formData.Add(new ByteArrayContent(stream.ToArray()), "gear", "image.png");
             HttpResponseMessage response = await httpClient.PostAsync(config.UploadEndpoint, formData);
             var responseString = response.Content.ReadAsStringAsync().Result;
@@ -131,27 +131,45 @@ namespace FortniteOverlay
 
         public static async Task DownloadGear()
         {
-            if (!FortniteFocused()) { return; }
-            //form.Log($"DownloadGear");
+            if (!FortniteOpen()) { return; }
+            if (!inGame) { return; }
+            if (fortniters.Count == 0) { return; }
+            lastDown = DateTime.Now;
+            form.Log($"Downloading gear...");
 
             var response = await httpClient.GetAsync(config.ImageLocation);
             string jsonString = await response.Content.ReadAsStringAsync();
-            var data = (JArray)JsonConvert.DeserializeObject(jsonString);
+            JArray data = null;
+            try
+            {
+                data = (JArray)JsonConvert.DeserializeObject(jsonString);
+            }
+            catch (Exception e)
+            {
+                form.Log("Error downloading data from server.\n" +
+                    "-------------------------\n" +
+                    e.ToString() + "\n" +
+                    "-------------------------\n" +
+                    "Server response:\n" + jsonString);
+                return;
+            }
 
             foreach (var fort in fortniters)
             {
-                var match = data.FirstOrDefault(x => x["name"].ToString() == fort.NameBase64 + ".png");
+                var match = data.FirstOrDefault(x => x["name"].ToString() == fort.NameEncoded + ".png");
                 if (match == null) { continue; }
 
                 DateTime lastMod = DateTime.Parse(match["mtime"].ToString().Substring(5));
                 if (lastMod != fort.GearModified)
                 {
                     //form.Log("Downloading gear for " + fort.Name);
-                    string gearUrl = config.ImageLocation + "/" + fort.NameBase64 + ".png";
+                    string gearUrl = config.ImageLocation + "/" + fort.NameEncoded + ".png";
                     response = await httpClient.GetAsync(gearUrl);
                     var stream = await response.Content.ReadAsStreamAsync();
+                    var test = await response.Content.ReadAsStringAsync();
                     fort.GearImage = new Bitmap(stream);
                     fort.GearModified = lastMod;
+                    fort.IsFaded = false;
                 }
             }
 
@@ -169,8 +187,32 @@ namespace FortniteOverlay
                     form.SetSquadName(i, "");
                 }
             }
+        }
 
-            lastDown = DateTime.Now;
+        public static void MarkStaleImages()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                if (i > fortniters.Count - 1) { return; }
+                if (fortniters[i].GearImage == null) { continue; }
+                if (fortniters[i].GearModified.AddSeconds(15) > DateTime.Now) { continue; }
+                if (fortniters[i].IsFaded) { continue; }
+
+                using (Graphics g = Graphics.FromImage(fortniters[i].GearImage))
+                {
+                    int width = fortniters[i].GearImage.Width;
+                    int height = fortniters[i].GearImage.Height;
+                    Image outdated = Image.FromFile("outdated.png");
+                    Rectangle rect = new Rectangle(0, 0, width, height);
+                    using (Brush darken = new SolidBrush(Color.FromArgb(128, Color.Black)))
+                    {
+                        g.FillRectangle(darken, rect);
+                    }
+                    g.DrawImage(outdated, new Rectangle(width / 2 - height / 2, height - (int)(height * 0.95), (int)(height*0.90), (int)(height * 0.90)));
+                }
+                form.SetSquadGear(i, fortniters[i].GearImage);
+                fortniters[i].IsFaded = true;
+            }
         }
 
         public static Bitmap TakeScreenshot()
@@ -196,7 +238,7 @@ namespace FortniteOverlay
             return true;
         }
 
-        public static Bitmap RenderGear(Bitmap screenshot, int screenWidth, int screenHeight)
+        public static Bitmap RenderGear(Bitmap screenshot)
         {
             Color pureWhite = Color.FromArgb(255, 255, 255);
             Color fadedWhite = Color.FromArgb(127, 127, 127);
@@ -248,20 +290,30 @@ namespace FortniteOverlay
             return false;
         }
 
-        public static bool IsBorderlessFullscreen()
+        private static bool FortniteOpen()
         {
-            string configDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\FortniteGame\\Saved\\Config\\WindowsClient";
-            string configFile = "GameUserSettings.ini";
-            if(!File.Exists(Path.Combine(configDir, configFile))) { return false; }
-            string configText = File.ReadAllText(Path.Combine(configDir, configFile));
-            int index = configText.IndexOf("PreferredFullscreenMode=");
-            if (index == -1) { return false; }
-            if(configText.Substring(index + 24, 1) == "1")
+            var allProcesses = Process.GetProcesses();
+            if (allProcesses.Any(x => x.ProcessName == "FortniteClient-Win64-Shipping"))
             {
                 return true;
             }
             return false;
         }
+
+        //public static bool IsBorderlessFullscreen()
+        //{
+        //    string configDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\FortniteGame\\Saved\\Config\\WindowsClient";
+        //    string configFile = "GameUserSettings.ini";
+        //    if(!File.Exists(Path.Combine(configDir, configFile))) { return false; }
+        //    string configText = File.ReadAllText(Path.Combine(configDir, configFile));
+        //    int index = configText.IndexOf("PreferredFullscreenMode=");
+        //    if (index == -1) { return false; }
+        //    if(configText.Substring(index + 24, 1) == "1")
+        //    {
+        //        return true;
+        //    }
+        //    return false;
+        //}
 
         public static void ReadLogFile(object sender, DoWorkEventArgs e)
         {
@@ -269,6 +321,7 @@ namespace FortniteOverlay
             string logFile = "FortniteGame.log";
             
             var fs = new FileStream(logDir + "\\" + logFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            long totalLenCached = 0;
             using (var sr = new StreamReader(fs))
             {
                 var s = "";
@@ -281,6 +334,13 @@ namespace FortniteOverlay
                     }
                     else
                     {
+                        if (fs.Length < totalLenCached)
+                        {
+                            form.Log("Fortnite restarted, resetting log file.");
+                            fs.Seek(0, SeekOrigin.Begin);
+                            sr.DiscardBufferedData();
+                        }
+                        totalLenCached = fs.Length;
                         Thread.Sleep(1000);
                     }
                 }
@@ -328,6 +388,21 @@ namespace FortniteOverlay
                 form.Log("[PartyMemberLeft] Name: " + match.Groups[1] + ", ID: " + match.Groups[2] + ", Host: " + match.Groups[3]);
                 return;
             }
+
+            match = Regex.Match(line, FortniteLogRegex.StartedGame);
+            if (match.Success)
+            {
+                form.Log("[StartedGame]");
+                inGame = true;
+                return;
+            }
+            match = Regex.Match(line, FortniteLogRegex.LeftGame);
+            if (match.Success)
+            {
+                form.Log("[LeftGame]");
+                inGame = false;
+                return;
+            }
         }
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
@@ -347,6 +422,15 @@ namespace FortniteOverlay
             var handle = GetForegroundWindow();
             GetWindowThreadProcessId(handle, out uint pID);
             return Process.GetProcessById((Int32)pID);
+        }
+
+        public static string StringToHex(string input)
+        {
+            byte[] bytes = Encoding.Default.GetBytes(input);
+            string hexString = BitConverter.ToString(bytes)
+                .Replace("-", "")
+                .ToLower();
+            return hexString;
         }
 
         private static PixelPositions InterpolateResolution(int width, int height)
@@ -446,9 +530,10 @@ namespace FortniteOverlay
     public class Fortniter
     {
         public string Name { get; set; }
-        public string NameBase64 => Convert.ToBase64String(Encoding.UTF8.GetBytes(Name));
+        public string NameEncoded => Program.StringToHex(Name);
         public Bitmap GearImage { get; set; }
         public DateTime GearModified { get; set; }
+        public bool IsFaded { get; set; } = false;
     }
 
     public class ProgramConfig
@@ -477,5 +562,8 @@ namespace FortniteOverlay
         public static string LoggedIn = "^" + Timestamp + UnknownId + @"LogOnlineAccount: Display: \[UOnlineAccountCommon::ProcessUserLogin\] Successfully logged in user\. UserId=\[([0-9a-fA-F]{32})\] DisplayName=\[(.{1,32})\] EpicAccountId=\[MCP:[0-9a-fA-F]{32}\] AuthTicket=\[<Redacted>\]$";
         public static string PartyMemberJoined = "^" + Timestamp + UnknownId + @"LogParty: Display: New party member state for \[(.{1,32})\] Id \[MCP:([0-9a-fA-F]{5}[0-9a-fA-F\.]{3,22}[0-9a-fA-F]{5})\] added to the local player's party \[V2:[0-9a-fA-F]{32}\]\.$";
         public static string PartyMemberLeft = "^" + Timestamp + UnknownId + @"LogParty: Display: Party member state for \[(.{1,32})\] Id \[MCP:([0-9a-fA-F]{5}[0-9a-fA-F\.]{3,22}[0-9a-fA-F]{5})\] removed from \[(.{1,32})\]'s party\.$";
+        public static string StartedGame = "^" + Timestamp + UnknownId + @"LogDemo: UReplaySubsystem::RecordReplay: Starting recording with demo driver\.  Name:  FriendlyName: Unsaved Replay$";
+        //public static string StartedGameAlt = "^" + Timestamp + UnknownId + @"LogLocalFileReplay: Writing replay to '.*' with \d+\.\d{2}MB free$";
+        public static string LeftGame = "^" + Timestamp + UnknownId + @"LogDemo: StopDemo: Demo  stopped at frame \d+$";
     }
 }
