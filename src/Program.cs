@@ -1,25 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
-using System.Runtime.CompilerServices;
 using System.IO;
-using System.Text.RegularExpressions;
-using System.Reflection;
-using System.Threading;
 using System.ComponentModel;
 using System.Drawing.Imaging;
 using Newtonsoft.Json;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
-using Microsoft.Win32.SafeHandles;
-using System.Web;
-using System.Web.UI;
 using static FortniteOverlay.Util.ImageUtil;
 using static FortniteOverlay.Util.LogReadUtil;
 using static FortniteOverlay.Util.MiscUtil;
@@ -119,7 +109,7 @@ namespace FortniteOverlay
             //form.Log($"Uploading gear...");
             var gearBitmap = RenderGear(screen, pixelPositions);
 
-            var urlFriendlyName = HttpUtility.UrlEncode(hostName);
+            var urlFriendlyName = StringToHex(hostName);
             var stream = new MemoryStream();
             gearBitmap.Save(stream, ImageFormat.Bmp);
             stream.Seek(0, SeekOrigin.Begin);
