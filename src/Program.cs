@@ -19,19 +19,19 @@ namespace FortniteOverlay
 {
     internal static class Program
     {
-        public static System.Windows.Forms.Timer updateTimer = new System.Windows.Forms.Timer();
-        public static Form1 form;
-        public static DateTime lastUp;
-        public static DateTime lastDown;
-        public static Dictionary<string, string> logRegex = new Dictionary<string, string>();
-        public static string hostName;
-        public static string hostId;
         public static bool inGame = false;
-        public static List<Fortniter> fortniters = new List<Fortniter>();
-        public static ProgramConfig config;
+        public static DateTime lastDown;
+        public static DateTime lastUp;
+        public static Dictionary<string, string> logRegex = new Dictionary<string, string>();
+        public static Form1 form;
         public static HttpClient httpClient = new HttpClient();
-
+        public static List<Fortniter> fortniters = new List<Fortniter>();
         public static List<PixelPositions> pixelPositions = KnownPositions();
+        public static ProgramConfig config;
+        public static string fortniteProcess = "FortniteClient-Win64-Shipping";
+        public static string hostId;
+        public static string hostName;
+        public static System.Windows.Forms.Timer updateTimer = new System.Windows.Forms.Timer();
 
         [STAThread]
         static void Main()

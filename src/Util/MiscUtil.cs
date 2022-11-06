@@ -30,7 +30,7 @@ namespace FortniteOverlay.Util
 
         public static bool FortniteFocused()
         {
-            if (GetActiveWindow().ProcessName == "FortniteClient-Win64-Shipping")
+            if (GetActiveWindow().ProcessName == Program.fortniteProcess)
             {
                 return true;
             }
@@ -40,11 +40,42 @@ namespace FortniteOverlay.Util
         public static bool FortniteOpen()
         {
             var allProcesses = Process.GetProcesses();
-            if (allProcesses.Any(x => x.ProcessName == "FortniteClient-Win64-Shipping"))
+            if (allProcesses.Any(x => x.ProcessName == Program.fortniteProcess))
             {
                 return true;
             }
             return false;
+        }
+
+        public static Rectangle GetWindowPosition(string processName)
+        {
+            return GetWindowPosition(GetWindowHandle(processName));
+        }
+
+        public static IntPtr GetWindowHandle(string processName)
+        {
+            var bruh = Process.GetProcessesByName(processName);
+            var proc = Process.GetProcessesByName(processName).FirstOrDefault(x => x.MainWindowHandle != default(IntPtr));
+            if (proc == null) { return IntPtr.Zero;           }
+            else              { return proc.MainWindowHandle; }
+        }
+
+        public static Rectangle GetWindowPosition(IntPtr ptr)
+        {
+            Rect procRect = new Rect();
+            GetWindowRect(ptr, ref procRect);
+            return new Rectangle(procRect.Left, procRect.Top, procRect.Right - procRect.Left, procRect.Bottom - procRect.Top);
+        }
+
+        [DllImport("user32.dll")]
+        public static extern bool GetWindowRect(IntPtr hwnd, ref Rect rectangle);
+
+        public struct Rect
+        {
+            public int Left { get; set; }
+            public int Top { get; set; }
+            public int Right { get; set; }
+            public int Bottom { get; set; }
         }
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]

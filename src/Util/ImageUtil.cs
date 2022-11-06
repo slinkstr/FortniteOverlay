@@ -11,7 +11,7 @@ namespace FortniteOverlay.Util
         private static PixelPositions MatchingPosition(Bitmap screenshot, List<PixelPositions> positions)
         {
             var dsrpos = positions.FirstOrDefault(x => x.Resolution[0] == screenshot.Width && x.Resolution[1] == screenshot.Height);
-            if (dsrpos == null) { throw new Exception($"No dictionary found for a resolution of {screenshot.Width}x{screenshot.Height}."); }
+            if (dsrpos == null) { dsrpos = InterpolateResolution(positions.First(), screenshot.Width, screenshot.Height); }
             return dsrpos;
         }
 
@@ -97,11 +97,15 @@ namespace FortniteOverlay.Util
 
         public static Bitmap TakeScreenshot()
         {
-            Rectangle bounds = Screen.GetBounds(Point.Empty);
+            Rectangle bounds = MiscUtil.GetWindowPosition(Program.fortniteProcess);
+            if (bounds.Width <= 0 || bounds.Height <= 0)
+            {
+                throw new Exception($"Error capturing screenshot. Width: {bounds.Width}, Height: {bounds.Height}, X: {bounds.X}, Y: {bounds.Y}.");
+            }
             Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height);
             using (Graphics g = Graphics.FromImage(bitmap))
             {
-                g.CopyFromScreen(Point.Empty, Point.Empty, bounds.Size);
+                g.CopyFromScreen(bounds.X, bounds.Y, 0, 0, bounds.Size);
             }
             return bitmap;
         }
