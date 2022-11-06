@@ -13,6 +13,7 @@ using Newtonsoft.Json.Linq;
 using static FortniteOverlay.Util.ImageUtil;
 using static FortniteOverlay.Util.LogReadUtil;
 using static FortniteOverlay.Util.MiscUtil;
+using System.Web;
 
 namespace FortniteOverlay
 {
@@ -103,19 +104,21 @@ namespace FortniteOverlay
 
         public static async Task UploadGear()
         {
-            if(!FortniteFocused()) { return; }
+            if (!FortniteFocused())    { return; }
+            if (!inGame)               { return; }
+            if (fortniters.Count == 0) { return; }
+
             var screen = TakeScreenshot();
             if (!IsMapVisible(screen, pixelPositions)) { return; }
             //form.Log($"Uploading gear...");
             var gearBitmap = RenderGear(screen, pixelPositions);
 
-            var urlFriendlyName = StringToHex(hostName);
             var stream = new MemoryStream();
             gearBitmap.Save(stream, ImageFormat.Bmp);
             stream.Seek(0, SeekOrigin.Begin);
             var formData = new MultipartFormDataContent();
             formData.Add(new StringContent(config.SecretKey), "secret");
-            formData.Add(new StringContent(urlFriendlyName), "filename");
+            formData.Add(new StringContent(hostName), "filename");
             formData.Add(new ByteArrayContent(stream.ToArray()), "gear", "image.png");
             HttpResponseMessage response = await httpClient.PostAsync(config.UploadEndpoint, formData);
             var responseString = response.Content.ReadAsStringAsync().Result;
@@ -158,15 +161,20 @@ namespace FortniteOverlay
 
             foreach (var fort in fortniters)
             {
-                var match = data.FirstOrDefault(x => x["name"].ToString() == fort.NameEncoded + ".png");
+                var match = data.FirstOrDefault(x => x["name"].ToString() == fort.Name + ".png");
                 if (match == null) { continue; }
 
                 DateTime lastMod = DateTime.Parse(match["mtime"].ToString().Substring(5));
                 if (lastMod != fort.GearModified)
                 {
                     //form.Log("Downloading gear for " + fort.Name);
-                    string gearUrl = config.ImageLocation + "/" + fort.NameEncoded + ".png";
+                    string gearUrl = config.ImageLocation + "/" + fort.Name + ".png";
                     response = await httpClient.GetAsync(gearUrl);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        form.Log("Error downloading gear image for " + fort.Name);
+                        continue;
+                    }
                     var stream = await response.Content.ReadAsStreamAsync();
                     var test = await response.Content.ReadAsStringAsync();
                     fort.GearImage = new Bitmap(stream);
@@ -194,8 +202,13 @@ namespace FortniteOverlay
 
     public class Fortniter
     {
+        public Fortniter(string name = null)
+        {
+            Name = name;
+        }
+
         public string Name { get; set; }
-        public string NameEncoded => StringToHex(Name);
+        //public string NameEncoded => HttpUtility.UrlEncode(Name);
         public Bitmap GearImage { get; set; }
         public DateTime GearModified { get; set; }
         public bool IsFaded { get; set; } = false;

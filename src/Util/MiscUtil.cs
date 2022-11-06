@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace FortniteOverlay.Util
 {
@@ -43,14 +45,6 @@ namespace FortniteOverlay.Util
                 return true;
             }
             return false;
-        }
-        public static string StringToHex(string input)
-        {
-            byte[] bytes = Encoding.Default.GetBytes(input);
-            string hexString = BitConverter.ToString(bytes)
-                .Replace("-", "")
-                .ToLower();
-            return hexString;
         }
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]

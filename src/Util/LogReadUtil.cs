@@ -63,11 +63,10 @@ namespace FortniteOverlay.Util
             if (match.Success)
             {
                 if (Program.fortniters.Any(x => x.Name == match.Groups[1].ToString())) { return; }
-                if (match.Groups[1].ToString() == Program.hostName) { return; }
+                if (match.Groups[1].ToString() == Program.hostName)                    { return; }
 
                 Fortniter newJoin = new Fortniter();
                 newJoin.Name = match.Groups[1].ToString();
-                //newJoin.Id = match.Groups[2].ToString();
                 Program.fortniters.Add(newJoin);
                 Program.form.SetSquadGear(string.Join(", ", Program.fortniters.Select(x => x.Name)));
 
