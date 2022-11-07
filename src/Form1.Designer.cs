@@ -49,6 +49,11 @@ namespace FortniteOverlay
             return Convert.ToInt32(DownFreq.Value);
         }
 
+        public bool GetOverlayCheckbox()
+        {
+            return showOverlayCheckbox.Checked;
+        }
+
         public void SetHostName(string text)
         {
             setControlProperty(hostNameTextBox, "Text", text);
@@ -131,7 +136,7 @@ namespace FortniteOverlay
             this.label1 = new System.Windows.Forms.Label();
             this.DownFreq = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
-            this.enableOverlayCheckbox = new System.Windows.Forms.CheckBox();
+            this.showOverlayCheckbox = new System.Windows.Forms.CheckBox();
             this.consoleLogTextBox = new System.Windows.Forms.TextBox();
             this.hostNameTextBox = new System.Windows.Forms.TextBox();
             this.hostIdTextBox = new System.Windows.Forms.TextBox();
@@ -220,17 +225,18 @@ namespace FortniteOverlay
             this.label2.TabIndex = 4;
             this.label2.Text = "Download Frequency (sec)";
             // 
-            // enableOverlayCheckbox
+            // showOverlayCheckbox
             // 
-            this.enableOverlayCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.enableOverlayCheckbox.AutoSize = true;
-            this.enableOverlayCheckbox.Enabled = false;
-            this.enableOverlayCheckbox.Location = new System.Drawing.Point(686, 12);
-            this.enableOverlayCheckbox.Name = "enableOverlayCheckbox";
-            this.enableOverlayCheckbox.Size = new System.Drawing.Size(98, 17);
-            this.enableOverlayCheckbox.TabIndex = 5;
-            this.enableOverlayCheckbox.Text = "Enable Overlay";
-            this.enableOverlayCheckbox.UseVisualStyleBackColor = true;
+            this.showOverlayCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.showOverlayCheckbox.AutoSize = true;
+            this.showOverlayCheckbox.Checked = true;
+            this.showOverlayCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showOverlayCheckbox.Location = new System.Drawing.Point(686, 12);
+            this.showOverlayCheckbox.Name = "showOverlayCheckbox";
+            this.showOverlayCheckbox.Size = new System.Drawing.Size(98, 17);
+            this.showOverlayCheckbox.TabIndex = 5;
+            this.showOverlayCheckbox.Text = "Enable Overlay";
+            this.showOverlayCheckbox.UseVisualStyleBackColor = true;
             // 
             // consoleLogTextBox
             // 
@@ -435,7 +441,7 @@ namespace FortniteOverlay
             this.Controls.Add(this.hostIdTextBox);
             this.Controls.Add(this.hostNameTextBox);
             this.Controls.Add(this.consoleLogTextBox);
-            this.Controls.Add(this.enableOverlayCheckbox);
+            this.Controls.Add(this.showOverlayCheckbox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.DownFreq);
             this.Controls.Add(this.label1);
@@ -461,7 +467,7 @@ namespace FortniteOverlay
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.NumericUpDown DownFreq;
         private System.Windows.Forms.Label label2;
-        private CheckBox enableOverlayCheckbox;
+        private CheckBox showOverlayCheckbox;
         private TextBox consoleLogTextBox;
         private TextBox hostNameTextBox;
         private TextBox hostIdTextBox;

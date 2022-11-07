@@ -24,6 +24,7 @@ namespace FortniteOverlay
         public static DateTime lastUp;
         public static Dictionary<string, string> logRegex = new Dictionary<string, string>();
         public static Form1 form;
+        public static OverlayForm overlayForm;
         public static HttpClient httpClient = new HttpClient();
         public static List<Fortniter> fortniters = new List<Fortniter>();
         public static List<PixelPositions> pixelPositions = KnownPositions();
@@ -61,6 +62,7 @@ namespace FortniteOverlay
             Application.SetCompatibleTextRenderingDefault(false);
 
             form = new Form1();
+            overlayForm = new OverlayForm();
             updateTimer.Tick += new EventHandler(UpdateEvent);
             updateTimer.Interval = 1000;
             updateTimer.Start();
@@ -95,6 +97,25 @@ namespace FortniteOverlay
 
                 fort.GearImage = MarkStaleImage(fort.GearImage);
                 fort.IsFaded = true;
+            }
+
+            if (form.GetOverlayCheckbox())
+            {
+                if (FortniteFocused())
+                {
+                    var rect = GetWindowPosition(Program.fortniteProcess);
+                    overlayForm.Location = new Point(rect.Top, rect.Left);
+                    overlayForm.Size = new Size(rect.Width, rect.Height);
+                    overlayForm.Show();
+                }
+                else
+                {
+                    overlayForm.Hide();
+                }
+            }
+            else
+            {
+                overlayForm.Hide();
             }
 
             await Task.WhenAll(tasks);
@@ -188,11 +209,13 @@ namespace FortniteOverlay
             {
                 if (fortniters.Count - 1 >= i)
                 {
+                    overlayForm.SetSquadGear(i, fortniters[i].GearImage);
                     form.SetSquadGear(i, fortniters[i].GearImage);
                     form.SetSquadName(i, fortniters[i].Name);
                 }
                 else
                 {
+                    overlayForm.SetSquadGear(i, null);
                     form.SetSquadGear(i, null);
                     form.SetSquadName(i, "");
                 }
