@@ -39,6 +39,11 @@ namespace FortniteOverlay
             }
         }
 
+        public void SetDebugOverlay(Bitmap bmp)
+        {
+            setControlProperty(debugPictureBox, "Image", bmp);
+        }
+
         public void SetSquadGear(int index, Bitmap bmp)
         {
             switch (index)
@@ -80,9 +85,11 @@ namespace FortniteOverlay
             this.squadmateGearPictureBox1 = new System.Windows.Forms.PictureBox();
             this.squadmateGearPictureBox2 = new System.Windows.Forms.PictureBox();
             this.squadmateGearPictureBox3 = new System.Windows.Forms.PictureBox();
+            this.debugPictureBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.squadmateGearPictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmateGearPictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmateGearPictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debugPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // squadmateGearPictureBox1
@@ -121,6 +128,19 @@ namespace FortniteOverlay
             this.squadmateGearPictureBox3.TabIndex = 4;
             this.squadmateGearPictureBox3.TabStop = false;
             // 
+            // debugPictureBox
+            // 
+            this.debugPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.debugPictureBox.Location = new System.Drawing.Point(0, 0);
+            this.debugPictureBox.Margin = new System.Windows.Forms.Padding(0);
+            this.debugPictureBox.Name = "debugPictureBox";
+            this.debugPictureBox.Size = new System.Drawing.Size(2560, 1440);
+            this.debugPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.debugPictureBox.TabIndex = 5;
+            this.debugPictureBox.TabStop = false;
+            // 
             // OverlayForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -130,6 +150,7 @@ namespace FortniteOverlay
             this.Controls.Add(this.squadmateGearPictureBox3);
             this.Controls.Add(this.squadmateGearPictureBox2);
             this.Controls.Add(this.squadmateGearPictureBox1);
+            this.Controls.Add(this.debugPictureBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "OverlayForm";
             this.Opacity = 0.9D;
@@ -140,6 +161,7 @@ namespace FortniteOverlay
             ((System.ComponentModel.ISupportInitialize)(this.squadmateGearPictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmateGearPictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmateGearPictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.debugPictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -148,5 +170,6 @@ namespace FortniteOverlay
         private System.Windows.Forms.PictureBox squadmateGearPictureBox1;
         private System.Windows.Forms.PictureBox squadmateGearPictureBox2;
         private System.Windows.Forms.PictureBox squadmateGearPictureBox3;
+        private PictureBox debugPictureBox;
     }
 }

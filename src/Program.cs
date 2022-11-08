@@ -64,7 +64,7 @@ namespace FortniteOverlay
             form = new Form1();
             overlayForm = new OverlayForm();
             updateTimer.Tick += new EventHandler(UpdateEvent);
-            updateTimer.Interval = 1000;
+            updateTimer.Interval = 250;
             updateTimer.Start();
 
             BackgroundWorker logReader = new BackgroundWorker();
@@ -101,7 +101,7 @@ namespace FortniteOverlay
 
             if (form.GetOverlayCheckbox())
             {
-                if (FortniteFocused())
+                if (FortniteFocused() && inGame)
                 {
                     var rect = GetWindowPosition(Program.fortniteProcess);
                     overlayForm.Location = new Point(rect.Top, rect.Left);
@@ -118,6 +118,14 @@ namespace FortniteOverlay
                 overlayForm.Hide();
             }
 
+            // *******************************************************************************
+            // Remove this later
+            var screen = TakeScreenshot();
+            var debugBitmap = RenderGearDebug(screen, pixelPositions);
+            if (form.GetDebugOverlayCheckbox()) { overlayForm.SetDebugOverlay(debugBitmap); }
+            else                                { overlayForm.SetDebugOverlay(null); }
+            // *******************************************************************************
+
             await Task.WhenAll(tasks);
 
             updateTimer.Start();
@@ -131,7 +139,6 @@ namespace FortniteOverlay
 
             var screen = TakeScreenshot();
             if (!IsMapVisible(screen, pixelPositions)) { return; }
-            //form.Log($"Uploading gear...");
             var gearBitmap = RenderGear(screen, pixelPositions);
 
             var stream = new MemoryStream();
@@ -161,7 +168,6 @@ namespace FortniteOverlay
             if (!inGame)               { return; }
             if (fortniters.Count == 0) { return; }
             lastDown = DateTime.Now;
-            //form.Log($"Downloading gear...");
 
             var response = await httpClient.GetAsync(config.ImageLocation);
             string jsonString = await response.Content.ReadAsStringAsync();
@@ -173,14 +179,21 @@ namespace FortniteOverlay
             catch (Exception e)
             {
                 form.Log("Error downloading data from server.\n" +
-                    "-------------------------\n" +
-                    e.ToString() + "\n" +
-                    "-------------------------\n" +
-                    "Server response:\n" + jsonString);
+                         "-------------------------\n" +
+                         e.ToString() + "\n" +
+                         "-------------------------\n" +
+                         "Server response:\n" + jsonString);
                 return;
             }
 
-            foreach (var fort in fortniters)
+            if(data == null)
+            {
+                form.Log("Error downloading data from server.\n" +
+                         "Server response:\n" + jsonString);
+                return;
+            }
+
+            foreach (var fort in fortniters.ToList())
             {
                 var match = data.FirstOrDefault(x => x["name"].ToString() == fort.Name + ".png");
                 if (match == null) { continue; }

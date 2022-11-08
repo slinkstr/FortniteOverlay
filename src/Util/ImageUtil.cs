@@ -95,6 +95,64 @@ namespace FortniteOverlay.Util
             return bitmap;
         }
 
+        public static Bitmap RenderGearDebug(Bitmap screenshot, List<PixelPositions> positions)
+        {
+            return RenderGearDebug(screenshot, MatchingPosition(screenshot, positions));
+        }
+
+        public static Bitmap RenderGearDebug(Bitmap screenshot, PixelPositions positions)
+        {
+            Bitmap bitmap = new Bitmap(screenshot.Width, screenshot.Height);
+            Pen pen = new Pen(Color.Red, 1);
+
+            Color pureWhite = Color.FromArgb(255, 255, 255);
+            Color fadedWhite = Color.FromArgb(127, 127, 127);
+
+            int slotSelected = 0;
+            for (int i = 0; i < positions.Slots.Length; i++)
+            {
+                var pix = screenshot.GetPixel(positions.Slots[i][0], positions.Slots[i][1]);
+                if (pix == pureWhite || pix == fadedWhite)
+                {
+                    slotSelected = i + 1;
+                }
+            }
+
+            using (Graphics g = Graphics.FromImage(bitmap))
+            {
+                for (int i = 0; i < positions.Slots.Length; i++)
+                {
+                    var ofs = (slotSelected == i + 1) ? positions.SelectedSlotOffset : 0;
+                    g.DrawRectangle(pen, new Rectangle(positions.Slots[i][0], positions.Slots[i][1] + ofs, positions.SlotSize, positions.SlotSize));
+                }
+
+                // keys
+                Color yellowish = Color.FromArgb(244, 219, 93);
+                var pix = screenshot.GetPixel(positions.CrownPos[0], positions.CrownPos[1]);
+                g.DrawRectangle(pen, new Rectangle(positions.CrownPos[0], positions.CrownPos[1], 1, 1));
+                Program.form.Log($"Crown position hue: {pix.GetHue()}, tolerance: {yellowish.GetHue() - 10} - {yellowish.GetHue() + 10}");
+                if (yellowish.GetHue() - 10 < pix.GetHue() && yellowish.GetHue() + 10 > pix.GetHue())
+                {
+                    g.DrawRectangle(pen, new Rectangle(positions.KeyPosCrown[0], positions.KeyPosCrown[1], positions.SlotSize, positions.SlotSize));
+                }
+                else
+                {
+                    g.DrawRectangle(pen, new Rectangle(positions.KeyPos[0], positions.KeyPos[1], positions.SlotSize, positions.SlotSize));
+                }
+
+                // Draw points of interest
+                // Map
+                g.DrawRectangle(pen, new Rectangle(positions.Map[0][0], positions.Map[0][1], 1, 1));
+                g.DrawRectangle(pen, new Rectangle(positions.Map[1][0], positions.Map[1][1], 1, 1));
+                g.DrawRectangle(pen, new Rectangle(positions.Map[2][0], positions.Map[2][1], 1, 1));
+
+                // Crown
+
+            }
+
+            return bitmap;
+        }
+
         public static Bitmap TakeScreenshot()
         {
             Rectangle bounds = MiscUtil.GetWindowPosition(Program.fortniteProcess);

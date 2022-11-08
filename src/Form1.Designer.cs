@@ -54,6 +54,11 @@ namespace FortniteOverlay
             return showOverlayCheckbox.Checked;
         }
 
+        public bool GetDebugOverlayCheckbox()
+        {
+            return debugOverlayCheckbox.Checked;
+        }
+
         public void SetHostName(string text)
         {
             setControlProperty(hostNameTextBox, "Text", text);
@@ -155,6 +160,7 @@ namespace FortniteOverlay
             this.squadmateNameTextBox3 = new System.Windows.Forms.Label();
             this.showConsoleCheckBox = new System.Windows.Forms.CheckBox();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.debugOverlayCheckbox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.UpFreq)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DownFreq)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selfGearPictureBox1)).BeginInit();
@@ -404,7 +410,7 @@ namespace FortniteOverlay
             this.showConsoleCheckBox.AutoSize = true;
             this.showConsoleCheckBox.Checked = true;
             this.showConsoleCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showConsoleCheckBox.Location = new System.Drawing.Point(587, 12);
+            this.showConsoleCheckBox.Location = new System.Drawing.Point(585, 12);
             this.showConsoleCheckBox.Name = "showConsoleCheckBox";
             this.showConsoleCheckBox.Size = new System.Drawing.Size(93, 17);
             this.showConsoleCheckBox.TabIndex = 22;
@@ -418,12 +424,24 @@ namespace FortniteOverlay
             this.notifyIcon.Text = "Fortnite Gear Overlay";
             this.notifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseClick);
             // 
+            // debugOverlayCheckbox
+            // 
+            this.debugOverlayCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.debugOverlayCheckbox.AutoSize = true;
+            this.debugOverlayCheckbox.Location = new System.Drawing.Point(585, 35);
+            this.debugOverlayCheckbox.Name = "debugOverlayCheckbox";
+            this.debugOverlayCheckbox.Size = new System.Drawing.Size(95, 17);
+            this.debugOverlayCheckbox.TabIndex = 23;
+            this.debugOverlayCheckbox.Text = "Debug overlay";
+            this.debugOverlayCheckbox.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.debugOverlayCheckbox);
             this.Controls.Add(this.showConsoleCheckBox);
             this.Controls.Add(this.squadmateNameTextBox3);
             this.Controls.Add(this.squadmateNameTextBox2);
@@ -486,6 +504,7 @@ namespace FortniteOverlay
         private Label squadmateNameTextBox3;
         private CheckBox showConsoleCheckBox;
         private NotifyIcon notifyIcon;
+        private CheckBox debugOverlayCheckbox;
     }
 }
 
