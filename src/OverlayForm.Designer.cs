@@ -32,16 +32,18 @@ namespace FortniteOverlay
             {
                 const int WS_EX_LAYERED = 0x80000;
                 const int WS_EX_TRANSPARENT = 0x20;
+                const int WS_EX_TOOLWINDOW = 0x80;
                 CreateParams cp = base.CreateParams;
                 cp.ExStyle |= WS_EX_LAYERED;
                 cp.ExStyle |= WS_EX_TRANSPARENT;
+                cp.ExStyle |= WS_EX_TOOLWINDOW;
                 return cp;
             }
         }
 
         public void SetDebugOverlay(Bitmap bmp)
         {
-            setControlProperty(debugPictureBox, "Image", bmp);
+            SetControlProperty(debugPictureBox, "Image", bmp);
         }
 
         public void SetSquadGear(int index, Bitmap bmp)
@@ -49,20 +51,20 @@ namespace FortniteOverlay
             switch (index)
             {
                 case 0:
-                    setControlProperty(squadmateGearPictureBox1, "Image", bmp);
+                    SetControlProperty(squadmateGearPictureBox1, "Image", bmp);
                     break;
                 case 1:
-                    setControlProperty(squadmateGearPictureBox2, "Image", bmp);
+                    SetControlProperty(squadmateGearPictureBox2, "Image", bmp);
                     break;
                 case 2:
-                    setControlProperty(squadmateGearPictureBox3, "Image", bmp);
+                    SetControlProperty(squadmateGearPictureBox3, "Image", bmp);
                     break;
                 default:
                     throw new Exception("Invalid index in SetSquadGear");
             }
         }
 
-        public void setControlProperty(Control control, string propertyName, object data)
+        public void SetControlProperty(Control control, string propertyName, object data)
         {
             if (control.InvokeRequired)
             {

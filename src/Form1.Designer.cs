@@ -61,22 +61,22 @@ namespace FortniteOverlay
 
         public void SetHostName(string text)
         {
-            setControlProperty(hostNameTextBox, "Text", text);
+            SetControlProperty(hostNameTextBox, "Text", text);
         }
 
         public void SetHostId(string text)
         {
-            setControlProperty(hostIdTextBox, "Text", text);
+            SetControlProperty(hostIdTextBox, "Text", text);
         }
 
         public void SetSquadGear(string text)
         {
-            setControlProperty(currentSquadTextBox, "Text", text);
+            SetControlProperty(currentSquadTextBox, "Text", text);
         }
 
         public void SetSelfGear(Bitmap bmp)
         {
-            setControlProperty(selfGearPictureBox1, "Image", bmp);
+            SetControlProperty(selfGearPictureBox1, "Image", bmp);
         }
 
         public void SetSquadGear(int index, Bitmap bmp)
@@ -84,13 +84,13 @@ namespace FortniteOverlay
             switch (index)
             {
                 case 0:
-                    setControlProperty(squadmateGearPictureBox1, "Image", bmp);
+                    SetControlProperty(squadmateGearPictureBox1, "Image", bmp);
                     break;
                 case 1:
-                    setControlProperty(squadmateGearPictureBox2, "Image", bmp);
+                    SetControlProperty(squadmateGearPictureBox2, "Image", bmp);
                     break;
                 case 2:
-                    setControlProperty(squadmateGearPictureBox3, "Image", bmp);
+                    SetControlProperty(squadmateGearPictureBox3, "Image", bmp);
                     break;
                 default:
                     throw new Exception("Invalid index in SetSquadGear");
@@ -102,20 +102,20 @@ namespace FortniteOverlay
             switch (index)
             {
                 case 0:
-                    setControlProperty(squadmateNameTextBox1, "Text", name);
+                    SetControlProperty(squadmateNameTextBox1, "Text", name);
                     break;
                 case 1:
-                    setControlProperty(squadmateNameTextBox2, "Text", name);
+                    SetControlProperty(squadmateNameTextBox2, "Text", name);
                     break;
                 case 2:
-                    setControlProperty(squadmateNameTextBox3, "Text", name);
+                    SetControlProperty(squadmateNameTextBox3, "Text", name);
                     break;
                 default:
                     throw new Exception("Invalid index in SetSquadName");
             }
         }
 
-        public void setControlProperty(Control control, string propertyName, object data)
+        public void SetControlProperty(Control control, string propertyName, object data)
         {
             if(control.InvokeRequired)
             {

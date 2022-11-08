@@ -14,7 +14,6 @@ namespace FortniteOverlay
     {
         public Form1()
         {
-            OverlayForm overlayForm = new OverlayForm();
             InitializeComponent();
         }
 
