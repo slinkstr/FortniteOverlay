@@ -145,9 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="chunli.ico" />
-    <Content Include="outdated.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="outdated.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">

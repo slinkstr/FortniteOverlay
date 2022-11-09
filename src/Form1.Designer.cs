@@ -25,108 +25,6 @@ namespace FortniteOverlay
             base.Dispose(disposing);
         }
 
-        public void Log(string message)
-        {
-            message = $"[{DateTime.Now}] {message.Replace("\n", Environment.NewLine)}" + Environment.NewLine;
-            if (consoleLogTextBox.InvokeRequired)
-            {
-                consoleLogTextBox.Invoke(new MethodInvoker(delegate { consoleLogTextBox.AppendText(message); }));
-            }
-            else
-            {
-                consoleLogTextBox.AppendText(message);
-            }
-            Console.Write(message);
-        }
-
-        public int GetUpFreq()
-        {
-            return Convert.ToInt32(UpFreq.Value);
-        }
-
-        public int GetDownFreq()
-        {
-            return Convert.ToInt32(DownFreq.Value);
-        }
-
-        public bool GetOverlayCheckbox()
-        {
-            return showOverlayCheckbox.Checked;
-        }
-
-        public bool GetDebugOverlayCheckbox()
-        {
-            return debugOverlayCheckbox.Checked;
-        }
-
-        public void SetHostName(string text)
-        {
-            SetControlProperty(hostNameTextBox, "Text", text);
-        }
-
-        public void SetHostId(string text)
-        {
-            SetControlProperty(hostIdTextBox, "Text", text);
-        }
-
-        public void SetSquadGear(string text)
-        {
-            SetControlProperty(currentSquadTextBox, "Text", text);
-        }
-
-        public void SetSelfGear(Bitmap bmp)
-        {
-            SetControlProperty(selfGearPictureBox1, "Image", bmp);
-        }
-
-        public void SetSquadGear(int index, Bitmap bmp)
-        {
-            switch (index)
-            {
-                case 0:
-                    SetControlProperty(squadmateGearPictureBox1, "Image", bmp);
-                    break;
-                case 1:
-                    SetControlProperty(squadmateGearPictureBox2, "Image", bmp);
-                    break;
-                case 2:
-                    SetControlProperty(squadmateGearPictureBox3, "Image", bmp);
-                    break;
-                default:
-                    throw new Exception("Invalid index in SetSquadGear");
-            }
-        }
-
-        public void SetSquadName(int index, string name)
-        {
-            switch (index)
-            {
-                case 0:
-                    SetControlProperty(squadmateNameTextBox1, "Text", name);
-                    break;
-                case 1:
-                    SetControlProperty(squadmateNameTextBox2, "Text", name);
-                    break;
-                case 2:
-                    SetControlProperty(squadmateNameTextBox3, "Text", name);
-                    break;
-                default:
-                    throw new Exception("Invalid index in SetSquadName");
-            }
-        }
-
-        public void SetControlProperty(Control control, string propertyName, object data)
-        {
-            if (control.InvokeRequired)
-            {
-                control.Invoke(new MethodInvoker(delegate { control.GetType().GetProperty(propertyName).SetValue(control, data); }));
-            }
-            else
-            {
-                control.GetType().GetProperty(propertyName).SetValue(control, data);
-            }
-        }
-
         #region Windows Form Designer generated code
 
         /// <summary>
@@ -137,9 +35,9 @@ namespace FortniteOverlay
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.UpFreq = new System.Windows.Forms.NumericUpDown();
+            this.uploadFrequencyNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
-            this.DownFreq = new System.Windows.Forms.NumericUpDown();
+            this.downloadFrequencyNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.showOverlayCheckbox = new System.Windows.Forms.CheckBox();
             this.consoleLogTextBox = new System.Windows.Forms.TextBox();
@@ -147,9 +45,7 @@ namespace FortniteOverlay
             this.hostIdTextBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.currentSquadTextBox = new System.Windows.Forms.TextBox();
             this.selfGearPictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.squadmateGearPictureBox1 = new System.Windows.Forms.PictureBox();
             this.squadmateGearPictureBox2 = new System.Windows.Forms.PictureBox();
@@ -162,31 +58,31 @@ namespace FortniteOverlay
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.debugOverlayCheckbox = new System.Windows.Forms.CheckBox();
             this.updateNoticeLinkLabel = new System.Windows.Forms.LinkLabel();
-            ((System.ComponentModel.ISupportInitialize)(this.UpFreq)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.DownFreq)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.uploadFrequencyNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.downloadFrequencyNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selfGearPictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmateGearPictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmateGearPictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmateGearPictureBox3)).BeginInit();
             this.SuspendLayout();
             // 
-            // UpFreq
+            // uploadFrequencyNumericUpDown
             // 
-            this.UpFreq.Location = new System.Drawing.Point(12, 12);
-            this.UpFreq.Maximum = new decimal(new int[] {
+            this.uploadFrequencyNumericUpDown.Location = new System.Drawing.Point(12, 12);
+            this.uploadFrequencyNumericUpDown.Maximum = new decimal(new int[] {
             120,
             0,
             0,
             0});
-            this.UpFreq.Minimum = new decimal(new int[] {
+            this.uploadFrequencyNumericUpDown.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.UpFreq.Name = "UpFreq";
-            this.UpFreq.Size = new System.Drawing.Size(120, 20);
-            this.UpFreq.TabIndex = 1;
-            this.UpFreq.Value = new decimal(new int[] {
+            this.uploadFrequencyNumericUpDown.Name = "uploadFrequencyNumericUpDown";
+            this.uploadFrequencyNumericUpDown.Size = new System.Drawing.Size(120, 20);
+            this.uploadFrequencyNumericUpDown.TabIndex = 1;
+            this.uploadFrequencyNumericUpDown.Value = new decimal(new int[] {
             5,
             0,
             0,
@@ -201,23 +97,23 @@ namespace FortniteOverlay
             this.label1.TabIndex = 2;
             this.label1.Text = "Upload Frequency (sec)";
             // 
-            // DownFreq
+            // downloadFrequencyNumericUpDown
             // 
-            this.DownFreq.Location = new System.Drawing.Point(12, 38);
-            this.DownFreq.Maximum = new decimal(new int[] {
+            this.downloadFrequencyNumericUpDown.Location = new System.Drawing.Point(12, 38);
+            this.downloadFrequencyNumericUpDown.Maximum = new decimal(new int[] {
             120,
             0,
             0,
             0});
-            this.DownFreq.Minimum = new decimal(new int[] {
+            this.downloadFrequencyNumericUpDown.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.DownFreq.Name = "DownFreq";
-            this.DownFreq.Size = new System.Drawing.Size(120, 20);
-            this.DownFreq.TabIndex = 3;
-            this.DownFreq.Value = new decimal(new int[] {
+            this.downloadFrequencyNumericUpDown.Name = "downloadFrequencyNumericUpDown";
+            this.downloadFrequencyNumericUpDown.Size = new System.Drawing.Size(120, 20);
+            this.downloadFrequencyNumericUpDown.TabIndex = 3;
+            this.downloadFrequencyNumericUpDown.Value = new decimal(new int[] {
             5,
             0,
             0,
@@ -293,14 +189,6 @@ namespace FortniteOverlay
             this.label4.Text = "User ID:";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // currentSquadTextBox
-            // 
-            this.currentSquadTextBox.Location = new System.Drawing.Point(68, 122);
-            this.currentSquadTextBox.Name = "currentSquadTextBox";
-            this.currentSquadTextBox.ReadOnly = true;
-            this.currentSquadTextBox.Size = new System.Drawing.Size(300, 20);
-            this.currentSquadTextBox.TabIndex = 11;
-            // 
             // selfGearPictureBox1
             // 
             this.selfGearPictureBox1.BackColor = System.Drawing.SystemColors.ControlLight;
@@ -310,15 +198,6 @@ namespace FortniteOverlay
             this.selfGearPictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.selfGearPictureBox1.TabIndex = 12;
             this.selfGearPictureBox1.TabStop = false;
-            // 
-            // label5
-            // 
-            this.label5.Location = new System.Drawing.Point(12, 122);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(50, 20);
-            this.label5.TabIndex = 13;
-            this.label5.Text = "Squad:";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label6
             // 
@@ -463,9 +342,7 @@ namespace FortniteOverlay
             this.Controls.Add(this.squadmateGearPictureBox2);
             this.Controls.Add(this.squadmateGearPictureBox1);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.selfGearPictureBox1);
-            this.Controls.Add(this.currentSquadTextBox);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.hostIdTextBox);
@@ -473,16 +350,16 @@ namespace FortniteOverlay
             this.Controls.Add(this.consoleLogTextBox);
             this.Controls.Add(this.showOverlayCheckbox);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.DownFreq);
+            this.Controls.Add(this.downloadFrequencyNumericUpDown);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.UpFreq);
+            this.Controls.Add(this.uploadFrequencyNumericUpDown);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Fortnite Gear Overlay";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.form1_FormClosed);
             this.Resize += new System.EventHandler(this.Form1_Resize);
-            ((System.ComponentModel.ISupportInitialize)(this.UpFreq)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.DownFreq)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.uploadFrequencyNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.downloadFrequencyNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.selfGearPictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmateGearPictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmateGearPictureBox2)).EndInit();
@@ -493,9 +370,9 @@ namespace FortniteOverlay
         }
 
         #endregion
-        private System.Windows.Forms.NumericUpDown UpFreq;
+        private System.Windows.Forms.NumericUpDown uploadFrequencyNumericUpDown;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.NumericUpDown DownFreq;
+        private System.Windows.Forms.NumericUpDown downloadFrequencyNumericUpDown;
         private System.Windows.Forms.Label label2;
         private CheckBox showOverlayCheckbox;
         private TextBox consoleLogTextBox;
@@ -503,9 +380,7 @@ namespace FortniteOverlay
         private TextBox hostIdTextBox;
         private Label label3;
         private Label label4;
-        private TextBox currentSquadTextBox;
         private PictureBox selfGearPictureBox1;
-        private Label label5;
         private Label label6;
         private PictureBox squadmateGearPictureBox1;
         private PictureBox squadmateGearPictureBox2;

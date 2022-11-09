@@ -68,7 +68,6 @@ namespace FortniteOverlay.Util
                 Fortniter newJoin = new Fortniter();
                 newJoin.Name = match.Groups[1].ToString();
                 Program.fortniters.Add(newJoin);
-                Program.form.SetSquadGear(string.Join(", ", Program.fortniters.Select(x => x.Name)));
 
                 Program.form.Log("[PartyMemberJoined] Name: " + match.Groups[1] + ", ID: " + match.Groups[2]);
                 return;
@@ -79,7 +78,6 @@ namespace FortniteOverlay.Util
             {
                 var leaver = Program.fortniters.Find(x => x.Name == match.Groups[1].ToString());
                 if (leaver != null) { Program.fortniters.Remove(leaver); };
-                Program.form.SetSquadGear(string.Join(", ", Program.fortniters.Select(x => x.Name)));
 
                 Program.form.Log("[PartyMemberLeft] Name: " + match.Groups[1] + ", ID: " + match.Groups[2] + ", Host: " + match.Groups[3]);
                 return;

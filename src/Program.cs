@@ -101,27 +101,54 @@ namespace FortniteOverlay
             updateTimer.Stop();
 
             var tasks = new List<Task>();
-            if (lastUp == null || lastUp.AddSeconds(form.GetUpFreq()) - DateTime.Now <= TimeSpan.FromSeconds(0.5))
+            if (lastUp == null || lastUp.AddSeconds(form.ProgramOptions().UploadFrequency) - DateTime.Now <= TimeSpan.FromSeconds(0.5))
             {
                 tasks.Add(UploadGear());
             }
 
-            if (lastDown == null || lastDown.AddSeconds(form.GetDownFreq()) - DateTime.Now <= TimeSpan.FromSeconds(0.5))
+            if (lastDown == null || lastDown.AddSeconds(form.ProgramOptions().DownloadFrequency) - DateTime.Now <= TimeSpan.FromSeconds(0.5))
             {
                 tasks.Add(DownloadGear());
             }
 
-            foreach(var fort in fortniters)
-            {
-                if (fort.GearModified.AddSeconds(15) > DateTime.Now) { continue; }
-                if (fort.GearImage == null)                          { continue; }
-                if (fort.IsFaded)                                    { continue; }
+            await Task.WhenAll(tasks);
 
-                fort.GearImage = MarkStaleImage(fort.GearImage);
-                fort.IsFaded = true;
+            // Update form elements
+            fortniters = fortniters.OrderBy(x => x.Name).ToList();
+            for (int i = 0; i < 3; i++)
+            {
+                if (fortniters.Count - 1 >= i)
+                {
+                    overlayForm.SetSquadGear(i, fortniters[i].GearImage);
+                    form.SetSquadGear(i, fortniters[i].GearImage);
+                    form.SetSquadName(i, fortniters[i].Name);
+                }
+                else
+                {
+                    overlayForm.SetSquadGear(i, null);
+                    form.SetSquadGear(i, null);
+                    form.SetSquadName(i, "");
+                }
             }
 
-            if (form.GetOverlayCheckbox())
+            // Grey out stale pics
+            for (int i = 0; i < 3; i++)
+            {
+                if (fortniters.Count - 1 >= i)
+                {
+                    if (fortniters[i].GearModified.AddSeconds(10) > DateTime.Now) { continue; }
+                    if (fortniters[i].GearImage == null) { continue; }
+                    if (fortniters[i].IsFaded) { continue; }
+
+                    fortniters[i].GearImage = MarkStaleImage(fortniters[i].GearImage);
+                    fortniters[i].IsFaded = true;
+                    overlayForm.SetSquadGear(i, fortniters[i].GearImage);
+                    form.SetSquadGear(i, fortniters[i].GearImage);
+                }
+            }
+
+            // Show or hide overlay
+            if (form.ProgramOptions().EnableOverlay)
             {
                 if (FortniteFocused() && inGame)
                 {
@@ -146,12 +173,10 @@ namespace FortniteOverlay
             {
                 var screen = TakeScreenshot();
                 var debugBitmap = RenderGearDebug(screen, pixelPositions);
-                if (form.GetDebugOverlayCheckbox()) { overlayForm.SetDebugOverlay(debugBitmap); }
-                else                                { overlayForm.SetDebugOverlay(null); }
+                if (form.ProgramOptions().DebugOverlay) { overlayForm.SetDebugOverlay(debugBitmap); }
+                else                                    { overlayForm.SetDebugOverlay(null); }
             }
             // *******************************************************************************
-
-            await Task.WhenAll(tasks);
 
             updateTimer.Start();
         }
@@ -244,23 +269,6 @@ namespace FortniteOverlay
                         ftn.GearModified = lastMod;
                         ftn.IsFaded = false;
                     }
-                }
-            }
-
-            fortniters = fortniters.OrderBy(x => x.Name).ToList();
-            for (int i = 0; i < 3; i++)
-            {
-                if (fortniters.Count - 1 >= i)
-                {
-                    overlayForm.SetSquadGear(i, fortniters[i].GearImage);
-                    form.SetSquadGear(i, fortniters[i].GearImage);
-                    form.SetSquadName(i, fortniters[i].Name);
-                }
-                else
-                {
-                    overlayForm.SetSquadGear(i, null);
-                    form.SetSquadGear(i, null);
-                    form.SetSquadName(i, "");
                 }
             }
         }
