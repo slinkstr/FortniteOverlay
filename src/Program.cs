@@ -14,6 +14,7 @@ using static FortniteOverlay.Util.ImageUtil;
 using static FortniteOverlay.Util.LogReadUtil;
 using static FortniteOverlay.Util.MiscUtil;
 using System.Web;
+using System.Reflection;
 
 namespace FortniteOverlay
 {
@@ -32,7 +33,9 @@ namespace FortniteOverlay
         public static string fortniteProcess = "FortniteClient-Win64-Shipping";
         public static string hostId;
         public static string hostName;
-        public static System.Windows.Forms.Timer updateTimer = new System.Windows.Forms.Timer();
+
+        public static Timer updateTimer = new Timer();
+        public static Timer checkForUpdatesTimer = new Timer();
 
         [STAThread]
         static void Main()
@@ -58,20 +61,39 @@ namespace FortniteOverlay
                 pixelPositions.Add(InterpolateResolution(pixelPositions.First(), curWidth, curHeight));
             }
 
+            httpClient.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("FortniteGearOverlay", Assembly.GetExecutingAssembly().GetName().Version.ToString()));
+            httpClient.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("(+https://github.com/slinkstr/FortniteOverlay)"));
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
             form = new Form1();
             overlayForm = new OverlayForm();
+
+            // Rendering and upload/download events
             updateTimer.Tick += new EventHandler(UpdateEvent);
             updateTimer.Interval = 250;
             updateTimer.Start();
 
+            // Log reader
             BackgroundWorker logReader = new BackgroundWorker();
             logReader.DoWork += new DoWorkEventHandler(ReadLogFile);
             logReader.RunWorkerAsync();
 
+            // Update checking
+            _ = CheckForUpdates();
+            checkForUpdatesTimer.Tick += new EventHandler(GetNewestVersionEvent);
+            checkForUpdatesTimer.Interval = (6 * 60 * 60);
+            checkForUpdatesTimer.Start();
+
             Application.Run(form);
+        }
+
+        public static async void GetNewestVersionEvent(Object obj, EventArgs evtargs)
+        {
+            checkForUpdatesTimer.Stop();
+            await CheckForUpdates();
+            checkForUpdatesTimer.Start();
         }
 
         public static async void UpdateEvent(Object obj, EventArgs evtargs)
@@ -120,10 +142,13 @@ namespace FortniteOverlay
 
             // *******************************************************************************
             // Remove this later
-            var screen = TakeScreenshot();
-            var debugBitmap = RenderGearDebug(screen, pixelPositions);
-            if (form.GetDebugOverlayCheckbox()) { overlayForm.SetDebugOverlay(debugBitmap); }
-            else                                { overlayForm.SetDebugOverlay(null); }
+            if (FortniteOpen())
+            {
+                var screen = TakeScreenshot();
+                var debugBitmap = RenderGearDebug(screen, pixelPositions);
+                if (form.GetDebugOverlayCheckbox()) { overlayForm.SetDebugOverlay(debugBitmap); }
+                else                                { overlayForm.SetDebugOverlay(null); }
+            }
             // *******************************************************************************
 
             await Task.WhenAll(tasks);

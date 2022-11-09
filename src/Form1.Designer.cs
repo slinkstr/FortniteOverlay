@@ -117,7 +117,7 @@ namespace FortniteOverlay
 
         public void SetControlProperty(Control control, string propertyName, object data)
         {
-            if(control.InvokeRequired)
+            if (control.InvokeRequired)
             {
                 control.Invoke(new MethodInvoker(delegate { control.GetType().GetProperty(propertyName).SetValue(control, data); }));
             }
@@ -161,6 +161,7 @@ namespace FortniteOverlay
             this.showConsoleCheckBox = new System.Windows.Forms.CheckBox();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.debugOverlayCheckbox = new System.Windows.Forms.CheckBox();
+            this.updateNoticeLinkLabel = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.UpFreq)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DownFreq)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selfGearPictureBox1)).BeginInit();
@@ -254,7 +255,7 @@ namespace FortniteOverlay
             this.consoleLogTextBox.Name = "consoleLogTextBox";
             this.consoleLogTextBox.ReadOnly = true;
             this.consoleLogTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.consoleLogTextBox.Size = new System.Drawing.Size(776, 200);
+            this.consoleLogTextBox.Size = new System.Drawing.Size(776, 211);
             this.consoleLogTextBox.TabIndex = 6;
             this.consoleLogTextBox.WordWrap = false;
             // 
@@ -435,12 +436,23 @@ namespace FortniteOverlay
             this.debugOverlayCheckbox.Text = "Debug overlay";
             this.debugOverlayCheckbox.UseVisualStyleBackColor = true;
             // 
+            // updateNoticeLinkLabel
+            // 
+            this.updateNoticeLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.updateNoticeLinkLabel.Location = new System.Drawing.Point(385, 452);
+            this.updateNoticeLinkLabel.Name = "updateNoticeLinkLabel";
+            this.updateNoticeLinkLabel.Size = new System.Drawing.Size(399, 20);
+            this.updateNoticeLinkLabel.TabIndex = 25;
+            this.updateNoticeLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.updateNoticeLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.updateNoticeLinkLabel_LinkClicked);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(800, 481);
+            this.Controls.Add(this.updateNoticeLinkLabel);
             this.Controls.Add(this.debugOverlayCheckbox);
             this.Controls.Add(this.showConsoleCheckBox);
             this.Controls.Add(this.squadmateNameTextBox3);
@@ -505,6 +517,7 @@ namespace FortniteOverlay
         private CheckBox showConsoleCheckBox;
         private NotifyIcon notifyIcon;
         private CheckBox debugOverlayCheckbox;
+        private LinkLabel updateNoticeLinkLabel;
     }
 }
 

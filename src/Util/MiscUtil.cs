@@ -1,18 +1,48 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Windows.Forms;
 
 namespace FortniteOverlay.Util
 {
     internal class MiscUtil
     {
+        public static async Task CheckForUpdates()
+        {
+            string host = "https://api.github.com";
+            string path = "/repos/slinkstr/FortniteOverlay/releases";
+            var response = await Program.httpClient.GetAsync(host + path);
+            if (!response.IsSuccessStatusCode)
+            {
+                Program.form.Log("Unable to check for updates on GitHub.");
+                return;
+            }
+
+            string content = await response.Content.ReadAsStringAsync();
+            var latest = JArray.Parse(content)[0];
+            Version latestVersion = Version.Parse(latest["tag_name"].ToString().Substring(1));
+            Version currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
+            
+            if(latestVersion.CompareTo(currentVersion) > 0)
+            {
+                var label = Application.OpenForms["Form1"].Controls["updateNoticeLinkLabel"] as LinkLabel;
+                label.Text = $"New update available (v{latestVersion})";
+                label.LinkArea = new LinkArea(0, label.Text.Length);
+                label.Tag = latest["html_url"].ToString();
+                label.LinkVisited = false;
+            }
+        }
+
         public static int SettingsFullscreenMode()
         {
             string configDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\FortniteGame\\Saved\\Config\\WindowsClient";

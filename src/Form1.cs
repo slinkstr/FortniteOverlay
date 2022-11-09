@@ -49,5 +49,12 @@ namespace FortniteOverlay
         {
             notifyIcon.Icon = null;
         }
+
+        private void updateNoticeLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            var label = (LinkLabel)sender;
+            updateNoticeLinkLabel.LinkVisited = true;
+            System.Diagnostics.Process.Start(label.Tag.ToString());
+        }
     }
 }
