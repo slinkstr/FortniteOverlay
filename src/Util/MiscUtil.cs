@@ -13,20 +13,22 @@ namespace FortniteOverlay.Util
 {
     internal class MiscUtil
     {
-        public static bool BorderlessFullscreen()
+        public static int SettingsFullscreenMode()
         {
             string configDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\FortniteGame\\Saved\\Config\\WindowsClient";
             string configFile = "GameUserSettings.ini";
-            if (!File.Exists(Path.Combine(configDir, configFile))) { return false; }
+            if (!File.Exists(Path.Combine(configDir, configFile))) { return -1; }
             string configText = File.ReadAllText(Path.Combine(configDir, configFile));
             int index = configText.IndexOf("PreferredFullscreenMode=");
-            if (index == -1) { return false; }
-            if (configText.Substring(index + 24, 1) == "1")
+            if (index == -1) { return -1; }
+            if (!int.TryParse(configText.Substring(index + 24, 1), out var mode))
             {
-                return true;
+                return -1;
             }
-            return false;
+            return mode;
         }
+
+        // Don't know if it's possible to check if replays are enabled, GameUserSettings.ini doesn't have any options that mention "replay" or "demo"
 
         public static bool FortniteFocused()
         {

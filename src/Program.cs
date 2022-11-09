@@ -210,10 +210,15 @@ namespace FortniteOverlay
                         continue;
                     }
                     var stream = await response.Content.ReadAsStreamAsync();
-                    var test = await response.Content.ReadAsStringAsync();
-                    fort.GearImage = new Bitmap(stream);
-                    fort.GearModified = lastMod;
-                    fort.IsFaded = false;
+
+                    // squad could change while we're fetching gear, hence the ToList() and this
+                    var ftn = fortniters.FirstOrDefault(x => x.Name == fort.Name);
+                    if(ftn != null)
+                    {
+                        ftn.GearImage = new Bitmap(stream);
+                        ftn.GearModified = lastMod;
+                        ftn.IsFaded = false;
+                    }
                 }
             }
 
