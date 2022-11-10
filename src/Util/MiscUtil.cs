@@ -31,9 +31,9 @@ namespace FortniteOverlay.Util
             string content = await response.Content.ReadAsStringAsync();
             var latest = JArray.Parse(content)[0];
             Version latestVersion = Version.Parse(latest["tag_name"].ToString().Substring(1));
-            Version currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
-            
-            if(latestVersion.CompareTo(currentVersion) > 0)
+            Version currentVersion = Version.Parse(Application.ProductVersion);
+
+            if (latestVersion.CompareTo(currentVersion) > 0)
             {
                 var label = Application.OpenForms["Form1"].Controls["updateNoticeLinkLabel"] as LinkLabel;
                 label.Text = $"New update available (v{latestVersion})";

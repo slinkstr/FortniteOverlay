@@ -61,7 +61,7 @@ namespace FortniteOverlay
                 pixelPositions.Add(InterpolateResolution(pixelPositions.First(), curWidth, curHeight));
             }
 
-            httpClient.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("FortniteGearOverlay", Assembly.GetExecutingAssembly().GetName().Version.ToString()));
+            httpClient.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("FortniteOverlay", Application.ProductVersion));
             httpClient.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("(+https://github.com/slinkstr/FortniteOverlay)"));
 
             Application.EnableVisualStyles();

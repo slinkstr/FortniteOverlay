@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,6 +16,7 @@ namespace FortniteOverlay
         public Form1()
         {
             InitializeComponent();
+            Text += " v" + Application.ProductVersion;
         }
 
         public ProgramOptions ProgramOptions()
@@ -145,6 +147,48 @@ namespace FortniteOverlay
             var label = (LinkLabel)sender;
             updateNoticeLinkLabel.LinkVisited = true;
             System.Diagnostics.Process.Start(label.Tag.ToString());
+        }
+
+        private void squadmateNameTextBox1_DoubleClick(object sender, EventArgs e)
+        {
+            var label = (Label)sender;
+            if(!string.IsNullOrWhiteSpace(label.Text)) { Clipboard.SetText(label.Text); }
+        }
+
+        private void squadmateNameTextBox2_DoubleClick(object sender, EventArgs e)
+        {
+            var label = (Label)sender;
+            if (!string.IsNullOrWhiteSpace(label.Text)) { Clipboard.SetText(label.Text); }
+        }
+
+        private void squadmateNameTextBox3_DoubleClick(object sender, EventArgs e)
+        {
+            var label = (Label)sender;
+            if (!string.IsNullOrWhiteSpace(label.Text)) { Clipboard.SetText(label.Text); }
+        }
+
+        private void squadmateGearPictureBox1_DoubleClick(object sender, EventArgs e)
+        {
+            var box = (PictureBox)sender;
+            if (box.Image != null) { Clipboard.SetDataObject(box.Image); }
+        }
+
+        private void squadmateGearPictureBox2_DoubleClick(object sender, EventArgs e)
+        {
+            var box = (PictureBox)sender;
+            if (box.Image != null) { Clipboard.SetDataObject(box.Image); }
+        }
+
+        private void squadmateGearPictureBox3_DoubleClick(object sender, EventArgs e)
+        {
+            var box = (PictureBox)sender;
+            if (box.Image != null) { Clipboard.SetDataObject(box.Image); }
+        }
+
+        private void selfGearPictureBox1_DoubleClick(object sender, EventArgs e)
+        {
+            var box = (PictureBox)sender;
+            if (box.Image != null) { Clipboard.SetDataObject(box.Image); }
         }
     }
 

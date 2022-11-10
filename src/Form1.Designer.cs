@@ -198,6 +198,7 @@ namespace FortniteOverlay
             this.selfGearPictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.selfGearPictureBox1.TabIndex = 12;
             this.selfGearPictureBox1.TabStop = false;
+            this.selfGearPictureBox1.DoubleClick += new System.EventHandler(this.selfGearPictureBox1_DoubleClick);
             // 
             // label6
             // 
@@ -218,6 +219,7 @@ namespace FortniteOverlay
             this.squadmateGearPictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.squadmateGearPictureBox1.TabIndex = 15;
             this.squadmateGearPictureBox1.TabStop = false;
+            this.squadmateGearPictureBox1.DoubleClick += new System.EventHandler(this.squadmateGearPictureBox1_DoubleClick);
             // 
             // squadmateGearPictureBox2
             // 
@@ -229,6 +231,7 @@ namespace FortniteOverlay
             this.squadmateGearPictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.squadmateGearPictureBox2.TabIndex = 16;
             this.squadmateGearPictureBox2.TabStop = false;
+            this.squadmateGearPictureBox2.DoubleClick += new System.EventHandler(this.squadmateGearPictureBox2_DoubleClick);
             // 
             // squadmateGearPictureBox3
             // 
@@ -240,6 +243,7 @@ namespace FortniteOverlay
             this.squadmateGearPictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.squadmateGearPictureBox3.TabIndex = 17;
             this.squadmateGearPictureBox3.TabStop = false;
+            this.squadmateGearPictureBox3.DoubleClick += new System.EventHandler(this.squadmateGearPictureBox3_DoubleClick);
             // 
             // minimizeTrayCheckbox
             // 
@@ -261,8 +265,8 @@ namespace FortniteOverlay
             this.squadmateNameTextBox1.Name = "squadmateNameTextBox1";
             this.squadmateNameTextBox1.Size = new System.Drawing.Size(100, 50);
             this.squadmateNameTextBox1.TabIndex = 19;
-            this.squadmateNameTextBox1.Text = "(none)";
             this.squadmateNameTextBox1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.squadmateNameTextBox1.DoubleClick += new System.EventHandler(this.squadmateNameTextBox1_DoubleClick);
             // 
             // squadmateNameTextBox2
             // 
@@ -271,8 +275,8 @@ namespace FortniteOverlay
             this.squadmateNameTextBox2.Name = "squadmateNameTextBox2";
             this.squadmateNameTextBox2.Size = new System.Drawing.Size(100, 50);
             this.squadmateNameTextBox2.TabIndex = 20;
-            this.squadmateNameTextBox2.Text = "(none)";
             this.squadmateNameTextBox2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.squadmateNameTextBox2.DoubleClick += new System.EventHandler(this.squadmateNameTextBox2_DoubleClick);
             // 
             // squadmateNameTextBox3
             // 
@@ -281,8 +285,8 @@ namespace FortniteOverlay
             this.squadmateNameTextBox3.Name = "squadmateNameTextBox3";
             this.squadmateNameTextBox3.Size = new System.Drawing.Size(100, 50);
             this.squadmateNameTextBox3.TabIndex = 21;
-            this.squadmateNameTextBox3.Text = "(none)";
             this.squadmateNameTextBox3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.squadmateNameTextBox3.DoubleClick += new System.EventHandler(this.squadmateNameTextBox3_DoubleClick);
             // 
             // showConsoleCheckBox
             // 
@@ -301,7 +305,7 @@ namespace FortniteOverlay
             // notifyIcon
             // 
             this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
-            this.notifyIcon.Text = "Fortnite Gear Overlay";
+            this.notifyIcon.Text = "FortniteOverlay";
             this.notifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseClick);
             // 
             // debugOverlayCheckbox
@@ -355,7 +359,7 @@ namespace FortniteOverlay
             this.Controls.Add(this.uploadFrequencyNumericUpDown);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Fortnite Gear Overlay";
+            this.Text = "FortniteOverlay";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.form1_FormClosed);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.uploadFrequencyNumericUpDown)).EndInit();
