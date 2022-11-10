@@ -100,6 +100,9 @@ namespace FortniteOverlay.Util
                 }
             }
 
+            // Resize to save space
+            bitmap = new Bitmap(bitmap, new Size(312, 52));
+
             return bitmap;
         }
 
@@ -153,9 +156,6 @@ namespace FortniteOverlay.Util
                 g.DrawRectangle(pen, new Rectangle(positions.Map[0][0], positions.Map[0][1], 1, 1));
                 g.DrawRectangle(pen, new Rectangle(positions.Map[1][0], positions.Map[1][1], 1, 1));
                 g.DrawRectangle(pen, new Rectangle(positions.Map[2][0], positions.Map[2][1], 1, 1));
-
-                // Crown
-
             }
 
             return bitmap;
@@ -166,7 +166,7 @@ namespace FortniteOverlay.Util
             Rectangle bounds = MiscUtil.GetWindowPosition(Program.fortniteProcess);
             if (bounds.Width <= 0 || bounds.Height <= 0)
             {
-                throw new Exception($"Error capturing screenshot. Width: {bounds.Width}, Height: {bounds.Height}, X: {bounds.X}, Y: {bounds.Y}.");
+                bounds = Screen.GetBounds(Point.Empty);
             }
             Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height);
             using (Graphics g = Graphics.FromImage(bitmap))

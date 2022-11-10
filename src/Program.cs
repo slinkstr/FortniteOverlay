@@ -192,8 +192,9 @@ namespace FortniteOverlay
             var gearBitmap = RenderGear(screen, pixelPositions);
 
             var stream = new MemoryStream();
-            gearBitmap.Save(stream, ImageFormat.Bmp);
+            gearBitmap.Save(stream, ImageFormat.Png);
             stream.Seek(0, SeekOrigin.Begin);
+
             var formData = new MultipartFormDataContent();
             formData.Add(new StringContent(config.SecretKey), "secret");
             formData.Add(new StringContent(hostName), "filename");
