@@ -138,12 +138,15 @@ namespace FortniteOverlay
                 {
                     if (fortniters[i].GearModified.AddSeconds(30) > DateTime.UtcNow) { continue; }
                     if (fortniters[i].GearImage == null) { continue; }
-                    if (fortniters[i].IsFaded) { continue; }
+                    if (!fortniters[i].IsFaded)
+                    {
+                        fortniters[i].GearImage = MarkStaleImage(fortniters[i].GearImage);
+                        fortniters[i].IsFaded = true;
+                    }
 
-                    fortniters[i].GearImage = MarkStaleImage(fortniters[i].GearImage);
-                    fortniters[i].IsFaded = true;
-                    overlayForm.SetSquadGear(i, fortniters[i].GearImage);
                     form.SetSquadGear(i, fortniters[i].GearImage);
+                    // Remove really old ones from the overlay completely
+                    overlayForm.SetSquadGear(i, null);
                 }
             }
 
