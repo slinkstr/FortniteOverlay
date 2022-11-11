@@ -171,10 +171,16 @@ namespace FortniteOverlay
             // Remove this later
             if (FortniteOpen())
             {
-                var screen = TakeScreenshot();
-                var debugBitmap = RenderGearDebug(screen, pixelPositions);
-                if (form.ProgramOptions().DebugOverlay) { overlayForm.SetDebugOverlay(debugBitmap); }
-                else                                    { overlayForm.SetDebugOverlay(null); }
+                if (form.ProgramOptions().DebugOverlay)
+                {
+                    var screen = TakeScreenshot();
+                    var debugBitmap = RenderGearDebug(screen, pixelPositions);
+                    overlayForm.SetDebugOverlay(debugBitmap);
+                }
+                else
+                {
+                    overlayForm.SetDebugOverlay(null);
+                }
             }
             // *******************************************************************************
 
