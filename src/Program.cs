@@ -83,7 +83,7 @@ namespace FortniteOverlay
             // Update checking
             _ = CheckForUpdates();
             checkForUpdatesTimer.Tick += new EventHandler(GetNewestVersionEvent);
-            checkForUpdatesTimer.Interval = (6 * 60 * 60);
+            checkForUpdatesTimer.Interval = (6 * 60 * 60 * 1000);
             checkForUpdatesTimer.Start();
 
             Application.Run(form);
@@ -136,7 +136,7 @@ namespace FortniteOverlay
             {
                 if (fortniters.Count - 1 >= i)
                 {
-                    if (fortniters[i].GearModified.AddSeconds(10) > DateTime.Now) { continue; }
+                    if (fortniters[i].GearModified.AddSeconds(30) > DateTime.UtcNow) { continue; }
                     if (fortniters[i].GearImage == null) { continue; }
                     if (fortniters[i].IsFaded) { continue; }
 
@@ -255,7 +255,7 @@ namespace FortniteOverlay
                 var match = data.FirstOrDefault(x => x["name"].ToString() == fort.Name + ".png");
                 if (match == null) { continue; }
 
-                DateTime lastMod = DateTime.Parse(match["mtime"].ToString().Substring(5));
+                DateTime lastMod = DateTime.Parse(match["mtime"].ToString().Substring(5)).ToUniversalTime();
                 if (lastMod != fort.GearModified)
                 {
                     //form.Log("Downloading gear for " + fort.Name);

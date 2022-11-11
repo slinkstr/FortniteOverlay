@@ -24,7 +24,7 @@ namespace FortniteOverlay.Util
             var response = await Program.httpClient.GetAsync(host + path);
             if (!response.IsSuccessStatusCode)
             {
-                Program.form.Log("Unable to check for updates on GitHub.");
+                Program.form.Log("Unable to check for updates on GitHub. Error:\n" + response.Content.ReadAsStringAsync().Result);
                 return;
             }
 
