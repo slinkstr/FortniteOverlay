@@ -89,14 +89,14 @@ namespace FortniteOverlay.Util
             if (match.Success)
             {
                 Program.form.Log("[StartedGame]");
-                Program.inGame = true;
+                //Program.inGame = true;
                 return;
             }
             match = FortniteLogRegex.LeftGame.Match(line);
             if (match.Success)
             {
                 Program.form.Log("[LeftGame]");
-                Program.inGame = false;
+                //Program.inGame = false;
                 return;
             }
         }

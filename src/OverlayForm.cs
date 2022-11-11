@@ -40,6 +40,27 @@ namespace FortniteOverlay
             }
         }
 
+        public void PositionSquadGear(int index, int x, int y, int width, int height)
+        {
+            switch (index)
+            {
+                case 0:
+                    SetControlProperty(squadmateGearPictureBox1, "Location", new Point(x, y));
+                    SetControlProperty(squadmateGearPictureBox1, "Size", new Size(width, height));
+                    break;
+                case 1:
+                    SetControlProperty(squadmateGearPictureBox2, "Location", new Point(x, y));
+                    SetControlProperty(squadmateGearPictureBox2, "Size", new Size(width, height));
+                    break;
+                case 2:
+                    SetControlProperty(squadmateGearPictureBox3, "Location", new Point(x, y));
+                    SetControlProperty(squadmateGearPictureBox3, "Size", new Size(width, height));
+                    break;
+                default:
+                    throw new Exception("Invalid index in SetSquadGear");
+            }
+        }
+
         public void SetControlProperty(Control control, string propertyName, object data)
         {
             if (control.InvokeRequired)

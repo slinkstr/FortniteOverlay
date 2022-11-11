@@ -20,7 +20,6 @@ namespace FortniteOverlay
 {
     internal static class Program
     {
-        public static bool inGame = false;
         public static DateTime lastDown;
         public static DateTime lastUp;
         public static Dictionary<string, string> logRegex = new Dictionary<string, string>();
@@ -111,7 +110,16 @@ namespace FortniteOverlay
                 tasks.Add(DownloadGear());
             }
 
-            await Task.WhenAll(tasks);
+            try
+            {
+                await Task.WhenAll(tasks);
+            }
+            catch (Exception ex)
+            {
+                // FIXME:11/11/2022 - remove this if it doesnt catch the random exceptions
+                form.Log("wtf...\n" + ex.ToString());
+                return;
+            }
 
             // Update form elements
             fortniters = fortniters.OrderBy(x => x.Name).ToList();
@@ -153,11 +161,17 @@ namespace FortniteOverlay
             // Show or hide overlay
             if (form.ProgramOptions().EnableOverlay)
             {
-                if (FortniteFocused() && inGame)
+                if (FortniteFocused())
                 {
                     var rect = GetWindowPosition(Program.fortniteProcess);
-                    overlayForm.Location = new Point(rect.Top, rect.Left);
+                    overlayForm.Location = new Point(rect.Left, rect.Top);
                     overlayForm.Size = new Size(rect.Width, rect.Height);
+
+                    var imageSize = new Size((int)(rect.Width * 0.125), (int)(rect.Height * 0.05555555555));
+                    var firstImagePos = new Point((int)(rect.Width * 0.16796875), (int)(rect.Height * 0.08333333333));
+                    overlayForm.PositionSquadGear(0, firstImagePos.X, firstImagePos.Y + (imageSize.Height * 0), imageSize.Width, imageSize.Height);
+                    overlayForm.PositionSquadGear(1, firstImagePos.X, firstImagePos.Y + (imageSize.Height * 1), imageSize.Width, imageSize.Height);
+                    overlayForm.PositionSquadGear(2, firstImagePos.X, firstImagePos.Y + (imageSize.Height * 2), imageSize.Width, imageSize.Height);
                     overlayForm.Show();
                 }
                 else
@@ -193,7 +207,7 @@ namespace FortniteOverlay
         public static async Task UploadGear()
         {
             if (!FortniteFocused())    { return; }
-            if (!inGame)               { return; }
+            //if (!inGame)               { return; }
             if (fortniters.Count == 0) { return; }
 
             var screen = TakeScreenshot();
@@ -225,7 +239,7 @@ namespace FortniteOverlay
         public static async Task DownloadGear()
         {
             if (!FortniteOpen())       { return; }
-            if (!inGame)               { return; }
+            //if (!inGame)               { return; }
             if (fortniters.Count == 0) { return; }
             lastDown = DateTime.Now;
 
