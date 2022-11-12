@@ -1,8 +1,8 @@
 # FortniteOverlay
 
-Gear overlay for Fortnite. Automatically gets current squad as you play and overlays a screenshot of their gear in the top-left corner.
+Gear overlay for Fortnite. Automatically gets current squad as you play and overlays a screenshot of their gear in the top-left corner if they're also running it.
 
-Requires everyone to be running it to get the screenshots.
+Designed for 100% HUD scale at 1080p/1440p. Other resolutions and scales are calculated from these and may not be accurate.
 
 # Config
 
@@ -12,7 +12,8 @@ Requires config.json next to the executable. An example is below.
 {
     "UploadEndpoint": "http://example.com/fortnitegear/upload.php",
     "SecretKey": "SECRET_KEY",
-    "ImageLocation": "http://example.com/fortnitegear/images"
+    "ImageLocation": "http://example.com/fortnitegear/images",
+    "HUDScale": 100
 }
 ```
 
