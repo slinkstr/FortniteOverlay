@@ -6,6 +6,8 @@ Gear overlay for Fortnite. Automatically gets current squad as you play and over
 
 Designed for 100% HUD scale at 1080p/1440p. Other resolutions and scales are calculated from these and may not be accurate.
 
+Uses ~5.5MB/hour per person down and ~5.5MB/hour up. Doesn't upload or download unless Fortnite is open and you're in a party with other players.
+
 # Config
 
 Requires config.json next to the executable. An example is below.

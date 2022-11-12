@@ -219,13 +219,13 @@ namespace FortniteOverlay
             var gearBitmap = RenderGear(screen, pixelPositions, form.ProgramOptions().HUDScale);
 
             var stream = new MemoryStream();
-            gearBitmap.Save(stream, ImageFormat.Png);
+            gearBitmap.Save(stream, ImageFormat.Jpeg);
             stream.Seek(0, SeekOrigin.Begin);
 
             var formData = new MultipartFormDataContent();
             formData.Add(new StringContent(config.SecretKey), "secret");
             formData.Add(new StringContent(hostName), "filename");
-            formData.Add(new ByteArrayContent(stream.ToArray()), "gear", "image.png");
+            formData.Add(new ByteArrayContent(stream.ToArray()), "gear", "image.jpg");
             HttpResponseMessage response = await httpClient.PostAsync(config.UploadEndpoint, formData);
             var responseString = response.Content.ReadAsStringAsync().Result;
             if (!response.IsSuccessStatusCode)
@@ -234,7 +234,7 @@ namespace FortniteOverlay
             }
             else
             {
-                form.SetSelfGear(gearBitmap);
+                form.SetSelfGear(new Bitmap(stream));
             }
 
             lastUp = DateTime.Now;
@@ -273,14 +273,14 @@ namespace FortniteOverlay
 
             foreach (var fort in fortniters.ToList())
             {
-                var match = data.FirstOrDefault(x => x["name"].ToString() == fort.Name + ".png");
+                var match = data.FirstOrDefault(x => x["name"].ToString() == fort.Name + ".jpg");
                 if (match == null) { continue; }
 
                 DateTime lastMod = DateTime.Parse(match["mtime"].ToString().Substring(5)).ToUniversalTime();
                 if (lastMod != fort.GearModified)
                 {
                     //form.Log("Downloading gear for " + fort.Name);
-                    string gearUrl = config.ImageLocation + "/" + fort.Name + ".png";
+                    string gearUrl = config.ImageLocation + "/" + fort.Name + ".jpg";
                     response = await httpClient.GetAsync(gearUrl);
                     if (!response.IsSuccessStatusCode)
                     {
