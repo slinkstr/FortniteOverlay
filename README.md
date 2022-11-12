@@ -1,5 +1,7 @@
 # FortniteOverlay
 
+![Preview screenshot](PreviewScreenshot.jpg)
+
 Gear overlay for Fortnite. Automatically gets current squad as you play and overlays a screenshot of their gear in the top-left corner if they're also running it.
 
 Designed for 100% HUD scale at 1080p/1440p. Other resolutions and scales are calculated from these and may not be accurate.
