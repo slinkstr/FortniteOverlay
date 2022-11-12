@@ -54,7 +54,6 @@ namespace FortniteOverlay.Util
             if (match.Success)
             {
                 Program.hostId = match.Groups[1].ToString();
-                Program.form.SetHostId(Program.hostId);
                 Program.hostName = match.Groups[2].ToString();
                 Program.form.SetHostName(Program.hostName);
                 Program.form.Log("[LoggedIn] User ID: " + match.Groups[1] + ", Display name: " + match.Groups[2]);

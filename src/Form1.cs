@@ -13,10 +13,13 @@ namespace FortniteOverlay
 {
     public partial class Form1 : Form
     {
+        private int consoleHeight;
+
         public Form1()
         {
             InitializeComponent();
             Text += " v" + Application.ProductVersion;
+            consoleHeight = consoleLogTextBox.Size.Height;
         }
 
         public ProgramOptions ProgramOptions()
@@ -48,12 +51,7 @@ namespace FortniteOverlay
 
         public void SetHostName(string text)
         {
-            SetControlProperty(hostNameTextBox, "Text", text);
-        }
-
-        public void SetHostId(string text)
-        {
-            SetControlProperty(hostIdTextBox, "Text", text);
+            SetControlProperty(previewLabel, "Text", text);
         }
 
         public void SetSelfGear(Bitmap bmp)
@@ -112,10 +110,9 @@ namespace FortniteOverlay
         private void showConsoleCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             var visible = ((CheckBox)sender).Checked;
-            var textBoxHeight = consoleLogTextBox.Size.Height;
-            consoleLogTextBox.Visible = visible;
 
-            Size = new Size(Size.Width, Size.Height + (visible ? 200 : textBoxHeight * -1));
+            mainTableLayoutPanel.RowStyles[1].Height = (visible ? consoleHeight : 0);
+            Size = new Size(Size.Width, Size.Height + (visible ? consoleHeight : consoleHeight * -1));
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -183,6 +180,12 @@ namespace FortniteOverlay
         {
             var box = (PictureBox)sender;
             if (box.Image != null) { Clipboard.SetDataObject(box.Image); }
+        }
+
+        private void previewLabel_DoubleClick(object sender, EventArgs e)
+        {
+            var label = (Label)sender;
+            if (!string.IsNullOrWhiteSpace(label.Text)) { Clipboard.SetText(label.Text); }
         }
 
         private void selfGearPictureBox1_DoubleClick(object sender, EventArgs e)

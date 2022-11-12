@@ -36,17 +36,13 @@ namespace FortniteOverlay
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.uploadFrequencyNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
+            this.uploadFrequencyLabel = new System.Windows.Forms.Label();
             this.downloadFrequencyNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label2 = new System.Windows.Forms.Label();
+            this.downloadFrequencyLabel = new System.Windows.Forms.Label();
             this.showOverlayCheckbox = new System.Windows.Forms.CheckBox();
             this.consoleLogTextBox = new System.Windows.Forms.TextBox();
-            this.hostNameTextBox = new System.Windows.Forms.TextBox();
-            this.hostIdTextBox = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.selfGearPictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label6 = new System.Windows.Forms.Label();
+            this.previewLabel = new System.Windows.Forms.Label();
             this.squadmateGearPictureBox1 = new System.Windows.Forms.PictureBox();
             this.squadmateGearPictureBox2 = new System.Windows.Forms.PictureBox();
             this.squadmateGearPictureBox3 = new System.Windows.Forms.PictureBox();
@@ -58,17 +54,32 @@ namespace FortniteOverlay
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.debugOverlayCheckbox = new System.Windows.Forms.CheckBox();
             this.updateNoticeLinkLabel = new System.Windows.Forms.LinkLabel();
+            this.infoTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.previewTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.configTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.uploadTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.downloadTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.squadmatesTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.mainTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.uploadFrequencyNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.downloadFrequencyNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selfGearPictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmateGearPictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmateGearPictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmateGearPictureBox3)).BeginInit();
+            this.infoTableLayoutPanel.SuspendLayout();
+            this.previewTableLayoutPanel.SuspendLayout();
+            this.configTableLayoutPanel.SuspendLayout();
+            this.uploadTableLayoutPanel.SuspendLayout();
+            this.downloadTableLayoutPanel.SuspendLayout();
+            this.squadmatesTableLayoutPanel.SuspendLayout();
+            this.mainTableLayoutPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // uploadFrequencyNumericUpDown
             // 
-            this.uploadFrequencyNumericUpDown.Location = new System.Drawing.Point(12, 12);
+            this.uploadFrequencyNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.uploadFrequencyNumericUpDown.Location = new System.Drawing.Point(3, 5);
             this.uploadFrequencyNumericUpDown.Maximum = new decimal(new int[] {
             120,
             0,
@@ -80,7 +91,7 @@ namespace FortniteOverlay
             0,
             0});
             this.uploadFrequencyNumericUpDown.Name = "uploadFrequencyNumericUpDown";
-            this.uploadFrequencyNumericUpDown.Size = new System.Drawing.Size(120, 20);
+            this.uploadFrequencyNumericUpDown.Size = new System.Drawing.Size(58, 20);
             this.uploadFrequencyNumericUpDown.TabIndex = 1;
             this.uploadFrequencyNumericUpDown.Value = new decimal(new int[] {
             5,
@@ -88,18 +99,21 @@ namespace FortniteOverlay
             0,
             0});
             // 
-            // label1
+            // uploadFrequencyLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(138, 14);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(120, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Upload Frequency (sec)";
+            this.uploadFrequencyLabel.AutoSize = true;
+            this.uploadFrequencyLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.uploadFrequencyLabel.Location = new System.Drawing.Point(67, 0);
+            this.uploadFrequencyLabel.Name = "uploadFrequencyLabel";
+            this.uploadFrequencyLabel.Size = new System.Drawing.Size(124, 31);
+            this.uploadFrequencyLabel.TabIndex = 2;
+            this.uploadFrequencyLabel.Text = "Upload Frequency (sec)";
+            this.uploadFrequencyLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // downloadFrequencyNumericUpDown
             // 
-            this.downloadFrequencyNumericUpDown.Location = new System.Drawing.Point(12, 38);
+            this.downloadFrequencyNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.downloadFrequencyNumericUpDown.Location = new System.Drawing.Point(3, 5);
             this.downloadFrequencyNumericUpDown.Maximum = new decimal(new int[] {
             120,
             0,
@@ -111,7 +125,7 @@ namespace FortniteOverlay
             0,
             0});
             this.downloadFrequencyNumericUpDown.Name = "downloadFrequencyNumericUpDown";
-            this.downloadFrequencyNumericUpDown.Size = new System.Drawing.Size(120, 20);
+            this.downloadFrequencyNumericUpDown.Size = new System.Drawing.Size(59, 20);
             this.downloadFrequencyNumericUpDown.TabIndex = 3;
             this.downloadFrequencyNumericUpDown.Value = new decimal(new int[] {
             5,
@@ -119,103 +133,76 @@ namespace FortniteOverlay
             0,
             0});
             // 
-            // label2
+            // downloadFrequencyLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(138, 40);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(134, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Download Frequency (sec)";
+            this.downloadFrequencyLabel.AutoSize = true;
+            this.downloadFrequencyLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.downloadFrequencyLabel.Location = new System.Drawing.Point(68, 0);
+            this.downloadFrequencyLabel.Name = "downloadFrequencyLabel";
+            this.downloadFrequencyLabel.Size = new System.Drawing.Size(124, 31);
+            this.downloadFrequencyLabel.TabIndex = 4;
+            this.downloadFrequencyLabel.Text = "Download Frequency (sec)";
+            this.downloadFrequencyLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // showOverlayCheckbox
             // 
-            this.showOverlayCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.showOverlayCheckbox.AutoSize = true;
             this.showOverlayCheckbox.Checked = true;
             this.showOverlayCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showOverlayCheckbox.Location = new System.Drawing.Point(686, 12);
+            this.showOverlayCheckbox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.showOverlayCheckbox.Location = new System.Drawing.Point(197, 34);
             this.showOverlayCheckbox.Name = "showOverlayCheckbox";
-            this.showOverlayCheckbox.Size = new System.Drawing.Size(98, 17);
+            this.showOverlayCheckbox.Size = new System.Drawing.Size(189, 25);
             this.showOverlayCheckbox.TabIndex = 5;
             this.showOverlayCheckbox.Text = "Enable Overlay";
             this.showOverlayCheckbox.UseVisualStyleBackColor = true;
             // 
             // consoleLogTextBox
             // 
-            this.consoleLogTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.consoleLogTextBox.Location = new System.Drawing.Point(12, 238);
+            this.mainTableLayoutPanel.SetColumnSpan(this.consoleLogTextBox, 2);
+            this.consoleLogTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.consoleLogTextBox.Location = new System.Drawing.Point(3, 258);
+            this.consoleLogTextBox.Margin = new System.Windows.Forms.Padding(0);
             this.consoleLogTextBox.Multiline = true;
             this.consoleLogTextBox.Name = "consoleLogTextBox";
             this.consoleLogTextBox.ReadOnly = true;
             this.consoleLogTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.consoleLogTextBox.Size = new System.Drawing.Size(776, 211);
+            this.consoleLogTextBox.Size = new System.Drawing.Size(778, 200);
             this.consoleLogTextBox.TabIndex = 6;
             this.consoleLogTextBox.WordWrap = false;
-            // 
-            // hostNameTextBox
-            // 
-            this.hostNameTextBox.Location = new System.Drawing.Point(68, 70);
-            this.hostNameTextBox.Name = "hostNameTextBox";
-            this.hostNameTextBox.ReadOnly = true;
-            this.hostNameTextBox.Size = new System.Drawing.Size(300, 20);
-            this.hostNameTextBox.TabIndex = 7;
-            // 
-            // hostIdTextBox
-            // 
-            this.hostIdTextBox.Location = new System.Drawing.Point(68, 96);
-            this.hostIdTextBox.Name = "hostIdTextBox";
-            this.hostIdTextBox.ReadOnly = true;
-            this.hostIdTextBox.Size = new System.Drawing.Size(300, 20);
-            this.hostIdTextBox.TabIndex = 8;
-            // 
-            // label3
-            // 
-            this.label3.Location = new System.Drawing.Point(12, 70);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(50, 20);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "User:";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label4
-            // 
-            this.label4.Location = new System.Drawing.Point(12, 96);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(50, 20);
-            this.label4.TabIndex = 10;
-            this.label4.Text = "User ID:";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // selfGearPictureBox1
             // 
             this.selfGearPictureBox1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.selfGearPictureBox1.Location = new System.Drawing.Point(68, 182);
+            this.selfGearPictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.selfGearPictureBox1.Location = new System.Drawing.Point(77, 0);
+            this.selfGearPictureBox1.Margin = new System.Windows.Forms.Padding(0);
             this.selfGearPictureBox1.Name = "selfGearPictureBox1";
-            this.selfGearPictureBox1.Size = new System.Drawing.Size(300, 50);
+            this.selfGearPictureBox1.Size = new System.Drawing.Size(312, 85);
             this.selfGearPictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.selfGearPictureBox1.TabIndex = 12;
             this.selfGearPictureBox1.TabStop = false;
             this.selfGearPictureBox1.DoubleClick += new System.EventHandler(this.selfGearPictureBox1_DoubleClick);
             // 
-            // label6
+            // previewLabel
             // 
-            this.label6.Location = new System.Drawing.Point(12, 182);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(50, 50);
-            this.label6.TabIndex = 14;
-            this.label6.Text = "Preview:";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.previewLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.previewLabel.Location = new System.Drawing.Point(3, 0);
+            this.previewLabel.Name = "previewLabel";
+            this.previewLabel.Size = new System.Drawing.Size(71, 85);
+            this.previewLabel.TabIndex = 14;
+            this.previewLabel.Text = "Preview:";
+            this.previewLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.previewLabel.DoubleClick += new System.EventHandler(this.previewLabel_DoubleClick);
             // 
             // squadmateGearPictureBox1
             // 
-            this.squadmateGearPictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.squadmateGearPictureBox1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.squadmateGearPictureBox1.Location = new System.Drawing.Point(488, 70);
+            this.squadmateGearPictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.squadmateGearPictureBox1.Location = new System.Drawing.Point(77, 0);
+            this.squadmateGearPictureBox1.Margin = new System.Windows.Forms.Padding(0);
             this.squadmateGearPictureBox1.Name = "squadmateGearPictureBox1";
-            this.squadmateGearPictureBox1.Size = new System.Drawing.Size(300, 50);
+            this.squadmateGearPictureBox1.Size = new System.Drawing.Size(312, 85);
             this.squadmateGearPictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.squadmateGearPictureBox1.TabIndex = 15;
             this.squadmateGearPictureBox1.TabStop = false;
@@ -223,11 +210,12 @@ namespace FortniteOverlay
             // 
             // squadmateGearPictureBox2
             // 
-            this.squadmateGearPictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.squadmateGearPictureBox2.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.squadmateGearPictureBox2.Location = new System.Drawing.Point(488, 126);
+            this.squadmateGearPictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.squadmateGearPictureBox2.Location = new System.Drawing.Point(77, 85);
+            this.squadmateGearPictureBox2.Margin = new System.Windows.Forms.Padding(0);
             this.squadmateGearPictureBox2.Name = "squadmateGearPictureBox2";
-            this.squadmateGearPictureBox2.Size = new System.Drawing.Size(300, 50);
+            this.squadmateGearPictureBox2.Size = new System.Drawing.Size(312, 85);
             this.squadmateGearPictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.squadmateGearPictureBox2.TabIndex = 16;
             this.squadmateGearPictureBox2.TabStop = false;
@@ -235,11 +223,12 @@ namespace FortniteOverlay
             // 
             // squadmateGearPictureBox3
             // 
-            this.squadmateGearPictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.squadmateGearPictureBox3.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.squadmateGearPictureBox3.Location = new System.Drawing.Point(488, 182);
+            this.squadmateGearPictureBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.squadmateGearPictureBox3.Location = new System.Drawing.Point(77, 170);
+            this.squadmateGearPictureBox3.Margin = new System.Windows.Forms.Padding(0);
             this.squadmateGearPictureBox3.Name = "squadmateGearPictureBox3";
-            this.squadmateGearPictureBox3.Size = new System.Drawing.Size(300, 50);
+            this.squadmateGearPictureBox3.Size = new System.Drawing.Size(312, 85);
             this.squadmateGearPictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.squadmateGearPictureBox3.TabIndex = 17;
             this.squadmateGearPictureBox3.TabStop = false;
@@ -247,56 +236,62 @@ namespace FortniteOverlay
             // 
             // minimizeTrayCheckbox
             // 
-            this.minimizeTrayCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.minimizeTrayCheckbox.AutoSize = true;
             this.minimizeTrayCheckbox.Checked = true;
             this.minimizeTrayCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.minimizeTrayCheckbox.Location = new System.Drawing.Point(686, 35);
+            this.minimizeTrayCheckbox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.minimizeTrayCheckbox.Location = new System.Drawing.Point(3, 65);
             this.minimizeTrayCheckbox.Name = "minimizeTrayCheckbox";
-            this.minimizeTrayCheckbox.Size = new System.Drawing.Size(98, 17);
+            this.minimizeTrayCheckbox.Size = new System.Drawing.Size(188, 27);
             this.minimizeTrayCheckbox.TabIndex = 18;
             this.minimizeTrayCheckbox.Text = "Minimize to tray";
             this.minimizeTrayCheckbox.UseVisualStyleBackColor = true;
             // 
             // squadmateNameTextBox1
             // 
-            this.squadmateNameTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.squadmateNameTextBox1.Location = new System.Drawing.Point(382, 70);
+            this.squadmateNameTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.squadmateNameTextBox1.Location = new System.Drawing.Point(0, 0);
+            this.squadmateNameTextBox1.Margin = new System.Windows.Forms.Padding(0);
             this.squadmateNameTextBox1.Name = "squadmateNameTextBox1";
-            this.squadmateNameTextBox1.Size = new System.Drawing.Size(100, 50);
+            this.squadmateNameTextBox1.Size = new System.Drawing.Size(77, 85);
             this.squadmateNameTextBox1.TabIndex = 19;
+            this.squadmateNameTextBox1.Text = "squadmate1";
             this.squadmateNameTextBox1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.squadmateNameTextBox1.DoubleClick += new System.EventHandler(this.squadmateNameTextBox1_DoubleClick);
             // 
             // squadmateNameTextBox2
             // 
-            this.squadmateNameTextBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.squadmateNameTextBox2.Location = new System.Drawing.Point(382, 126);
+            this.squadmateNameTextBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.squadmateNameTextBox2.Location = new System.Drawing.Point(0, 85);
+            this.squadmateNameTextBox2.Margin = new System.Windows.Forms.Padding(0);
             this.squadmateNameTextBox2.Name = "squadmateNameTextBox2";
-            this.squadmateNameTextBox2.Size = new System.Drawing.Size(100, 50);
+            this.squadmateNameTextBox2.Size = new System.Drawing.Size(77, 85);
             this.squadmateNameTextBox2.TabIndex = 20;
+            this.squadmateNameTextBox2.Text = "squadmate2";
             this.squadmateNameTextBox2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.squadmateNameTextBox2.DoubleClick += new System.EventHandler(this.squadmateNameTextBox2_DoubleClick);
             // 
             // squadmateNameTextBox3
             // 
-            this.squadmateNameTextBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.squadmateNameTextBox3.Location = new System.Drawing.Point(382, 182);
+            this.squadmateNameTextBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.squadmateNameTextBox3.Location = new System.Drawing.Point(0, 170);
+            this.squadmateNameTextBox3.Margin = new System.Windows.Forms.Padding(0);
             this.squadmateNameTextBox3.Name = "squadmateNameTextBox3";
-            this.squadmateNameTextBox3.Size = new System.Drawing.Size(100, 50);
+            this.squadmateNameTextBox3.Size = new System.Drawing.Size(77, 85);
             this.squadmateNameTextBox3.TabIndex = 21;
+            this.squadmateNameTextBox3.Text = "squadmate3";
             this.squadmateNameTextBox3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.squadmateNameTextBox3.DoubleClick += new System.EventHandler(this.squadmateNameTextBox3_DoubleClick);
             // 
             // showConsoleCheckBox
             // 
-            this.showConsoleCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.showConsoleCheckBox.AutoSize = true;
             this.showConsoleCheckBox.Checked = true;
             this.showConsoleCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showConsoleCheckBox.Location = new System.Drawing.Point(585, 12);
+            this.showConsoleCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.showConsoleCheckBox.Location = new System.Drawing.Point(3, 34);
             this.showConsoleCheckBox.Name = "showConsoleCheckBox";
-            this.showConsoleCheckBox.Size = new System.Drawing.Size(93, 17);
+            this.showConsoleCheckBox.Size = new System.Drawing.Size(188, 25);
             this.showConsoleCheckBox.TabIndex = 22;
             this.showConsoleCheckBox.Text = "Show console";
             this.showConsoleCheckBox.UseVisualStyleBackColor = true;
@@ -310,11 +305,11 @@ namespace FortniteOverlay
             // 
             // debugOverlayCheckbox
             // 
-            this.debugOverlayCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.debugOverlayCheckbox.AutoSize = true;
-            this.debugOverlayCheckbox.Location = new System.Drawing.Point(585, 35);
+            this.debugOverlayCheckbox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.debugOverlayCheckbox.Location = new System.Drawing.Point(197, 65);
             this.debugOverlayCheckbox.Name = "debugOverlayCheckbox";
-            this.debugOverlayCheckbox.Size = new System.Drawing.Size(95, 17);
+            this.debugOverlayCheckbox.Size = new System.Drawing.Size(189, 27);
             this.debugOverlayCheckbox.TabIndex = 23;
             this.debugOverlayCheckbox.Text = "Debug overlay";
             this.debugOverlayCheckbox.UseVisualStyleBackColor = true;
@@ -322,41 +317,150 @@ namespace FortniteOverlay
             // updateNoticeLinkLabel
             // 
             this.updateNoticeLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.updateNoticeLinkLabel.Location = new System.Drawing.Point(385, 452);
+            this.updateNoticeLinkLabel.Location = new System.Drawing.Point(369, 520);
             this.updateNoticeLinkLabel.Name = "updateNoticeLinkLabel";
             this.updateNoticeLinkLabel.Size = new System.Drawing.Size(399, 20);
             this.updateNoticeLinkLabel.TabIndex = 25;
             this.updateNoticeLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.updateNoticeLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.updateNoticeLinkLabel_LinkClicked);
             // 
+            // infoTableLayoutPanel
+            // 
+            this.infoTableLayoutPanel.ColumnCount = 1;
+            this.infoTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.infoTableLayoutPanel.Controls.Add(this.previewTableLayoutPanel, 0, 2);
+            this.infoTableLayoutPanel.Controls.Add(this.configTableLayoutPanel, 0, 0);
+            this.infoTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.infoTableLayoutPanel.Location = new System.Drawing.Point(3, 3);
+            this.infoTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.infoTableLayoutPanel.Name = "infoTableLayoutPanel";
+            this.infoTableLayoutPanel.RowCount = 3;
+            this.infoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.infoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.infoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.infoTableLayoutPanel.Size = new System.Drawing.Size(389, 255);
+            this.infoTableLayoutPanel.TabIndex = 27;
+            // 
+            // previewTableLayoutPanel
+            // 
+            this.previewTableLayoutPanel.ColumnCount = 2;
+            this.previewTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.previewTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80F));
+            this.previewTableLayoutPanel.Controls.Add(this.selfGearPictureBox1, 1, 0);
+            this.previewTableLayoutPanel.Controls.Add(this.previewLabel, 0, 0);
+            this.previewTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.previewTableLayoutPanel.Location = new System.Drawing.Point(0, 170);
+            this.previewTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.previewTableLayoutPanel.Name = "previewTableLayoutPanel";
+            this.previewTableLayoutPanel.RowCount = 1;
+            this.previewTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.previewTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.previewTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.previewTableLayoutPanel.Size = new System.Drawing.Size(389, 85);
+            this.previewTableLayoutPanel.TabIndex = 0;
+            // 
+            // configTableLayoutPanel
+            // 
+            this.configTableLayoutPanel.ColumnCount = 2;
+            this.configTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.configTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.configTableLayoutPanel.Controls.Add(this.uploadTableLayoutPanel, 0, 0);
+            this.configTableLayoutPanel.Controls.Add(this.downloadTableLayoutPanel, 1, 0);
+            this.configTableLayoutPanel.Controls.Add(this.showConsoleCheckBox, 0, 1);
+            this.configTableLayoutPanel.Controls.Add(this.debugOverlayCheckbox, 1, 2);
+            this.configTableLayoutPanel.Controls.Add(this.showOverlayCheckbox, 1, 1);
+            this.configTableLayoutPanel.Controls.Add(this.minimizeTrayCheckbox, 0, 2);
+            this.configTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.configTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.configTableLayoutPanel.Name = "configTableLayoutPanel";
+            this.configTableLayoutPanel.RowCount = 3;
+            this.configTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.configTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.configTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.configTableLayoutPanel.Size = new System.Drawing.Size(389, 85);
+            this.configTableLayoutPanel.TabIndex = 0;
+            // 
+            // uploadTableLayoutPanel
+            // 
+            this.uploadTableLayoutPanel.ColumnCount = 2;
+            this.uploadTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.uploadTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 66.66666F));
+            this.uploadTableLayoutPanel.Controls.Add(this.uploadFrequencyLabel, 1, 0);
+            this.uploadTableLayoutPanel.Controls.Add(this.uploadFrequencyNumericUpDown, 0, 0);
+            this.uploadTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.uploadTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.uploadTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.uploadTableLayoutPanel.Name = "uploadTableLayoutPanel";
+            this.uploadTableLayoutPanel.RowCount = 1;
+            this.uploadTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.uploadTableLayoutPanel.Size = new System.Drawing.Size(194, 31);
+            this.uploadTableLayoutPanel.TabIndex = 0;
+            // 
+            // downloadTableLayoutPanel
+            // 
+            this.downloadTableLayoutPanel.ColumnCount = 2;
+            this.downloadTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.downloadTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 66.66666F));
+            this.downloadTableLayoutPanel.Controls.Add(this.downloadFrequencyNumericUpDown, 0, 0);
+            this.downloadTableLayoutPanel.Controls.Add(this.downloadFrequencyLabel, 1, 0);
+            this.downloadTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.downloadTableLayoutPanel.Location = new System.Drawing.Point(194, 0);
+            this.downloadTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.downloadTableLayoutPanel.Name = "downloadTableLayoutPanel";
+            this.downloadTableLayoutPanel.RowCount = 1;
+            this.downloadTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.downloadTableLayoutPanel.Size = new System.Drawing.Size(195, 31);
+            this.downloadTableLayoutPanel.TabIndex = 0;
+            // 
+            // squadmatesTableLayoutPanel
+            // 
+            this.squadmatesTableLayoutPanel.ColumnCount = 2;
+            this.squadmatesTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.squadmatesTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80F));
+            this.squadmatesTableLayoutPanel.Controls.Add(this.squadmateGearPictureBox1, 1, 0);
+            this.squadmatesTableLayoutPanel.Controls.Add(this.squadmateNameTextBox3, 0, 2);
+            this.squadmatesTableLayoutPanel.Controls.Add(this.squadmateGearPictureBox3, 1, 2);
+            this.squadmatesTableLayoutPanel.Controls.Add(this.squadmateNameTextBox2, 0, 1);
+            this.squadmatesTableLayoutPanel.Controls.Add(this.squadmateGearPictureBox2, 1, 1);
+            this.squadmatesTableLayoutPanel.Controls.Add(this.squadmateNameTextBox1, 0, 0);
+            this.squadmatesTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.squadmatesTableLayoutPanel.Location = new System.Drawing.Point(392, 3);
+            this.squadmatesTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.squadmatesTableLayoutPanel.Name = "squadmatesTableLayoutPanel";
+            this.squadmatesTableLayoutPanel.RowCount = 3;
+            this.squadmatesTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.squadmatesTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.squadmatesTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.squadmatesTableLayoutPanel.Size = new System.Drawing.Size(389, 255);
+            this.squadmatesTableLayoutPanel.TabIndex = 28;
+            // 
+            // mainTableLayoutPanel
+            // 
+            this.mainTableLayoutPanel.ColumnCount = 2;
+            this.mainTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.mainTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.mainTableLayoutPanel.Controls.Add(this.consoleLogTextBox, 0, 1);
+            this.mainTableLayoutPanel.Controls.Add(this.squadmatesTableLayoutPanel, 1, 0);
+            this.mainTableLayoutPanel.Controls.Add(this.infoTableLayoutPanel, 0, 0);
+            this.mainTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.mainTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.mainTableLayoutPanel.Name = "mainTableLayoutPanel";
+            this.mainTableLayoutPanel.Padding = new System.Windows.Forms.Padding(3);
+            this.mainTableLayoutPanel.RowCount = 2;
+            this.mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.mainTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.mainTableLayoutPanel.Size = new System.Drawing.Size(784, 461);
+            this.mainTableLayoutPanel.TabIndex = 29;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(800, 481);
+            this.ClientSize = new System.Drawing.Size(784, 461);
+            this.Controls.Add(this.mainTableLayoutPanel);
             this.Controls.Add(this.updateNoticeLinkLabel);
-            this.Controls.Add(this.debugOverlayCheckbox);
-            this.Controls.Add(this.showConsoleCheckBox);
-            this.Controls.Add(this.squadmateNameTextBox3);
-            this.Controls.Add(this.squadmateNameTextBox2);
-            this.Controls.Add(this.squadmateNameTextBox1);
-            this.Controls.Add(this.minimizeTrayCheckbox);
-            this.Controls.Add(this.squadmateGearPictureBox3);
-            this.Controls.Add(this.squadmateGearPictureBox2);
-            this.Controls.Add(this.squadmateGearPictureBox1);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.selfGearPictureBox1);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.hostIdTextBox);
-            this.Controls.Add(this.hostNameTextBox);
-            this.Controls.Add(this.consoleLogTextBox);
-            this.Controls.Add(this.showOverlayCheckbox);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.downloadFrequencyNumericUpDown);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.uploadFrequencyNumericUpDown);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "FortniteOverlay";
@@ -368,24 +472,30 @@ namespace FortniteOverlay
             ((System.ComponentModel.ISupportInitialize)(this.squadmateGearPictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmateGearPictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmateGearPictureBox3)).EndInit();
+            this.infoTableLayoutPanel.ResumeLayout(false);
+            this.previewTableLayoutPanel.ResumeLayout(false);
+            this.configTableLayoutPanel.ResumeLayout(false);
+            this.configTableLayoutPanel.PerformLayout();
+            this.uploadTableLayoutPanel.ResumeLayout(false);
+            this.uploadTableLayoutPanel.PerformLayout();
+            this.downloadTableLayoutPanel.ResumeLayout(false);
+            this.downloadTableLayoutPanel.PerformLayout();
+            this.squadmatesTableLayoutPanel.ResumeLayout(false);
+            this.mainTableLayoutPanel.ResumeLayout(false);
+            this.mainTableLayoutPanel.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
         private System.Windows.Forms.NumericUpDown uploadFrequencyNumericUpDown;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label uploadFrequencyLabel;
         private System.Windows.Forms.NumericUpDown downloadFrequencyNumericUpDown;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label downloadFrequencyLabel;
         private CheckBox showOverlayCheckbox;
         private TextBox consoleLogTextBox;
-        private TextBox hostNameTextBox;
-        private TextBox hostIdTextBox;
-        private Label label3;
-        private Label label4;
         private PictureBox selfGearPictureBox1;
-        private Label label6;
+        private Label previewLabel;
         private PictureBox squadmateGearPictureBox1;
         private PictureBox squadmateGearPictureBox2;
         private PictureBox squadmateGearPictureBox3;
@@ -397,6 +507,13 @@ namespace FortniteOverlay
         private NotifyIcon notifyIcon;
         private CheckBox debugOverlayCheckbox;
         private LinkLabel updateNoticeLinkLabel;
+        private TableLayoutPanel infoTableLayoutPanel;
+        private TableLayoutPanel previewTableLayoutPanel;
+        private TableLayoutPanel configTableLayoutPanel;
+        private TableLayoutPanel uploadTableLayoutPanel;
+        private TableLayoutPanel downloadTableLayoutPanel;
+        private TableLayoutPanel squadmatesTableLayoutPanel;
+        private TableLayoutPanel mainTableLayoutPanel;
     }
 }
 
