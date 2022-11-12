@@ -26,12 +26,13 @@ namespace FortniteOverlay
         {
             return new ProgramOptions()
             {
+                UploadFrequency = Convert.ToInt32(uploadFrequencyNumericUpDown.Value),
+                DownloadFrequency = Convert.ToInt32(downloadFrequencyNumericUpDown.Value),
                 ShowConsole = showConsoleCheckBox.Checked,
                 EnableOverlay = showOverlayCheckbox.Checked,
                 MinimizeToTray = minimizeTrayCheckbox.Checked,
                 DebugOverlay = debugOverlayCheckbox.Checked,
-                UploadFrequency = Convert.ToInt32(uploadFrequencyNumericUpDown.Value),
-                DownloadFrequency = Convert.ToInt32(downloadFrequencyNumericUpDown.Value),
+                HUDScale = Convert.ToInt32(hudScaleNumericUpDown.Value),
             };
         }
 
@@ -93,6 +94,11 @@ namespace FortniteOverlay
                 default:
                     throw new Exception("Invalid index in SetSquadName");
             }
+        }
+
+        public void SetHUDScale(int scale)
+        {
+            SetControlProperty(hudScaleNumericUpDown, "Value", (decimal)scale);
         }
 
         public void SetControlProperty(Control control, string propertyName, object data)
@@ -197,11 +203,12 @@ namespace FortniteOverlay
 
     public class ProgramOptions
     {
+        public int UploadFrequency;
+        public int DownloadFrequency;
         public bool ShowConsole;
         public bool EnableOverlay;
         public bool MinimizeToTray;
         public bool DebugOverlay;
-        public int UploadFrequency;
-        public int DownloadFrequency;
+        public int HUDScale;
     }
 }

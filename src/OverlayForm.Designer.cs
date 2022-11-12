@@ -126,6 +126,7 @@ namespace FortniteOverlay
             this.Text = "OverlayForm";
             this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.Lime;
+            this.Resize += new System.EventHandler(this.OverlayForm_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.debugPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmateGearPictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmateGearPictureBox1)).EndInit();

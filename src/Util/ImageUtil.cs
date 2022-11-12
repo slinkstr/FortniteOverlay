@@ -17,21 +17,18 @@ namespace FortniteOverlay.Util
             return dsrpos;
         }
 
-        public static bool IsMapVisible(Bitmap screenshot, List<PixelPositions> positions)
+        public static bool IsMapVisible(Bitmap screenshot, List<PixelPositions> positions, int hudScale)
         {
-            return IsMapVisible(screenshot, MatchingPosition(screenshot, positions).Map);
+            return IsMapVisible(screenshot, MatchingPosition(screenshot, positions), hudScale);
         }
 
-        public static bool IsMapVisible(Bitmap screenshot, int[][] mapPos)
+        public static bool IsMapVisible(Bitmap screenshot, PixelPositions positions, int hudScale)
         {
             if (screenshot == null) { return false; }
-            if (mapPos == null) { throw new Exception("'mapPos' given to IsMapVisible was null."); }
-
             Color pureWhite = Color.FromArgb(255, 255, 255);
-
-            if (screenshot.GetPixel(mapPos[0][0], mapPos[0][1]) != pureWhite) { return false; }
-            if (screenshot.GetPixel(mapPos[1][0], mapPos[1][1]) != pureWhite) { return false; }
-            if (screenshot.GetPixel(mapPos[2][0], mapPos[2][1]) != pureWhite) { return false; }
+            var scaledPos = ScalePositions(positions, hudScale);
+            var pix = screenshot.GetPixel(scaledPos.Map[0], scaledPos.Map[1]);
+            if (pix != pureWhite) { return false; }
             return true;
         }
 
@@ -58,46 +55,43 @@ namespace FortniteOverlay.Util
             return bmp;
         }
 
-        public static Bitmap RenderGear(Bitmap screenshot, List<PixelPositions> positions)
+        public static Bitmap RenderGear(Bitmap screenshot, List<PixelPositions> positions, int hudScale)
         {
-            return RenderGear(screenshot, MatchingPosition(screenshot, positions));
+            return RenderGear(screenshot, MatchingPosition(screenshot, positions), hudScale);
         }
 
-        public static Bitmap RenderGear(Bitmap screenshot, PixelPositions positions)
+        public static Bitmap RenderGear(Bitmap screenshot, PixelPositions positions, int hudScale)
         {
             Color pureWhite = Color.FromArgb(255, 255, 255);
             Color fadedWhite = Color.FromArgb(127, 127, 127);
 
+            var scaledPos = ScalePositions(positions, hudScale);
+
             int slotSelected = 0;
-            for (int i = 0; i < positions.Slots.Length; i++)
+            for (int i = 0; i < scaledPos.Slots.Length; i++)
             {
-                var pix = screenshot.GetPixel(positions.Slots[i][0], positions.Slots[i][1]);
+                var pix = screenshot.GetPixel(scaledPos.Slots[i][0], scaledPos.Slots[i][1]);
                 if (pix == pureWhite || pix == fadedWhite)
                 {
                     slotSelected = i + 1;
                 }
             }
 
-            Bitmap bitmap = new Bitmap((positions.SlotSize * 6), positions.SlotSize);
+            Bitmap bitmap = new Bitmap((scaledPos.SlotSize * 6), scaledPos.SlotSize);
             using (Graphics g = Graphics.FromImage(bitmap))
             {
-                for (int i = 0; i < positions.Slots.Length; i++)
+                for (int i = 0; i < scaledPos.Slots.Length; i++)
                 {
-                    var ofs = (slotSelected == i + 1) ? positions.SelectedSlotOffset : 0;
-                    g.DrawImage(screenshot, new Rectangle(i * positions.SlotSize, 0, positions.SlotSize, positions.SlotSize), new Rectangle(positions.Slots[i][0], positions.Slots[i][1] + ofs, positions.SlotSize, positions.SlotSize), GraphicsUnit.Pixel);
+                    var ofs = (slotSelected == i + 1) ? scaledPos.SelectedSlotOffset : 0;
+                    g.DrawImage(screenshot, new Rectangle(i * scaledPos.SlotSize, 0, scaledPos.SlotSize, scaledPos.SlotSize), new Rectangle(scaledPos.Slots[i][0], scaledPos.Slots[i][1] + ofs, scaledPos.SlotSize, scaledPos.SlotSize), GraphicsUnit.Pixel);
                 }
 
                 // keys
                 Color yellowish = Color.FromArgb(244, 219, 93);
-                var pix = screenshot.GetPixel(positions.CrownPos[0], positions.CrownPos[1]);
-                if (yellowish.GetHue() - 10 < pix.GetHue() && yellowish.GetHue() + 10 > pix.GetHue())
-                {
-                    g.DrawImage(screenshot, new Rectangle(positions.SlotSize * 5, 0, positions.SlotSize, positions.SlotSize), new Rectangle(positions.KeyPosCrown[0], positions.KeyPosCrown[1], positions.SlotSize, positions.SlotSize), GraphicsUnit.Pixel);
-                }
-                else
-                {
-                    g.DrawImage(screenshot, new Rectangle(positions.SlotSize * 5, 0, positions.SlotSize, positions.SlotSize), new Rectangle(positions.KeyPos[0], positions.KeyPos[1], positions.SlotSize, positions.SlotSize), GraphicsUnit.Pixel);
-                }
+                var pix = screenshot.GetPixel(scaledPos.CrownPos[0], scaledPos.CrownPos[1]);
+                bool crownVisible = yellowish.GetHue() - 10 < pix.GetHue() && yellowish.GetHue() + 10 > pix.GetHue();
+                if (crownVisible) { g.DrawImage(screenshot, new Rectangle(scaledPos.SlotSize * 5, 0, scaledPos.SlotSize, scaledPos.SlotSize), new Rectangle(scaledPos.KeyPosCrown[0], scaledPos.KeyPosCrown[1], scaledPos.SlotSize, scaledPos.SlotSize), GraphicsUnit.Pixel); }
+                else              { g.DrawImage(screenshot, new Rectangle(scaledPos.SlotSize * 5, 0, scaledPos.SlotSize, scaledPos.SlotSize), new Rectangle(scaledPos.KeyPos[0],      scaledPos.KeyPos[1],      scaledPos.SlotSize, scaledPos.SlotSize), GraphicsUnit.Pixel); }
             }
 
             // Resize to save space
@@ -106,12 +100,12 @@ namespace FortniteOverlay.Util
             return bitmap;
         }
 
-        public static Bitmap RenderGearDebug(Bitmap screenshot, List<PixelPositions> positions)
+        public static Bitmap RenderGearDebug(Bitmap screenshot, List<PixelPositions> positions, int hudScale)
         {
-            return RenderGearDebug(screenshot, MatchingPosition(screenshot, positions));
+            return RenderGearDebug(screenshot, MatchingPosition(screenshot, positions), hudScale);
         }
 
-        public static Bitmap RenderGearDebug(Bitmap screenshot, PixelPositions positions)
+        public static Bitmap RenderGearDebug(Bitmap screenshot, PixelPositions positions, int hudScale)
         {
             Bitmap bitmap = new Bitmap(screenshot.Width, screenshot.Height);
             Pen pen = new Pen(Color.Red, 1);
@@ -119,10 +113,12 @@ namespace FortniteOverlay.Util
             Color pureWhite = Color.FromArgb(255, 255, 255);
             Color fadedWhite = Color.FromArgb(127, 127, 127);
 
+            var scaledPos = ScalePositions(positions, hudScale);
+
             int slotSelected = 0;
-            for (int i = 0; i < positions.Slots.Length; i++)
+            for (int i = 0; i < scaledPos.Slots.Length; i++)
             {
-                var pix = screenshot.GetPixel(positions.Slots[i][0], positions.Slots[i][1]);
+                var pix = screenshot.GetPixel(scaledPos.Slots[i][0], scaledPos.Slots[i][1]);
                 if (pix == pureWhite || pix == fadedWhite)
                 {
                     slotSelected = i + 1;
@@ -131,31 +127,26 @@ namespace FortniteOverlay.Util
 
             using (Graphics g = Graphics.FromImage(bitmap))
             {
-                for (int i = 0; i < positions.Slots.Length; i++)
+                for (int i = 0; i < scaledPos.Slots.Length; i++)
                 {
-                    var ofs = (slotSelected == i + 1) ? positions.SelectedSlotOffset : 0;
-                    g.DrawRectangle(pen, new Rectangle(positions.Slots[i][0], positions.Slots[i][1] + ofs, positions.SlotSize, positions.SlotSize));
+                    var ofs = (slotSelected == i + 1) ? scaledPos.SelectedSlotOffset : 0;
+                    g.DrawRectangle(pen, new Rectangle(scaledPos.Slots[i][0] - 1, scaledPos.Slots[i][1] - 1 + ofs, scaledPos.SlotSize + 1, scaledPos.SlotSize + 1));
                 }
 
                 // keys
                 Color yellowish = Color.FromArgb(244, 219, 93);
-                var pix = screenshot.GetPixel(positions.CrownPos[0], positions.CrownPos[1]);
-                g.DrawRectangle(pen, new Rectangle(positions.CrownPos[0], positions.CrownPos[1], 1, 1));
-                Program.form.Log($"Crown position hue: {pix.GetHue()}, tolerance: {yellowish.GetHue() - 10} - {yellowish.GetHue() + 10}");
-                if (yellowish.GetHue() - 10 < pix.GetHue() && yellowish.GetHue() + 10 > pix.GetHue())
-                {
-                    g.DrawRectangle(pen, new Rectangle(positions.KeyPosCrown[0], positions.KeyPosCrown[1], positions.SlotSize, positions.SlotSize));
-                }
-                else
-                {
-                    g.DrawRectangle(pen, new Rectangle(positions.KeyPos[0], positions.KeyPos[1], positions.SlotSize, positions.SlotSize));
-                }
+                var pix = screenshot.GetPixel(scaledPos.CrownPos[0], scaledPos.CrownPos[1]);
+
+                bool crownVisible = yellowish.GetHue() - 10 < pix.GetHue() && yellowish.GetHue() + 10 > pix.GetHue();
+                Program.form.Log((crownVisible ? "CROWN!" : "") + $"Crown position hue: {pix.GetHue()}");
+                if (crownVisible) { g.DrawRectangle(pen, new Rectangle(scaledPos.KeyPosCrown[0] - 1, scaledPos.KeyPosCrown[1] - 1, scaledPos.SlotSize + 1, scaledPos.SlotSize + 1)); }
+                else              { g.DrawRectangle(pen, new Rectangle(scaledPos.KeyPos[0] - 1,      scaledPos.KeyPos[1] - 1,      scaledPos.SlotSize + 1, scaledPos.SlotSize + 1)); }
 
                 // Draw points of interest
                 // Map
-                g.DrawRectangle(pen, new Rectangle(positions.Map[0][0], positions.Map[0][1], 1, 1));
-                g.DrawRectangle(pen, new Rectangle(positions.Map[1][0], positions.Map[1][1], 1, 1));
-                g.DrawRectangle(pen, new Rectangle(positions.Map[2][0], positions.Map[2][1], 1, 1));
+                g.DrawEllipse(pen, scaledPos.Map[0] - 1, scaledPos.Map[1] - 1, 2, 2);
+                // Crown
+                g.DrawEllipse(pen, scaledPos.CrownPos[0] - 1, scaledPos.CrownPos[1] - 1, 2, 2);
             }
 
             return bitmap;
@@ -191,11 +182,9 @@ namespace FortniteOverlay.Util
                     new int[] { (int)((double)reference.Slots[3][0] / (double)reference.Resolution[0] * width), (int)((double)reference.Slots[3][1] / (double)reference.Resolution[1] * height) },
                     new int[] { (int)((double)reference.Slots[4][0] / (double)reference.Resolution[0] * width), (int)((double)reference.Slots[4][1] / (double)reference.Resolution[1] * height) },
                 },
-                Map = new int[3][]
-                {
-                    new int[] { (int)((double)reference.Map[0][0] / (double)reference.Resolution[0] * width), (int)((double)reference.Map[0][1] / (double)reference.Resolution[1] * height) },
-                    new int[] { (int)((double)reference.Map[1][0] / (double)reference.Resolution[0] * width), (int)((double)reference.Map[1][1] / (double)reference.Resolution[1] * height) },
-                    new int[] { (int)((double)reference.Map[2][0] / (double)reference.Resolution[0] * width), (int)((double)reference.Map[2][1] / (double)reference.Resolution[1] * height) },
+                Map = new int[2] {
+                    (int)((double)reference.Map[0] / (double)reference.Resolution[0] * width),
+                    (int)((double)reference.Map[1] / (double)reference.Resolution[1] * height),
                 },
                 KeyPos = new int[2] {
                     (int)((double)reference.KeyPos[0] / (double)reference.Resolution[0] * width),
@@ -214,6 +203,63 @@ namespace FortniteOverlay.Util
             };
         }
 
+        public static int[] ScaleFromTopLeft(int x, int y, int width, int height, int scale)
+        {
+            int newX = Convert.ToInt32(Math.Floor(x * ((double)scale / 100)));
+            int newY = Convert.ToInt32(Math.Floor(y * ((double)scale / 100)));
+            return new int[] { newX, newY };
+        }
+
+        public static int[] ScaleFromBottomLeft(int x, int y, int width, int height, int scale)
+        {
+            int newX = Convert.ToInt32(Math.Floor(x * ((double)scale / 100)));
+            int newY = Convert.ToInt32(Math.Floor(height - (height - y) * ((double)scale / 100)));
+            return new int[] { newX, newY };
+        }
+
+        public static int[] ScaleFromTopRight(int x, int y, int width, int height, int scale)
+        {
+            int newX = Convert.ToInt32(Math.Floor(width - (width - x) * ((double)scale / 100)));
+            int newY = Convert.ToInt32(Math.Floor(y * ((double)scale / 100)));
+            return new int[] { newX, newY };
+        }
+
+        public static int[] ScaleFromBottomRight(int x, int y, int width, int height, int scale)
+        {
+            Console.WriteLine("ScaleFromBottomRight - X: " + (width - (width - x) * ((double)scale / 100)) + ", Y: " + (height - (height - y) * ((double)scale / 100)));
+            int newX = Convert.ToInt32(Math.Floor(width - (width - x) * ((double)scale / 100)));
+            int newY = Convert.ToInt32(Math.Floor(height - (height - y) * ((double)scale / 100)));
+            return new int[] { newX, newY };
+        }
+
+        public static PixelPositions ScalePositions(PixelPositions pos, int scale)
+        {
+            if (scale == 100) { return pos; }
+            if (scale < 25)   { throw new Exception("Invalid scale '" + scale + "', minimum is 25."); }
+            if (scale > 125)  { throw new Exception("Invalid scale '" + scale + "', maximum is 125."); }
+
+            var newPos = new PixelPositions
+            {
+                Resolution = pos.Resolution,
+                SelectedSlotOffset = Convert.ToInt32(pos.SelectedSlotOffset * ((double)scale / 100)),
+                SlotSize = Convert.ToInt32(pos.SlotSize * ((double)scale / 100)),
+                Slots = new int[5][]
+                {
+                    ScaleFromBottomRight(pos.Slots[0][0], pos.Slots[0][1], pos.Resolution[0], pos.Resolution[1], scale),
+                    ScaleFromBottomRight(pos.Slots[1][0], pos.Slots[1][1], pos.Resolution[0], pos.Resolution[1], scale),
+                    ScaleFromBottomRight(pos.Slots[2][0], pos.Slots[2][1], pos.Resolution[0], pos.Resolution[1], scale),
+                    ScaleFromBottomRight(pos.Slots[3][0], pos.Slots[3][1], pos.Resolution[0], pos.Resolution[1], scale),
+                    ScaleFromBottomRight(pos.Slots[4][0], pos.Slots[4][1], pos.Resolution[0], pos.Resolution[1], scale)
+                },
+                Map = ScaleFromTopRight(pos.Map[0], pos.Map[1], pos.Resolution[0], pos.Resolution[1], scale),
+                KeyPos = ScaleFromBottomRight(pos.KeyPos[0], pos.KeyPos[1], pos.Resolution[0], pos.Resolution[1], scale),
+                KeyPosCrown = ScaleFromBottomRight(pos.KeyPosCrown[0], pos.KeyPosCrown[1], pos.Resolution[0], pos.Resolution[1], scale),
+                CrownPos = ScaleFromBottomRight(pos.CrownPos[0], pos.CrownPos[1], pos.Resolution[0], pos.Resolution[1], scale),
+            };
+
+            return newPos;
+        }
+
         public static List<PixelPositions> KnownPositions()
         {
             List<PixelPositions> positions = new List<PixelPositions>()
@@ -230,7 +276,7 @@ namespace FortniteOverlay.Util
             public int SelectedSlotOffset { get; set; }
             public int SlotSize { get; set; }
             public int[][] Slots { get; set; }
-            public int[][] Map { get; set; }
+            public int[] Map { get; set; }
             public int[] KeyPos { get; set; }
             public int[] KeyPosCrown { get; set; }
             public int[] CrownPos { get; set; }
@@ -240,10 +286,10 @@ namespace FortniteOverlay.Util
         {
             public PixelPositions_1440p()
             {
-                Resolution = new int[2] { 2560, 1440 };
+                Resolution         = new int[2] { 2560, 1440 };
                 SelectedSlotOffset = -13;
-                SlotSize = 104;
-                Slots = new int[5][]
+                SlotSize           = 104;
+                Slots              = new int[5][]
                 {
                     new int[] { 2009, 1227 },
                     new int[] { 2118, 1227 },
@@ -251,15 +297,10 @@ namespace FortniteOverlay.Util
                     new int[] { 2336, 1227 },
                     new int[] { 2444, 1227 }
                 };
-                Map = new int[3][]
-                {
-                    new int[] { 2543, 18 },
-                    new int[] { 2538, 31 },
-                    new int[] { 2511, 45 }
-                };
-                KeyPos = new int[2] { 2456, 927 };
-                KeyPosCrown = new int[2] { 2350, 944 };
-                CrownPos = new int[2] { 2490, 1000 };
+                Map                = new int[2] { 2512, 47   };
+                KeyPos             = new int[2] { 2456, 927  };
+                KeyPosCrown        = new int[2] { 2350, 944  };
+                CrownPos           = new int[2] { 2490, 1000 };
             }
         }
 
@@ -267,10 +308,10 @@ namespace FortniteOverlay.Util
         {
             public PixelPositions_1080p()
             {
-                Resolution = new int[2] { 1920, 1080 };
+                Resolution         = new int[2] { 1920, 1080 };
                 SelectedSlotOffset = -11;
-                SlotSize = 78;
-                Slots = new int[5][]
+                SlotSize           = 78;
+                Slots              = new int[5][]
                 {
                     new int[] { 1507, 920 },
                     new int[] { 1589, 920 },
@@ -278,15 +319,10 @@ namespace FortniteOverlay.Util
                     new int[] { 1752, 920 },
                     new int[] { 1833, 920 }
                 };
-                Map = new int[3][]
-                {
-                    new int[] { 1907, 13 },
-                    new int[] { 1904, 23 },
-                    new int[] { 1883, 33 }
-                };
-                KeyPos = new int[2] { 1842, 694 };
-                KeyPosCrown = new int[2] { 1762, 707 };
-                CrownPos = new int[2] { 1866, 750 };
+                Map                = new int[2] { 1884, 35  };
+                KeyPos             = new int[2] { 1842, 694 };
+                KeyPosCrown        = new int[2] { 1762, 707 };
+                CrownPos           = new int[2] { 1866, 750 };
             }
         }
     }

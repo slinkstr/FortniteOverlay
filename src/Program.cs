@@ -20,6 +20,9 @@ namespace FortniteOverlay
 {
     internal static class Program
     {
+        // debugging
+        public static bool enableInOtherWindows = false;
+
         public static DateTime lastDown;
         public static DateTime lastUp;
         public static Dictionary<string, string> logRegex = new Dictionary<string, string>();
@@ -39,7 +42,18 @@ namespace FortniteOverlay
         [STAThread]
         static void Main()
         {
-            if(!File.Exists("config.json"))
+            // Initialize
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            form = new Form1();
+            overlayForm = new OverlayForm();
+
+            httpClient.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("FortniteOverlay", Application.ProductVersion));
+            httpClient.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("(+https://github.com/slinkstr/FortniteOverlay)"));
+
+            // config file checks
+            if (!File.Exists("config.json"))
             {
                 MessageBox.Show("No config.json found.", "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(1);
@@ -52,22 +66,14 @@ namespace FortniteOverlay
                 Environment.Exit(1);
             }
 
-            var curWidth = Screen.GetBounds(Point.Empty).Width;
-            var curHeight = Screen.GetBounds(Point.Empty).Height;
-            if (!pixelPositions.Any(x => x.Resolution[0] == curWidth && x.Resolution[1] == curHeight))
+            if(config.HUDScale > 125 || config.HUDScale < 25)
             {
-                MessageBox.Show($"Screen resolution {Screen.GetBounds(Point.Empty).Size} not supported - program may not function as expected.", "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                pixelPositions.Add(InterpolateResolution(pixelPositions.First(), curWidth, curHeight));
+                MessageBox.Show("HUD Scale is invalid - must be between 25 and 125 inclusive.\nValue given was: " + config.HUDScale, "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-
-            httpClient.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("FortniteOverlay", Application.ProductVersion));
-            httpClient.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("(+https://github.com/slinkstr/FortniteOverlay)"));
-
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
-            form = new Form1();
-            overlayForm = new OverlayForm();
+            else
+            {
+                form.SetHUDScale(config.HUDScale);
+            }
 
             // Rendering and upload/download events
             updateTimer.Tick += new EventHandler(UpdateEvent);
@@ -161,17 +167,15 @@ namespace FortniteOverlay
             // Show or hide overlay
             if (form.ProgramOptions().EnableOverlay)
             {
-                if (FortniteFocused())
+                if (FortniteFocused() || enableInOtherWindows)
                 {
-                    var rect = GetWindowPosition(Program.fortniteProcess);
-                    overlayForm.Location = new Point(rect.Left, rect.Top);
-                    overlayForm.Size = new Size(rect.Width, rect.Height);
-
-                    var imageSize = new Size((int)(rect.Width * 0.125), (int)(rect.Height * 0.05555555555));
-                    var firstImagePos = new Point((int)(rect.Width * 0.16796875), (int)(rect.Height * 0.08333333333));
-                    overlayForm.PositionSquadGear(0, firstImagePos.X, firstImagePos.Y + (imageSize.Height * 0), imageSize.Width, imageSize.Height);
-                    overlayForm.PositionSquadGear(1, firstImagePos.X, firstImagePos.Y + (imageSize.Height * 1), imageSize.Width, imageSize.Height);
-                    overlayForm.PositionSquadGear(2, firstImagePos.X, firstImagePos.Y + (imageSize.Height * 2), imageSize.Width, imageSize.Height);
+                    Rectangle bounds = GetWindowPosition(Program.fortniteProcess);
+                    if (bounds.Width <= 0 || bounds.Height <= 0)
+                    {
+                        bounds = Screen.GetBounds(Point.Empty);
+                    }
+                    overlayForm.Location = new Point(bounds.Left, bounds.Top);
+                    overlayForm.Size = new Size(bounds.Width, bounds.Height);
                     overlayForm.Show();
                 }
                 else
@@ -186,12 +190,12 @@ namespace FortniteOverlay
 
             // *******************************************************************************
             // Remove this later
-            if (FortniteOpen())
+            if (FortniteOpen() || enableInOtherWindows)
             {
                 if (form.ProgramOptions().DebugOverlay)
                 {
                     var screen = TakeScreenshot();
-                    var debugBitmap = RenderGearDebug(screen, pixelPositions);
+                    var debugBitmap = RenderGearDebug(screen, pixelPositions, form.ProgramOptions().HUDScale);
                     overlayForm.SetDebugOverlay(debugBitmap);
                 }
                 else
@@ -206,13 +210,13 @@ namespace FortniteOverlay
 
         public static async Task UploadGear()
         {
-            if (!FortniteFocused())    { return; }
-            //if (!inGame)               { return; }
-            if (fortniters.Count == 0) { return; }
+            if (!FortniteFocused() && !enableInOtherWindows) { return; }
+            //if (!inGame)                                     { return; }
+            if (fortniters.Count == 0)                       { return; }
 
             var screen = TakeScreenshot();
-            if (!IsMapVisible(screen, pixelPositions)) { return; }
-            var gearBitmap = RenderGear(screen, pixelPositions);
+            if (!IsMapVisible(screen, pixelPositions, form.ProgramOptions().HUDScale)) { return; }
+            var gearBitmap = RenderGear(screen, pixelPositions, form.ProgramOptions().HUDScale);
 
             var stream = new MemoryStream();
             gearBitmap.Save(stream, ImageFormat.Png);
@@ -317,5 +321,6 @@ namespace FortniteOverlay
         public string UploadEndpoint { get; set; }
         public string SecretKey { get; set; }
         public string ImageLocation { get; set; }
+        public int HUDScale { get; set; }
     }
 }
