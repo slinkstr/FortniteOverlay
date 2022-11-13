@@ -268,7 +268,7 @@ namespace FortniteOverlay
 
         private static void UpdateFormElements()
         {
-            //fortniters = fortniters.OrderBy(x => x.Name).ToList();
+            fortniters = fortniters.OrderBy(x => x.PartyIndex).ToList();
             int startIdx = fortniters.Count - 1;
             for (int i = 2; i >= 0; i--)
             {
@@ -314,7 +314,7 @@ namespace FortniteOverlay
         }
 
         public string Name { get; set; }
-        //public string NameEncoded => HttpUtility.UrlEncode(Name);
+        public int PartyIndex { get; set; }
         public Bitmap GearImage { get; set; }
         public DateTime GearModified { get; set; }
         public bool IsFaded { get; set; } = false;
