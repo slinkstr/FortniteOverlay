@@ -60,9 +60,18 @@ namespace FortniteOverlay
             }
             var configText = string.Join("\n", File.ReadAllLines("config.json"));
             try { config = JsonConvert.DeserializeObject<ProgramConfig>(configText); }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                MessageBox.Show("Error processing config.json:\n" + e.Message, "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error processing config.json:\n" + ex.Message, "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Environment.Exit(1);
+            }
+            var invalidProperties = config.GetType().GetProperties().Where(x => x.GetValue(config) == null || string.IsNullOrWhiteSpace(x.GetValue(config).ToString()));
+            if (invalidProperties.Count() > 0)
+            {
+                string err = "";
+                foreach (var prop in invalidProperties) { err += prop.Name + " is invalid.\n"; }
+                err.Substring(0, err.Length - 1);
+                MessageBox.Show("Error processing config.json:\n" + err, "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(1);
             }
 
@@ -116,94 +125,11 @@ namespace FortniteOverlay
                 tasks.Add(DownloadGear());
             }
 
-            try
-            {
-                await Task.WhenAll(tasks);
-            }
-            catch (Exception ex)
-            {
-                // FIXME:11/11/2022 - remove this if it doesnt catch the random exceptions
-                form.Log("wtf...\n" + ex.ToString());
-                return;
-            }
+            await Task.WhenAll(tasks);
 
-            // Update form elements
-            //fortniters = fortniters.OrderBy(x => x.Name).ToList();
-            int startIdx = fortniters.Count - 1;
-            for (int i = 2; i >= 0; i--)
-            {
-                if (startIdx >= i)
-                {
-                    overlayForm.SetSquadGear(i, fortniters[startIdx - i].GearImage);
-                    form.SetSquadGear       (i, fortniters[startIdx - i].GearImage);
-                    form.SetSquadName       (i, fortniters[startIdx - i].Name);
-                }
-                else
-                {
-                    overlayForm.SetSquadGear(i, null);
-                    form.SetSquadGear       (i, null);
-                    form.SetSquadName       (i, "");
-                }
-            }
-
-            // Grey out stale pics
-            for (int i = 2; i >= 0; i--)
-            {
-                if (startIdx >= i)
-                {
-                    if (fortniters[startIdx - i].GearModified.AddSeconds(20) > DateTime.UtcNow) { continue; }
-                    if (fortniters[startIdx - i].GearImage == null) { continue; }
-                    if (!fortniters[startIdx - i].IsFaded)
-                    {
-                        fortniters[startIdx - i].GearImage = MarkStaleImage(fortniters[startIdx - i].GearImage);
-                        fortniters[startIdx - i].IsFaded = true;
-                    }
-
-                    overlayForm.SetSquadGear(i, null);
-                    form.SetSquadGear       (i, fortniters[startIdx - i].GearImage);
-                }
-            }
-
-            // Show or hide overlay
-            if (form.ProgramOptions().EnableOverlay)
-            {
-                if (FortniteFocused() || enableInOtherWindows)
-                {
-                    Rectangle bounds = GetWindowPosition(Program.fortniteProcess);
-                    if (bounds.Width <= 0 || bounds.Height <= 0)
-                    {
-                        bounds = Screen.GetBounds(Point.Empty);
-                    }
-                    overlayForm.Location = new Point(bounds.Left, bounds.Top);
-                    overlayForm.Size = new Size(bounds.Width, bounds.Height);
-                    overlayForm.Show();
-                }
-                else
-                {
-                    overlayForm.Hide();
-                }
-            }
-            else
-            {
-                overlayForm.Hide();
-            }
-
-            // *******************************************************************************
-            // Remove this later
-            if (FortniteOpen() || enableInOtherWindows)
-            {
-                if (form.ProgramOptions().DebugOverlay)
-                {
-                    var screen = TakeScreenshot();
-                    var debugBitmap = RenderGearDebug(screen, pixelPositions, form.ProgramOptions().HUDScale);
-                    overlayForm.SetDebugOverlay(debugBitmap);
-                }
-                else
-                {
-                    overlayForm.SetDebugOverlay(null);
-                }
-            }
-            // *******************************************************************************
+            UpdateFormElements();
+            ShowHideOverlay();
+            ShowHideDebugOverlay();
 
             updateTimer.Start();
         }
@@ -226,17 +152,25 @@ namespace FortniteOverlay
             formData.Add(new StringContent(config.SecretKey), "secret");
             formData.Add(new StringContent(hostName), "filename");
             formData.Add(new ByteArrayContent(stream.ToArray()), "gear", "image.jpg");
-            HttpResponseMessage response = await httpClient.PostAsync(config.UploadEndpoint, formData);
-            var responseString = response.Content.ReadAsStringAsync().Result;
-            if (!response.IsSuccessStatusCode)
+
+            HttpResponseMessage response = null;
+            string responseString = "";
+            try
             {
-                form.Log("Error uploading image to server. " + responseString);
+                response = await httpClient.PostAsync(config.UploadEndpoint, formData);
+                responseString = response.Content.ReadAsStringAsync().Result;
+                response.EnsureSuccessStatusCode();
             }
-            else
+            catch (Exception ex)
             {
-                form.SetSelfGear(new Bitmap(stream));
+                form.Log("Error uploading data to server.\n" +
+                         "-------------------------\n" +
+                         ex.ToString() + "\n" +
+                         (!string.IsNullOrWhiteSpace(responseString) ? "-------------------------\nServer response:\n" + responseString : ""));
+                return;
             }
 
+            form.SetSelfGear(new Bitmap(stream));
             lastUp = DateTime.Now;
         }
 
@@ -247,46 +181,51 @@ namespace FortniteOverlay
             if (fortniters.Count == 0) { return; }
             lastDown = DateTime.Now;
 
-            var response = await httpClient.GetAsync(config.ImageLocation);
-            string jsonString = await response.Content.ReadAsStringAsync();
-            JArray data = null;
+            // get list of all users
+            HttpResponseMessage response = null;
+            string responseString = "";
+            JArray availImages = null;
             try
             {
-                data = (JArray)JsonConvert.DeserializeObject(jsonString);
+                response = await httpClient.GetAsync(config.ImageLocation);
+                responseString = await response.Content.ReadAsStringAsync();
+                response.EnsureSuccessStatusCode();
+                availImages = (JArray)JsonConvert.DeserializeObject(responseString);
+                if(availImages == null) { throw new Exception("Couldn't process json (availImages was null)."); }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
                 form.Log("Error downloading data from server.\n" +
                          "-------------------------\n" +
-                         e.ToString() + "\n" +
-                         "-------------------------\n" +
-                         "Server response:\n" + jsonString);
+                         ex.ToString() + "\n" +
+                         (!string.IsNullOrWhiteSpace(responseString) ? "-------------------------\nServer response:\n" + responseString : ""));
                 return;
             }
 
-            if(data == null)
-            {
-                form.Log("Error downloading data from server.\n" +
-                         "Server response:\n" + jsonString);
-                return;
-            }
-
+            // get specific individuals
             foreach (var fort in fortniters.ToList())
             {
-                var match = data.FirstOrDefault(x => x["name"].ToString() == fort.Name + ".jpg");
+                var match = availImages.FirstOrDefault(x => x["name"].ToString() == fort.Name + ".jpg");
                 if (match == null) { continue; }
 
                 DateTime lastMod = DateTime.Parse(match["mtime"].ToString().Substring(5)).ToUniversalTime();
                 if (lastMod != fort.GearModified)
                 {
-                    //form.Log("Downloading gear for " + fort.Name);
-                    string gearUrl = config.ImageLocation + "/" + fort.Name + ".jpg";
-                    response = await httpClient.GetAsync(gearUrl);
-                    if (!response.IsSuccessStatusCode)
+                    string gearUrl = config.ImageLocation + "/" + match["name"];
+                    try
                     {
-                        form.Log("Error downloading gear image for " + fort.Name);
+                        response = await httpClient.GetAsync(gearUrl);
+                        response.EnsureSuccessStatusCode();
+                    }
+                    catch (Exception ex)
+                    {
+                        form.Log($"Error downloading gear image for {fort.Name}\n" +
+                                  "-------------------------\n" +
+                                  ex.ToString() + "\n" +
+                                  "-------------------------\n");
                         continue;
                     }
+
                     var stream = await response.Content.ReadAsStreamAsync();
 
                     // squad could change while we're fetching gear, hence the ToList() and this
@@ -297,6 +236,71 @@ namespace FortniteOverlay
                         ftn.GearModified = lastMod;
                         ftn.IsFaded = false;
                     }
+                }
+            }
+        }
+
+        private static void ShowHideOverlay()
+        {
+            if (!form.ProgramOptions().EnableOverlay)        { overlayForm.Hide(); return; }
+            if (!FortniteFocused() && !enableInOtherWindows) { overlayForm.Hide(); return; }
+
+            Rectangle bounds = GetWindowPosition(Program.fortniteProcess);
+            if (bounds.Width <= 0 || bounds.Height <= 0)
+            {
+                bounds = Screen.GetBounds(Point.Empty);
+            }
+            overlayForm.Location = new Point(bounds.Left, bounds.Top);
+            overlayForm.Size = new Size(bounds.Width, bounds.Height);
+            overlayForm.Show();
+        }
+
+        private static void ShowHideDebugOverlay()
+        {
+            if (!form.ProgramOptions().EnableOverlay) {                                    return; }
+            if (!form.ProgramOptions().DebugOverlay)  { overlayForm.SetDebugOverlay(null); return; }
+            //if (!FortniteOpen() && !enableInOtherWindows) { overlayForm.SetDebugOverlay(null); return; }
+
+            var screen = TakeScreenshot();
+            var debugBitmap = RenderGearDebug(screen, pixelPositions, form.ProgramOptions().HUDScale);
+            overlayForm.SetDebugOverlay(debugBitmap);
+        }
+
+        private static void UpdateFormElements()
+        {
+            //fortniters = fortniters.OrderBy(x => x.Name).ToList();
+            int startIdx = fortniters.Count - 1;
+            for (int i = 2; i >= 0; i--)
+            {
+                if (startIdx >= i)
+                {
+                    overlayForm.SetSquadGear(i, fortniters[startIdx - i].GearImage);
+                    form.SetSquadGear(i, fortniters[startIdx - i].GearImage);
+                    form.SetSquadName(i, fortniters[startIdx - i].Name);
+                }
+                else
+                {
+                    overlayForm.SetSquadGear(i, null);
+                    form.SetSquadGear(i, null);
+                    form.SetSquadName(i, "");
+                }
+            }
+
+            // Gray out stale pics
+            for (int i = 2; i >= 0; i--)
+            {
+                if (startIdx >= i)
+                {
+                    if (fortniters[startIdx - i].GearModified.AddSeconds(20) > DateTime.UtcNow) { continue; }
+                    if (fortniters[startIdx - i].GearImage == null) { continue; }
+                    if (!fortniters[startIdx - i].IsFaded)
+                    {
+                        fortniters[startIdx - i].GearImage = MarkStaleImage(fortniters[startIdx - i].GearImage);
+                        fortniters[startIdx - i].IsFaded = true;
+                    }
+
+                    overlayForm.SetSquadGear(i, null);
+                    form.SetSquadGear(i, fortniters[startIdx - i].GearImage);
                 }
             }
         }
