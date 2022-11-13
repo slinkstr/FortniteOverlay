@@ -58,20 +58,36 @@ namespace FortniteOverlay.Util
 
         public static bool FortniteFocused()
         {
-            if (GetActiveWindow().ProcessName == Program.fortniteProcess)
+            try
             {
-                return true;
+                if (GetActiveWindow().ProcessName == Program.fortniteProcess)
+                {
+                    return true;
+                }
             }
+            catch (InvalidOperationException ex)
+            {
+                Program.form.Log("Error getting active process.\n" + ex.ToString());
+            }
+
             return false;
         }
 
         public static bool FortniteOpen()
         {
             var allProcesses = Process.GetProcesses();
-            if (allProcesses.Any(x => x.ProcessName == Program.fortniteProcess))
+            try
             {
-                return true;
+                if (allProcesses.Any(x => x.ProcessName == Program.fortniteProcess))
+                {
+                    return true;
+                }
             }
+            catch (InvalidOperationException ex)
+            {
+                Program.form.Log("Error scanning active processes.\n" + ex.ToString());
+            }
+
             return false;
         }
 
@@ -82,8 +98,7 @@ namespace FortniteOverlay.Util
 
         public static IntPtr GetWindowHandle(string processName)
         {
-            var bruh = Process.GetProcessesByName(processName);
-            var proc = Process.GetProcessesByName(processName).FirstOrDefault(x => x.MainWindowHandle != default(IntPtr));
+            var proc = Process.GetProcessesByName(processName).FirstOrDefault(x => x.MainWindowHandle != default);
             if (proc == null) { return IntPtr.Zero;           }
             else              { return proc.MainWindowHandle; }
         }
