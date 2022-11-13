@@ -35,11 +35,7 @@ namespace FortniteOverlay.Util
 
             if (latestVersion.CompareTo(currentVersion) > 0)
             {
-                var label = Application.OpenForms["Form1"].Controls["updateNoticeLinkLabel"] as LinkLabel;
-                label.Text = $"New update available (v{latestVersion})";
-                label.LinkArea = new LinkArea(0, label.Text.Length);
-                label.Tag = latest["html_url"].ToString();
-                label.LinkVisited = false;
+                Program.form.SetUpdateNotice($"New update available (v{latestVersion})", latest["html_url"].ToString());
             }
         }
 

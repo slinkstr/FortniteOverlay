@@ -101,6 +101,14 @@ namespace FortniteOverlay
             SetControlProperty(hudScaleNumericUpDown, "Value", (decimal)scale);
         }
 
+        public void SetUpdateNotice(string text, string url)
+        {
+            updateNoticeLinkLabel.Text = text;
+            updateNoticeLinkLabel.LinkArea = new LinkArea(0, updateNoticeLinkLabel.Text.Length);
+            updateNoticeLinkLabel.Tag = url;
+            updateNoticeLinkLabel.LinkVisited = false;
+        }
+
         public void SetControlProperty(Control control, string propertyName, object data)
         {
             if (control.InvokeRequired)

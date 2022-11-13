@@ -128,39 +128,39 @@ namespace FortniteOverlay
             }
 
             // Update form elements
-            fortniters = fortniters.OrderBy(x => x.Name).ToList();
-            for (int i = 0; i < 3; i++)
+            //fortniters = fortniters.OrderBy(x => x.Name).ToList();
+            int startIdx = fortniters.Count - 1;
+            for (int i = 2; i >= 0; i--)
             {
-                if (fortniters.Count - 1 >= i)
+                if (startIdx >= i)
                 {
-                    overlayForm.SetSquadGear(i, fortniters[i].GearImage);
-                    form.SetSquadGear(i, fortniters[i].GearImage);
-                    form.SetSquadName(i, fortniters[i].Name);
+                    overlayForm.SetSquadGear(i, fortniters[startIdx - i].GearImage);
+                    form.SetSquadGear       (i, fortniters[startIdx - i].GearImage);
+                    form.SetSquadName       (i, fortniters[startIdx - i].Name);
                 }
                 else
                 {
                     overlayForm.SetSquadGear(i, null);
-                    form.SetSquadGear(i, null);
-                    form.SetSquadName(i, "");
+                    form.SetSquadGear       (i, null);
+                    form.SetSquadName       (i, "");
                 }
             }
 
             // Grey out stale pics
-            for (int i = 0; i < 3; i++)
+            for (int i = 2; i >= 0; i--)
             {
-                if (fortniters.Count - 1 >= i)
+                if (startIdx >= i)
                 {
-                    if (fortniters[i].GearModified.AddSeconds(30) > DateTime.UtcNow) { continue; }
-                    if (fortniters[i].GearImage == null) { continue; }
-                    if (!fortniters[i].IsFaded)
+                    if (fortniters[startIdx - i].GearModified.AddSeconds(20) > DateTime.UtcNow) { continue; }
+                    if (fortniters[startIdx - i].GearImage == null) { continue; }
+                    if (!fortniters[startIdx - i].IsFaded)
                     {
-                        fortniters[i].GearImage = MarkStaleImage(fortniters[i].GearImage);
-                        fortniters[i].IsFaded = true;
+                        fortniters[startIdx - i].GearImage = MarkStaleImage(fortniters[startIdx - i].GearImage);
+                        fortniters[startIdx - i].IsFaded = true;
                     }
 
-                    form.SetSquadGear(i, fortniters[i].GearImage);
-                    // Remove really old ones from the overlay completely
                     overlayForm.SetSquadGear(i, null);
+                    form.SetSquadGear       (i, fortniters[startIdx - i].GearImage);
                 }
             }
 

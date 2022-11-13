@@ -46,11 +46,19 @@ namespace FortniteOverlay.Util
                 }
 
                 Rectangle rect = new Rectangle(0, 0, width, height);
-                using (Brush darken = new SolidBrush(Color.FromArgb(128, Color.Black)))
+                using (Brush darken = new SolidBrush(Color.FromArgb(96, Color.Black)))
                 {
                     g.FillRectangle(darken, rect);
                 }
-                g.DrawImage(outdated, new Rectangle(width / 2 - height / 2, height - (int)(height * 0.95), (int)(height * 0.90), (int)(height * 0.90)));
+
+                var smallestSide = (height < width) ? height : width;
+                var leftEdge     = (width  / 2) - (smallestSide / 2);
+                var topEdge      = (height / 2) - (smallestSide / 2);
+
+                g.DrawImage(outdated, new Rectangle(leftEdge     + (int)(smallestSide * 0.05),
+                                                    topEdge      + (int)(smallestSide * 0.05),
+                                                    smallestSide - (int)(smallestSide * 0.10),
+                                                    smallestSide - (int)(smallestSide * 0.10)));
             }
             return bmp;
         }

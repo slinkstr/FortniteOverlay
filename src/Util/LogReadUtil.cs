@@ -19,6 +19,7 @@ namespace FortniteOverlay.Util
         {
             string logDir = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\FortniteGame\\Saved\\Logs";
             string logFile = "FortniteGame.log";
+            //logFile = "Test-3teammates.log";
 
             var fs = new FileStream(logDir + "\\" + logFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             long totalLenCached = 0;
