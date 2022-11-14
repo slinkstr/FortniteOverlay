@@ -63,6 +63,13 @@ namespace FortniteOverlay
             this.hudScaleNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.hudScaleLabel = new System.Windows.Forms.Label();
             this.squadmatesTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.squadmate2ArrowTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.squadmate2DownButton = new System.Windows.Forms.Button();
+            this.squadmate2UpButton = new System.Windows.Forms.Button();
+            this.squadmate1ArrowTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.squadmate1DownButton = new System.Windows.Forms.Button();
+            this.squadmate3ArrowTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.squadmate3UpButton = new System.Windows.Forms.Button();
             this.mainTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.uploadFrequencyNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.downloadFrequencyNumericUpDown)).BeginInit();
@@ -78,6 +85,9 @@ namespace FortniteOverlay
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hudScaleNumericUpDown)).BeginInit();
             this.squadmatesTableLayoutPanel.SuspendLayout();
+            this.squadmate2ArrowTableLayoutPanel.SuspendLayout();
+            this.squadmate1ArrowTableLayoutPanel.SuspendLayout();
+            this.squadmate3ArrowTableLayoutPanel.SuspendLayout();
             this.mainTableLayoutPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -207,7 +217,7 @@ namespace FortniteOverlay
             this.squadmateGearPictureBox1.Location = new System.Drawing.Point(80, 0);
             this.squadmateGearPictureBox1.Margin = new System.Windows.Forms.Padding(0);
             this.squadmateGearPictureBox1.Name = "squadmateGearPictureBox1";
-            this.squadmateGearPictureBox1.Size = new System.Drawing.Size(348, 78);
+            this.squadmateGearPictureBox1.Size = new System.Drawing.Size(308, 78);
             this.squadmateGearPictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.squadmateGearPictureBox1.TabIndex = 15;
             this.squadmateGearPictureBox1.TabStop = false;
@@ -220,7 +230,7 @@ namespace FortniteOverlay
             this.squadmateGearPictureBox2.Location = new System.Drawing.Point(80, 78);
             this.squadmateGearPictureBox2.Margin = new System.Windows.Forms.Padding(0);
             this.squadmateGearPictureBox2.Name = "squadmateGearPictureBox2";
-            this.squadmateGearPictureBox2.Size = new System.Drawing.Size(348, 78);
+            this.squadmateGearPictureBox2.Size = new System.Drawing.Size(308, 78);
             this.squadmateGearPictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.squadmateGearPictureBox2.TabIndex = 16;
             this.squadmateGearPictureBox2.TabStop = false;
@@ -233,7 +243,7 @@ namespace FortniteOverlay
             this.squadmateGearPictureBox3.Location = new System.Drawing.Point(80, 156);
             this.squadmateGearPictureBox3.Margin = new System.Windows.Forms.Padding(0);
             this.squadmateGearPictureBox3.Name = "squadmateGearPictureBox3";
-            this.squadmateGearPictureBox3.Size = new System.Drawing.Size(348, 79);
+            this.squadmateGearPictureBox3.Size = new System.Drawing.Size(308, 79);
             this.squadmateGearPictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.squadmateGearPictureBox3.TabIndex = 17;
             this.squadmateGearPictureBox3.TabStop = false;
@@ -472,15 +482,19 @@ namespace FortniteOverlay
             // 
             // squadmatesTableLayoutPanel
             // 
-            this.squadmatesTableLayoutPanel.ColumnCount = 2;
+            this.squadmatesTableLayoutPanel.ColumnCount = 3;
             this.squadmatesTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.squadmatesTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.squadmatesTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.squadmatesTableLayoutPanel.Controls.Add(this.squadmate2ArrowTableLayoutPanel, 2, 1);
+            this.squadmatesTableLayoutPanel.Controls.Add(this.squadmate1ArrowTableLayoutPanel, 2, 0);
             this.squadmatesTableLayoutPanel.Controls.Add(this.squadmateGearPictureBox1, 1, 0);
             this.squadmatesTableLayoutPanel.Controls.Add(this.squadmateNameTextBox3, 0, 2);
             this.squadmatesTableLayoutPanel.Controls.Add(this.squadmateGearPictureBox3, 1, 2);
             this.squadmatesTableLayoutPanel.Controls.Add(this.squadmateNameTextBox2, 0, 1);
             this.squadmatesTableLayoutPanel.Controls.Add(this.squadmateGearPictureBox2, 1, 1);
             this.squadmatesTableLayoutPanel.Controls.Add(this.squadmateNameTextBox1, 0, 0);
+            this.squadmatesTableLayoutPanel.Controls.Add(this.squadmate3ArrowTableLayoutPanel, 2, 2);
             this.squadmatesTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.squadmatesTableLayoutPanel.Location = new System.Drawing.Point(353, 3);
             this.squadmatesTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
@@ -491,6 +505,107 @@ namespace FortniteOverlay
             this.squadmatesTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.squadmatesTableLayoutPanel.Size = new System.Drawing.Size(428, 235);
             this.squadmatesTableLayoutPanel.TabIndex = 28;
+            // 
+            // squadmate2ArrowTableLayoutPanel
+            // 
+            this.squadmate2ArrowTableLayoutPanel.ColumnCount = 1;
+            this.squadmate2ArrowTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.squadmate2ArrowTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.squadmate2ArrowTableLayoutPanel.Controls.Add(this.squadmate2DownButton, 0, 1);
+            this.squadmate2ArrowTableLayoutPanel.Controls.Add(this.squadmate2UpButton, 0, 0);
+            this.squadmate2ArrowTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.squadmate2ArrowTableLayoutPanel.Location = new System.Drawing.Point(388, 78);
+            this.squadmate2ArrowTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.squadmate2ArrowTableLayoutPanel.Name = "squadmate2ArrowTableLayoutPanel";
+            this.squadmate2ArrowTableLayoutPanel.RowCount = 2;
+            this.squadmate2ArrowTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.squadmate2ArrowTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.squadmate2ArrowTableLayoutPanel.Size = new System.Drawing.Size(40, 78);
+            this.squadmate2ArrowTableLayoutPanel.TabIndex = 24;
+            // 
+            // squadmate2DownButton
+            // 
+            this.squadmate2DownButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.squadmate2DownButton.Location = new System.Drawing.Point(3, 39);
+            this.squadmate2DownButton.Margin = new System.Windows.Forms.Padding(3, 0, 3, 6);
+            this.squadmate2DownButton.Name = "squadmate2DownButton";
+            this.squadmate2DownButton.Size = new System.Drawing.Size(34, 33);
+            this.squadmate2DownButton.TabIndex = 2;
+            this.squadmate2DownButton.Text = "↓";
+            this.squadmate2DownButton.UseVisualStyleBackColor = true;
+            this.squadmate2DownButton.Visible = false;
+            this.squadmate2DownButton.Click += new System.EventHandler(this.squadmate2DownButton_Click);
+            // 
+            // squadmate2UpButton
+            // 
+            this.squadmate2UpButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.squadmate2UpButton.Location = new System.Drawing.Point(3, 6);
+            this.squadmate2UpButton.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
+            this.squadmate2UpButton.Name = "squadmate2UpButton";
+            this.squadmate2UpButton.Size = new System.Drawing.Size(34, 33);
+            this.squadmate2UpButton.TabIndex = 1;
+            this.squadmate2UpButton.Text = "↑";
+            this.squadmate2UpButton.UseVisualStyleBackColor = true;
+            this.squadmate2UpButton.Visible = false;
+            this.squadmate2UpButton.Click += new System.EventHandler(this.squadmate2UpButton_Click);
+            // 
+            // squadmate1ArrowTableLayoutPanel
+            // 
+            this.squadmate1ArrowTableLayoutPanel.ColumnCount = 1;
+            this.squadmate1ArrowTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.squadmate1ArrowTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.squadmate1ArrowTableLayoutPanel.Controls.Add(this.squadmate1DownButton, 0, 1);
+            this.squadmate1ArrowTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.squadmate1ArrowTableLayoutPanel.Location = new System.Drawing.Point(388, 0);
+            this.squadmate1ArrowTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.squadmate1ArrowTableLayoutPanel.Name = "squadmate1ArrowTableLayoutPanel";
+            this.squadmate1ArrowTableLayoutPanel.RowCount = 2;
+            this.squadmate1ArrowTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.squadmate1ArrowTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.squadmate1ArrowTableLayoutPanel.Size = new System.Drawing.Size(40, 78);
+            this.squadmate1ArrowTableLayoutPanel.TabIndex = 23;
+            // 
+            // squadmate1DownButton
+            // 
+            this.squadmate1DownButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.squadmate1DownButton.Location = new System.Drawing.Point(3, 39);
+            this.squadmate1DownButton.Margin = new System.Windows.Forms.Padding(3, 0, 3, 6);
+            this.squadmate1DownButton.Name = "squadmate1DownButton";
+            this.squadmate1DownButton.Size = new System.Drawing.Size(34, 33);
+            this.squadmate1DownButton.TabIndex = 0;
+            this.squadmate1DownButton.Text = "↓";
+            this.squadmate1DownButton.UseVisualStyleBackColor = true;
+            this.squadmate1DownButton.Visible = false;
+            this.squadmate1DownButton.Click += new System.EventHandler(this.squadmate1DownButton_Click);
+            // 
+            // squadmate3ArrowTableLayoutPanel
+            // 
+            this.squadmate3ArrowTableLayoutPanel.ColumnCount = 1;
+            this.squadmate3ArrowTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.squadmate3ArrowTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.squadmate3ArrowTableLayoutPanel.Controls.Add(this.squadmate3UpButton, 0, 0);
+            this.squadmate3ArrowTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.squadmate3ArrowTableLayoutPanel.Location = new System.Drawing.Point(388, 156);
+            this.squadmate3ArrowTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.squadmate3ArrowTableLayoutPanel.Name = "squadmate3ArrowTableLayoutPanel";
+            this.squadmate3ArrowTableLayoutPanel.RowCount = 2;
+            this.squadmate3ArrowTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.squadmate3ArrowTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.squadmate3ArrowTableLayoutPanel.Size = new System.Drawing.Size(40, 79);
+            this.squadmate3ArrowTableLayoutPanel.TabIndex = 22;
+            // 
+            // squadmate3UpButton
+            // 
+            this.squadmate3UpButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.squadmate3UpButton.Location = new System.Drawing.Point(3, 6);
+            this.squadmate3UpButton.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
+            this.squadmate3UpButton.Name = "squadmate3UpButton";
+            this.squadmate3UpButton.Size = new System.Drawing.Size(34, 33);
+            this.squadmate3UpButton.TabIndex = 1;
+            this.squadmate3UpButton.Text = "↑";
+            this.squadmate3UpButton.UseVisualStyleBackColor = true;
+            this.squadmate3UpButton.Visible = false;
+            this.squadmate3UpButton.Click += new System.EventHandler(this.squadmate3UpButton_Click);
             // 
             // mainTableLayoutPanel
             // 
@@ -543,6 +658,9 @@ namespace FortniteOverlay
             this.tableLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hudScaleNumericUpDown)).EndInit();
             this.squadmatesTableLayoutPanel.ResumeLayout(false);
+            this.squadmate2ArrowTableLayoutPanel.ResumeLayout(false);
+            this.squadmate1ArrowTableLayoutPanel.ResumeLayout(false);
+            this.squadmate3ArrowTableLayoutPanel.ResumeLayout(false);
             this.mainTableLayoutPanel.ResumeLayout(false);
             this.mainTableLayoutPanel.PerformLayout();
             this.ResumeLayout(false);
@@ -579,6 +697,13 @@ namespace FortniteOverlay
         private TableLayoutPanel tableLayoutPanel1;
         private NumericUpDown hudScaleNumericUpDown;
         private Label hudScaleLabel;
+        private TableLayoutPanel squadmate2ArrowTableLayoutPanel;
+        private Button squadmate2DownButton;
+        private Button squadmate2UpButton;
+        private TableLayoutPanel squadmate1ArrowTableLayoutPanel;
+        private Button squadmate1DownButton;
+        private TableLayoutPanel squadmate3ArrowTableLayoutPanel;
+        private Button squadmate3UpButton;
     }
 }
 

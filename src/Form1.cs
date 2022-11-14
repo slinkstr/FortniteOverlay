@@ -96,6 +96,14 @@ namespace FortniteOverlay
             }
         }
 
+        public void ShowHideSortButtons(int squadmates)
+        {
+            SetControlProperty(squadmate1DownButton, "Visible", (squadmates > 1));
+            SetControlProperty(squadmate2UpButton,   "Visible", (squadmates > 1));
+            SetControlProperty(squadmate2DownButton, "Visible", (squadmates > 2));
+            SetControlProperty(squadmate3UpButton,   "Visible", (squadmates > 2));
+        }
+
         public void SetHUDScale(int scale)
         {
             SetControlProperty(hudScaleNumericUpDown, "Value", (decimal)scale);
@@ -206,6 +214,36 @@ namespace FortniteOverlay
         {
             var box = (PictureBox)sender;
             if (box.Image != null) { Clipboard.SetDataObject(box.Image); }
+        }
+
+        private void squadmate1DownButton_Click(object sender, EventArgs e)
+        {
+            SwapSquad(0, 1);
+        }
+
+        private void squadmate2UpButton_Click(object sender, EventArgs e)
+        {
+            SwapSquad(0, 1);
+        }
+
+        private void squadmate2DownButton_Click(object sender, EventArgs e)
+        {
+            SwapSquad(1, 2);
+        }
+
+        private void squadmate3UpButton_Click(object sender, EventArgs e)
+        {
+            SwapSquad(1, 2);
+        }
+
+        private void SwapSquad(int indexA, int indexB)
+        {
+            var max = indexA > indexB ? indexA : indexB;
+            if (Program.fortniters.Count < max + 1) { return; }
+            var temp = Program.fortniters[indexA];
+            Program.fortniters[indexA] = Program.fortniters[indexB];
+            Program.fortniters[indexB] = temp;
+            Program.UpdateFormElements();
         }
     }
 

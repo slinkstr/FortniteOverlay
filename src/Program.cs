@@ -266,17 +266,31 @@ namespace FortniteOverlay
             overlayForm.SetDebugOverlay(debugBitmap);
         }
 
-        private static void UpdateFormElements()
+        public static void UpdateFormElements()
         {
-            fortniters = fortniters.OrderBy(x => x.PartyIndex).ToList();
-            int startIdx = fortniters.Count - 1;
-            for (int i = 2; i >= 0; i--)
+            // Gray out stale pics
+            for (int i = 0; i < 3; i++)
             {
-                if (startIdx >= i)
+                if (fortniters.Count > i)
                 {
-                    overlayForm.SetSquadGear(i, fortniters[startIdx - i].GearImage);
-                    form.SetSquadGear(i, fortniters[startIdx - i].GearImage);
-                    form.SetSquadName(i, fortniters[startIdx - i].Name);
+                    if (fortniters[i].GearModified.AddSeconds(20) > DateTime.UtcNow) { continue; }
+                    if (fortniters[i].GearImage == null) { continue; }
+                    if (!fortniters[i].IsFaded)
+                    {
+                        fortniters[i].GearImage = MarkStaleImage(fortniters[i].GearImage);
+                        fortniters[i].IsFaded = true;
+                    }
+                }
+            }
+
+            //fortniters = fortniters.OrderBy(x => x.PartyIndex).ToList();
+            for (int i = 0; i < 3; i++)
+            {
+                if (fortniters.Count > i)
+                {
+                    overlayForm.SetSquadGear(i, fortniters[i].GearImage);
+                    form.SetSquadGear(i, fortniters[i].GearImage);
+                    form.SetSquadName(i, fortniters[i].Name);
                 }
                 else
                 {
@@ -286,23 +300,7 @@ namespace FortniteOverlay
                 }
             }
 
-            // Gray out stale pics
-            for (int i = 2; i >= 0; i--)
-            {
-                if (startIdx >= i)
-                {
-                    if (fortniters[startIdx - i].GearModified.AddSeconds(20) > DateTime.UtcNow) { continue; }
-                    if (fortniters[startIdx - i].GearImage == null) { continue; }
-                    if (!fortniters[startIdx - i].IsFaded)
-                    {
-                        fortniters[startIdx - i].GearImage = MarkStaleImage(fortniters[startIdx - i].GearImage);
-                        fortniters[startIdx - i].IsFaded = true;
-                    }
-
-                    overlayForm.SetSquadGear(i, null);
-                    form.SetSquadGear(i, fortniters[startIdx - i].GearImage);
-                }
-            }
+            form.ShowHideSortButtons(fortniters.Count);
         }
     }
 
