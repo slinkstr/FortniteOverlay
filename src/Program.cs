@@ -288,7 +288,8 @@ namespace FortniteOverlay
             {
                 if (fortniters.Count > i)
                 {
-                    overlayForm.SetSquadGear(i, fortniters[i].GearImage);
+                    if (fortniters[i].IsFaded) { overlayForm.SetSquadGear(i, null);                    }
+                    else                       { overlayForm.SetSquadGear(i, fortniters[i].GearImage); }
                     form.SetSquadGear(i, fortniters[i].GearImage);
                     form.SetSquadName(i, fortniters[i].Name);
                 }
