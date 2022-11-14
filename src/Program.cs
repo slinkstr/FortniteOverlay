@@ -15,6 +15,7 @@ using static FortniteOverlay.Util.LogReadUtil;
 using static FortniteOverlay.Util.MiscUtil;
 using System.Web;
 using System.Reflection;
+using FortniteOverlay.Util;
 
 namespace FortniteOverlay
 {
@@ -33,7 +34,6 @@ namespace FortniteOverlay
         public static List<PixelPositions> pixelPositions = KnownPositions();
         public static ProgramConfig config;
         public static string fortniteProcess = "FortniteClient-Win64-Shipping";
-        public static string hostId;
         public static string hostName;
 
         public static Timer updateTimer = new Timer();
@@ -94,6 +94,11 @@ namespace FortniteOverlay
             logReader.DoWork += new DoWorkEventHandler(ReadLogFile);
             logReader.RunWorkerAsync();
 
+            // Process Monitor
+            BackgroundWorker processMonitor = new BackgroundWorker();
+            processMonitor.DoWork += new DoWorkEventHandler(FortniteProcUtil.UpdateProcessStatus);
+            processMonitor.RunWorkerAsync();
+
             // Update checking
             _ = CheckForUpdates();
             checkForUpdatesTimer.Tick += new EventHandler(GetNewestVersionEvent);
@@ -113,36 +118,46 @@ namespace FortniteOverlay
         public static async void UpdateEvent(Object obj, EventArgs evtargs)
         {
             updateTimer.Stop();
+            var opts = form.ProgramOptions();
+            updateTimer.Interval = 250 * (FortniteProcUtil.Open ? 1 : 20);
 
             var tasks = new List<Task>();
-            if (lastUp == null || lastUp.AddSeconds(form.ProgramOptions().UploadFrequency) - DateTime.Now <= TimeSpan.FromSeconds(0.5))
+            if (lastUp.AddSeconds(opts.UploadFrequency) - DateTime.Now <= TimeSpan.FromSeconds(0.5))
             {
-                tasks.Add(UploadGear());
+                tasks.Add(UploadGear(opts.HUDScale));
             }
-
-            if (lastDown == null || lastDown.AddSeconds(form.ProgramOptions().DownloadFrequency) - DateTime.Now <= TimeSpan.FromSeconds(0.5))
+            if (lastDown.AddSeconds(opts.DownloadFrequency) - DateTime.Now <= TimeSpan.FromSeconds(0.5))
             {
                 tasks.Add(DownloadGear());
             }
-
             await Task.WhenAll(tasks);
 
+            if (FortniteProcUtil.Focused || enableInOtherWindows)
+            {
+                ShowOverlay();
+                if (opts.DebugOverlay)
+                {
+                    ShowDebugOverlay(opts.HUDScale);
+                }
+            }
+            else
+            {
+                overlayForm.Hide();
+            }
+
             UpdateFormElements();
-            ShowHideOverlay();
-            ShowHideDebugOverlay();
 
             updateTimer.Start();
         }
 
-        public static async Task UploadGear()
+        public static async Task UploadGear(int hudScale)
         {
-            if (!FortniteFocused() && !enableInOtherWindows) { return; }
-            //if (!inGame)                                     { return; }
-            if (fortniters.Count == 0)                       { return; }
+            if (!FortniteProcUtil.Focused) { return; }
+            //if (fortniters.Count == 0)     { return; }
 
             var screen = TakeScreenshot();
-            if (!IsMapVisible(screen, pixelPositions, form.ProgramOptions().HUDScale)) { return; }
-            var gearBitmap = RenderGear(screen, pixelPositions, form.ProgramOptions().HUDScale);
+            if (!IsMapVisible(screen, pixelPositions, hudScale)) { return; }
+            var gearBitmap = RenderGear(screen, pixelPositions, hudScale);
 
             var stream = new MemoryStream();
             gearBitmap.Save(stream, ImageFormat.Jpeg);
@@ -176,9 +191,8 @@ namespace FortniteOverlay
 
         public static async Task DownloadGear()
         {
-            if (!FortniteOpen())       { return; }
-            //if (!inGame)               { return; }
-            if (fortniters.Count == 0) { return; }
+            if (!FortniteProcUtil.Open) { return; }
+            if (fortniters.Count == 0)  { return; }
             lastDown = DateTime.Now;
 
             // get list of all users
@@ -240,12 +254,9 @@ namespace FortniteOverlay
             }
         }
 
-        private static void ShowHideOverlay()
+        private static void ShowOverlay()
         {
-            if (!form.ProgramOptions().EnableOverlay)        { overlayForm.Hide(); return; }
-            if (!FortniteFocused() && !enableInOtherWindows) { overlayForm.Hide(); return; }
-
-            Rectangle bounds = GetWindowPosition(Program.fortniteProcess);
+            Rectangle bounds = FortniteProcUtil.WindowSize;
             if (bounds.Width <= 0 || bounds.Height <= 0)
             {
                 bounds = Screen.GetBounds(Point.Empty);
@@ -255,14 +266,10 @@ namespace FortniteOverlay
             overlayForm.Show();
         }
 
-        private static void ShowHideDebugOverlay()
+        private static void ShowDebugOverlay(int hudScale)
         {
-            if (!form.ProgramOptions().EnableOverlay) {                                    return; }
-            if (!form.ProgramOptions().DebugOverlay)  { overlayForm.SetDebugOverlay(null); return; }
-            //if (!FortniteOpen() && !enableInOtherWindows) { overlayForm.SetDebugOverlay(null); return; }
-
             var screen = TakeScreenshot();
-            var debugBitmap = RenderGearDebug(screen, pixelPositions, form.ProgramOptions().HUDScale);
+            var debugBitmap = RenderGearDebug(screen, pixelPositions, hudScale);
             overlayForm.SetDebugOverlay(debugBitmap);
         }
 
@@ -283,7 +290,6 @@ namespace FortniteOverlay
                 }
             }
 
-            //fortniters = fortniters.OrderBy(x => x.PartyIndex).ToList();
             for (int i = 0; i < 3; i++)
             {
                 if (fortniters.Count > i)
