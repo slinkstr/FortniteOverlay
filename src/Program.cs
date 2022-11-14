@@ -122,11 +122,11 @@ namespace FortniteOverlay
             updateTimer.Interval = 250 * (FortniteProcUtil.Open ? 1 : 20);
 
             var tasks = new List<Task>();
-            if (lastUp.AddSeconds(opts.UploadFrequency) - DateTime.Now <= TimeSpan.FromSeconds(0.5))
+            if (lastUp.AddSeconds(opts.UploadFrequency) - DateTime.Now <= TimeSpan.FromSeconds(0.2))
             {
-                tasks.Add(UploadGear(opts.HUDScale));
+                tasks.Add(UploadGear());
             }
-            if (lastDown.AddSeconds(opts.DownloadFrequency) - DateTime.Now <= TimeSpan.FromSeconds(0.5))
+            if (lastDown.AddSeconds(opts.DownloadFrequency) - DateTime.Now <= TimeSpan.FromSeconds(0.2))
             {
                 tasks.Add(DownloadGear());
             }
@@ -137,7 +137,7 @@ namespace FortniteOverlay
                 ShowOverlay();
                 if (opts.DebugOverlay)
                 {
-                    ShowDebugOverlay(opts.HUDScale);
+                    ShowDebugOverlay();
                 }
             }
             else
@@ -150,11 +150,12 @@ namespace FortniteOverlay
             updateTimer.Start();
         }
 
-        public static async Task UploadGear(int hudScale)
+        public static async Task UploadGear()
         {
             if (!FortniteProcUtil.Focused) { return; }
             //if (fortniters.Count == 0)     { return; }
 
+            int hudScale = form.ProgramOptions().HUDScale;
             var screen = TakeScreenshot();
             if (!IsMapVisible(screen, pixelPositions, hudScale)) { return; }
             var gearBitmap = RenderGear(screen, pixelPositions, hudScale);
@@ -266,8 +267,9 @@ namespace FortniteOverlay
             overlayForm.Show();
         }
 
-        private static void ShowDebugOverlay(int hudScale)
+        private static void ShowDebugOverlay()
         {
+            int hudScale = form.ProgramOptions().HUDScale;
             var screen = TakeScreenshot();
             var debugBitmap = RenderGearDebug(screen, pixelPositions, hudScale);
             overlayForm.SetDebugOverlay(debugBitmap);
