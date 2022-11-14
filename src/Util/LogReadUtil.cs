@@ -54,9 +54,10 @@ namespace FortniteOverlay.Util
             var match = FortniteLogRegex.LoggedIn.Match(line);
             if (match.Success)
             {
-                Program.hostName = match.Groups["DisplayName"].ToString();
-                Program.form.SetHostName(Program.hostName);
-                Program.form.Log("[LoggedIn] Display name: " + match.Groups[2]);
+                string name = match.Groups["DisplayName"].ToString();
+                Program.hostName = name;
+                Program.form.SetHostName(name);
+                Program.form.Log("[LoggedIn] Display name: " + name);
                 return;
             }
 
