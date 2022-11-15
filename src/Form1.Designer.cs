@@ -1,7 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
+﻿using System.Windows.Forms;
 
 namespace FortniteOverlay
 {
@@ -62,6 +59,7 @@ namespace FortniteOverlay
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.hudScaleNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.hudScaleLabel = new System.Windows.Forms.Label();
+            this.hideStaleImagesCheckbox = new System.Windows.Forms.CheckBox();
             this.squadmatesTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.squadmate2ArrowTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.squadmate2DownButton = new System.Windows.Forms.Button();
@@ -322,7 +320,7 @@ namespace FortniteOverlay
             // 
             this.debugOverlayCheckbox.AutoSize = true;
             this.debugOverlayCheckbox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.debugOverlayCheckbox.Location = new System.Drawing.Point(178, 63);
+            this.debugOverlayCheckbox.Location = new System.Drawing.Point(178, 93);
             this.debugOverlayCheckbox.Name = "debugOverlayCheckbox";
             this.debugOverlayCheckbox.Size = new System.Drawing.Size(169, 24);
             this.debugOverlayCheckbox.TabIndex = 23;
@@ -382,10 +380,11 @@ namespace FortniteOverlay
             this.configTableLayoutPanel.Controls.Add(this.uploadTableLayoutPanel, 0, 0);
             this.configTableLayoutPanel.Controls.Add(this.downloadTableLayoutPanel, 1, 0);
             this.configTableLayoutPanel.Controls.Add(this.showConsoleCheckBox, 0, 1);
-            this.configTableLayoutPanel.Controls.Add(this.debugOverlayCheckbox, 1, 2);
             this.configTableLayoutPanel.Controls.Add(this.showOverlayCheckbox, 1, 1);
             this.configTableLayoutPanel.Controls.Add(this.minimizeTrayCheckbox, 0, 2);
             this.configTableLayoutPanel.Controls.Add(this.tableLayoutPanel1, 0, 3);
+            this.configTableLayoutPanel.Controls.Add(this.debugOverlayCheckbox, 1, 3);
+            this.configTableLayoutPanel.Controls.Add(this.hideStaleImagesCheckbox, 1, 2);
             this.configTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.configTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.configTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
@@ -479,6 +478,19 @@ namespace FortniteOverlay
             this.hudScaleLabel.TabIndex = 1;
             this.hudScaleLabel.Text = "HUD Scale";
             this.hudScaleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // hideStaleImagesCheckbox
+            // 
+            this.hideStaleImagesCheckbox.AutoSize = true;
+            this.hideStaleImagesCheckbox.Checked = true;
+            this.hideStaleImagesCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.hideStaleImagesCheckbox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.hideStaleImagesCheckbox.Location = new System.Drawing.Point(178, 63);
+            this.hideStaleImagesCheckbox.Name = "hideStaleImagesCheckbox";
+            this.hideStaleImagesCheckbox.Size = new System.Drawing.Size(169, 24);
+            this.hideStaleImagesCheckbox.TabIndex = 25;
+            this.hideStaleImagesCheckbox.Text = "Hide Stale Images";
+            this.hideStaleImagesCheckbox.UseVisualStyleBackColor = true;
             // 
             // squadmatesTableLayoutPanel
             // 
@@ -704,6 +716,7 @@ namespace FortniteOverlay
         private Button squadmate1DownButton;
         private TableLayoutPanel squadmate3ArrowTableLayoutPanel;
         private Button squadmate3UpButton;
+        private CheckBox hideStaleImagesCheckbox;
     }
 }
 

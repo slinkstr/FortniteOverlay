@@ -107,9 +107,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\FortniteProcUtil.cs" />
+    <Compile Include="Util\ProcMon.cs" />
     <Compile Include="Util\ImageUtil.cs" />
-    <Compile Include="Util\LogReadUtil.cs" />
+    <Compile Include="Util\LogReader.cs" />
     <Compile Include="Util\MiscUtil.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

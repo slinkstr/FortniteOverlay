@@ -1,21 +1,18 @@
-﻿using System;
+﻿using FortniteOverlay.Util;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Drawing;
-using System.IO;
-using System.ComponentModel;
-using System.Drawing.Imaging;
-using Newtonsoft.Json;
-using System.Net.Http;
-using Newtonsoft.Json.Linq;
 using static FortniteOverlay.Util.ImageUtil;
-using static FortniteOverlay.Util.LogReadUtil;
 using static FortniteOverlay.Util.MiscUtil;
-using System.Web;
-using System.Reflection;
-using FortniteOverlay.Util;
 
 namespace FortniteOverlay
 {
@@ -26,18 +23,17 @@ namespace FortniteOverlay
 
         public static DateTime lastDown;
         public static DateTime lastUp;
-        public static Dictionary<string, string> logRegex = new Dictionary<string, string>();
         public static Form1 form;
-        public static OverlayForm overlayForm;
         public static HttpClient httpClient = new HttpClient();
         public static List<Fortniter> fortniters = new List<Fortniter>();
         public static List<PixelPositions> pixelPositions = KnownPositions();
+        public static LogReader logReader = new LogReader(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\FortniteGame\\Saved\\Logs", "FortniteGame.log");
+        public static OverlayForm overlayForm;
+        public static ProcMon procMon = new ProcMon("FortniteClient-Win64-Shipping");
         public static ProgramConfig config;
-        public static string fortniteProcess = "FortniteClient-Win64-Shipping";
-        public static string hostName;
-
-        public static Timer updateTimer = new Timer();
         public static Timer checkForUpdatesTimer = new Timer();
+        public static Timer updateTimer = new Timer();
+        public static string hostName;
 
         [STAThread]
         static void Main()
@@ -60,9 +56,9 @@ namespace FortniteOverlay
             }
             var configText = string.Join("\n", File.ReadAllLines("config.json"));
             try { config = JsonConvert.DeserializeObject<ProgramConfig>(configText); }
-            catch (Exception ex)
+            catch (Exception exc)
             {
-                MessageBox.Show("Error processing config.json:\n" + ex.Message, "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error processing config.json:\n" + exc.Message, "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(1);
             }
             var invalidProperties = config.GetType().GetProperties().Where(x => x.GetValue(config) == null || string.IsNullOrWhiteSpace(x.GetValue(config).ToString()));
@@ -90,14 +86,14 @@ namespace FortniteOverlay
             updateTimer.Start();
 
             // Log reader
-            BackgroundWorker logReader = new BackgroundWorker();
-            logReader.DoWork += new DoWorkEventHandler(ReadLogFile);
-            logReader.RunWorkerAsync();
+            BackgroundWorker logReaderWorker = new BackgroundWorker();
+            logReaderWorker.DoWork += new DoWorkEventHandler(logReader.ReadLogFile);
+            logReaderWorker.RunWorkerAsync();
 
             // Process Monitor
-            BackgroundWorker processMonitor = new BackgroundWorker();
-            processMonitor.DoWork += new DoWorkEventHandler(FortniteProcUtil.UpdateProcessStatus);
-            processMonitor.RunWorkerAsync();
+            BackgroundWorker procMonWorker = new BackgroundWorker();
+            procMonWorker.DoWork += new DoWorkEventHandler(procMon.UpdateProcessStatus);
+            procMonWorker.RunWorkerAsync();
 
             // Update checking
             _ = CheckForUpdates();
@@ -119,7 +115,7 @@ namespace FortniteOverlay
         {
             updateTimer.Stop();
             var opts = form.ProgramOptions();
-            updateTimer.Interval = 250 * (FortniteProcUtil.Open ? 1 : 20);
+            updateTimer.Interval = 500 * (procMon.ValidHandle ? 1 : 10);
 
             var tasks = new List<Task>();
             if (lastUp.AddSeconds(opts.UploadFrequency) - DateTime.Now <= TimeSpan.FromSeconds(0.2))
@@ -132,12 +128,16 @@ namespace FortniteOverlay
             }
             await Task.WhenAll(tasks);
 
-            if (FortniteProcUtil.Focused || enableInOtherWindows)
+            if (procMon.Focused || enableInOtherWindows)
             {
                 ShowOverlay();
                 if (opts.DebugOverlay)
                 {
                     ShowDebugOverlay();
+                }
+                else
+                {
+                    overlayForm.SetDebugOverlay(null);
                 }
             }
             else
@@ -152,12 +152,15 @@ namespace FortniteOverlay
 
         public static async Task UploadGear()
         {
-            if (!FortniteProcUtil.Focused) { return; }
-            //if (fortniters.Count == 0)     { return; }
+            if (!procMon.Focused)      { return; }
+            if (fortniters.Count == 0) { return; }
 
             int hudScale = form.ProgramOptions().HUDScale;
-            var screen = TakeScreenshot();
-            if (!IsMapVisible(screen, pixelPositions, hudScale)) { return; }
+            var screen = TakeScreenshot(procMon.WindowSize);
+            if (!IsMapVisible(screen, pixelPositions, hudScale))
+            {
+                return;
+            }
             var gearBitmap = RenderGear(screen, pixelPositions, hudScale);
 
             var stream = new MemoryStream();
@@ -177,11 +180,11 @@ namespace FortniteOverlay
                 responseString = response.Content.ReadAsStringAsync().Result;
                 response.EnsureSuccessStatusCode();
             }
-            catch (Exception ex)
+            catch (Exception exc)
             {
                 form.Log("Error uploading data to server.\n" +
                          "-------------------------\n" +
-                         ex.ToString() + "\n" +
+                         exc.ToString() + "\n" +
                          (!string.IsNullOrWhiteSpace(responseString) ? "-------------------------\nServer response:\n" + responseString : ""));
                 return;
             }
@@ -192,8 +195,8 @@ namespace FortniteOverlay
 
         public static async Task DownloadGear()
         {
-            if (!FortniteProcUtil.Open) { return; }
-            if (fortniters.Count == 0)  { return; }
+            if (!procMon.ValidHandle)  { return; }
+            if (fortniters.Count == 0) { return; }
             lastDown = DateTime.Now;
 
             // get list of all users
@@ -208,11 +211,11 @@ namespace FortniteOverlay
                 availImages = (JArray)JsonConvert.DeserializeObject(responseString);
                 if(availImages == null) { throw new Exception("Couldn't process json (availImages was null)."); }
             }
-            catch (Exception ex)
+            catch (Exception exc)
             {
                 form.Log("Error downloading data from server.\n" +
                          "-------------------------\n" +
-                         ex.ToString() + "\n" +
+                         exc.ToString() + "\n" +
                          (!string.IsNullOrWhiteSpace(responseString) ? "-------------------------\nServer response:\n" + responseString : ""));
                 return;
             }
@@ -232,11 +235,11 @@ namespace FortniteOverlay
                         response = await httpClient.GetAsync(gearUrl);
                         response.EnsureSuccessStatusCode();
                     }
-                    catch (Exception ex)
+                    catch (Exception exc)
                     {
                         form.Log($"Error downloading gear image for {fort.Name}\n" +
                                   "-------------------------\n" +
-                                  ex.ToString() + "\n" +
+                                  exc.ToString() + "\n" +
                                   "-------------------------\n");
                         continue;
                     }
@@ -257,7 +260,7 @@ namespace FortniteOverlay
 
         private static void ShowOverlay()
         {
-            Rectangle bounds = FortniteProcUtil.WindowSize;
+            Rectangle bounds = procMon.WindowSize;
             if (bounds.Width <= 0 || bounds.Height <= 0)
             {
                 bounds = Screen.GetBounds(Point.Empty);
@@ -270,7 +273,7 @@ namespace FortniteOverlay
         private static void ShowDebugOverlay()
         {
             int hudScale = form.ProgramOptions().HUDScale;
-            var screen = TakeScreenshot();
+            var screen = TakeScreenshot(procMon.WindowSize);
             var debugBitmap = RenderGearDebug(screen, pixelPositions, hudScale);
             overlayForm.SetDebugOverlay(debugBitmap);
         }
@@ -296,8 +299,14 @@ namespace FortniteOverlay
             {
                 if (fortniters.Count > i)
                 {
-                    if (fortniters[i].IsFaded) { overlayForm.SetSquadGear(i, null);                    }
-                    else                       { overlayForm.SetSquadGear(i, fortniters[i].GearImage); }
+                    if (fortniters[i].IsFaded && form.ProgramOptions().HideStaleImages)
+                    {
+                        overlayForm.SetSquadGear(i, null);
+                    }
+                    else
+                    {
+                        overlayForm.SetSquadGear(i, fortniters[i].GearImage);
+                    }
                     form.SetSquadGear(i, fortniters[i].GearImage);
                     form.SetSquadName(i, fortniters[i].Name);
                 }

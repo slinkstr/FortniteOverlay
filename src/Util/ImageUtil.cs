@@ -160,9 +160,8 @@ namespace FortniteOverlay.Util
             return bitmap;
         }
 
-        public static Bitmap TakeScreenshot()
+        public static Bitmap TakeScreenshot(Rectangle bounds)
         {
-            Rectangle bounds = FortniteProcUtil.WindowSize;
             if (bounds.Width <= 0 || bounds.Height <= 0)
             {
                 bounds = Screen.GetBounds(Point.Empty);

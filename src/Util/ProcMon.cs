@@ -1,36 +1,42 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace FortniteOverlay.Util
 {
-    internal class FortniteProcUtil
+    internal class ProcMon
     {
-        public static bool      Open         => !Handle.Equals(IntPtr.Zero);
-        public static bool      Focused       = false;
-        public static IntPtr    Handle        = IntPtr.Zero;
-        public static Rectangle WindowSize    = new Rectangle();
+        public string    ProcessName { get; private set; }
+        public IntPtr    Handle      { get; private set; }
+        public bool      ValidHandle => !Handle.Equals(IntPtr.Zero);
+        public bool      Focused     { get; private set; }
+        public Rectangle WindowSize  { get; private set; }
 
-        public static void UpdateProcessStatus(object sender, DoWorkEventArgs e)
+        public ProcMon(string processName)
+        {
+            Focused = false;
+            ProcessName = processName;
+            Handle = IntPtr.Zero;
+            WindowSize = new Rectangle();
+        }
+
+        public void UpdateProcessStatus(object sender, DoWorkEventArgs e)
         {
             int openCheckDelay = 10_000;
             int focusCheckDelay = 250;
 
             while (true)
             {
-                Handle = GetFortniteHandle();
-                if (Open)
+                Handle = GetHandle(ProcessName);
+                if (ValidHandle)
                 {
                     for (int i = 0; i < openCheckDelay / focusCheckDelay; i++)
                     {
-                        Focused = FortniteFocused();
+                        Focused = IsFocused(Handle);
                         Rect procRect = new Rect();
                         GetWindowRect(Handle, ref procRect);
                         WindowSize = new Rectangle(procRect.Left, procRect.Top, procRect.Right - procRect.Left, procRect.Bottom - procRect.Top);
@@ -45,30 +51,30 @@ namespace FortniteOverlay.Util
             }
         }
 
-        private static bool FortniteFocused()
+        private static bool IsFocused(IntPtr handle)
         {
-            var handle = GetForegroundWindow();
-            return (handle == Handle);
+            IntPtr focused = GetForegroundWindow();
+            return (focused == handle);
         }
 
-        private static IntPtr GetFortniteHandle()
+        private static IntPtr GetHandle(string processName)
         {
             var allProcesses = Process.GetProcesses();
             try
             {
-                var fn = allProcesses.FirstOrDefault(x => x.ProcessName == Program.fortniteProcess && x.MainWindowHandle != default);
-                if (fn != null)
+                var proc = allProcesses.FirstOrDefault(x => x.ProcessName == processName && x.MainWindowHandle != default);
+                if (proc != null)
                 {
-                    return fn.MainWindowHandle;
+                    return proc.MainWindowHandle;
                 }
                 else
                 {
                     return IntPtr.Zero;
                 }
             }
-            catch (InvalidOperationException ex)
+            catch (InvalidOperationException exc)
             {
-                Program.form.Log("Error scanning active processes.\n" + ex.ToString());
+                Program.form.Log("Error scanning active processes.\n" + exc.ToString());
             }
 
             return IntPtr.Zero;

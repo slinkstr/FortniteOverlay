@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FortniteOverlay
@@ -26,13 +19,14 @@ namespace FortniteOverlay
         {
             return new ProgramOptions()
             {
-                UploadFrequency = Convert.ToInt32(uploadFrequencyNumericUpDown.Value),
-                DownloadFrequency = Convert.ToInt32(downloadFrequencyNumericUpDown.Value),
-                ShowConsole = showConsoleCheckBox.Checked,
-                EnableOverlay = showOverlayCheckbox.Checked,
-                MinimizeToTray = minimizeTrayCheckbox.Checked,
-                DebugOverlay = debugOverlayCheckbox.Checked,
-                HUDScale = Convert.ToInt32(hudScaleNumericUpDown.Value),
+                UploadFrequency     = Convert.ToInt32(uploadFrequencyNumericUpDown.Value),
+                DownloadFrequency   = Convert.ToInt32(downloadFrequencyNumericUpDown.Value),
+                ShowConsole         = showConsoleCheckBox.Checked,
+                DebugOverlay        = debugOverlayCheckbox.Checked,
+                EnableOverlay       = showOverlayCheckbox.Checked,
+                HideStaleImages     = hideStaleImagesCheckbox.Checked,
+                MinimizeToTray      = minimizeTrayCheckbox.Checked,
+                HUDScale            = Convert.ToInt32(hudScaleNumericUpDown.Value),
             };
         }
 
@@ -252,9 +246,10 @@ namespace FortniteOverlay
         public int UploadFrequency;
         public int DownloadFrequency;
         public bool ShowConsole;
-        public bool EnableOverlay;
-        public bool MinimizeToTray;
         public bool DebugOverlay;
+        public bool EnableOverlay;
+        public bool HideStaleImages;
+        public bool MinimizeToTray;
         public int HUDScale;
     }
 }
