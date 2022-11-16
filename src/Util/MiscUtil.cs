@@ -12,21 +12,25 @@ namespace FortniteOverlay.Util
         {
             string host = "https://api.github.com";
             string path = "/repos/slinkstr/FortniteOverlay/releases";
-            var response = await Program.httpClient.GetAsync(host + path);
-            if (!response.IsSuccessStatusCode)
+            try
             {
-                Program.form.Log("Unable to check for updates on GitHub. Error:\n" + response.Content.ReadAsStringAsync().Result);
-                return;
+                var response = await Program.httpClient.GetAsync(host + path);
+                response.EnsureSuccessStatusCode();
+
+                string content = await response.Content.ReadAsStringAsync();
+                var latest = JArray.Parse(content)[0];
+                Version latestVersion = Version.Parse(latest["tag_name"].ToString().Substring(1));
+                Version currentVersion = Version.Parse(Application.ProductVersion);
+
+                if (latestVersion.CompareTo(currentVersion) > 0)
+                {
+                    Program.form.SetUpdateNotice($"New update available (v{latestVersion})", latest["html_url"].ToString());
+                }
             }
-
-            string content = await response.Content.ReadAsStringAsync();
-            var latest = JArray.Parse(content)[0];
-            Version latestVersion = Version.Parse(latest["tag_name"].ToString().Substring(1));
-            Version currentVersion = Version.Parse(Application.ProductVersion);
-
-            if (latestVersion.CompareTo(currentVersion) > 0)
+            catch (Exception exc)
             {
-                Program.form.SetUpdateNotice($"New update available (v{latestVersion})", latest["html_url"].ToString());
+                Program.form.Log("Unable to check for updates. Error:\n" + exc.ToString());
+                Program.form.SetUpdateNotice("Unable to check for updates.");
             }
         }
 

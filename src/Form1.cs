@@ -103,10 +103,10 @@ namespace FortniteOverlay
             SetControlProperty(hudScaleNumericUpDown, "Value", (decimal)scale);
         }
 
-        public void SetUpdateNotice(string text, string url)
+        public void SetUpdateNotice(string text, string url = "")
         {
             updateNoticeLinkLabel.Text = text;
-            updateNoticeLinkLabel.LinkArea = new LinkArea(0, updateNoticeLinkLabel.Text.Length);
+            updateNoticeLinkLabel.LinkArea = string.IsNullOrWhiteSpace(url) ? new LinkArea(0, 0) : new LinkArea(0, updateNoticeLinkLabel.Text.Length);
             updateNoticeLinkLabel.Tag = url;
             updateNoticeLinkLabel.LinkVisited = false;
         }
