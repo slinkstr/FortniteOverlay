@@ -22,9 +22,8 @@ namespace FortniteOverlay
     internal static class Program
     {
         // debugging
-        public static bool enableInOtherWindows = true;
+        public static bool enableInOtherWindows = false;
 
-        public static ConfigForm configForm;
         public static DateTime lastDown;
         public static DateTime lastUp;
         public static Form1 form;
@@ -183,7 +182,7 @@ namespace FortniteOverlay
         public static async Task DownloadGear()
         {
             if (!procMon.ValidHandle && !enableInOtherWindows)  { return; }
-            //if (fortniters.Count == 0)                          { return; }
+            if (fortniters.Count == 0)                          { return; }
             lastDown = DateTime.Now;
 
             // get list of all users
