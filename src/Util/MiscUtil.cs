@@ -1,6 +1,9 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -8,6 +11,13 @@ namespace FortniteOverlay.Util
 {
     internal class MiscUtil
     {
+        public static Regex uploadEndpointRegex = new Regex(@"^(https?://)?(.+\..+|localhost)(:\d+)?(\/.*)*\.php$", RegexOptions.Compiled);
+        public static Regex imageLocationRegex = new Regex(@"^(https?://)?(.+\..+|localhost)(:\d+)?(\/.*)*\/$", RegexOptions.Compiled);
+
+        private static string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        private static string configFolder = Path.Combine(localAppData, "FortniteOverlay");
+        private static string fullConfigPath = Path.Combine(configFolder, "config.json");
+
         public static async Task CheckForUpdates()
         {
             string host = "https://api.github.com";
@@ -51,5 +61,79 @@ namespace FortniteOverlay.Util
 
         // Don't know if it's possible to check if replays are enabled, GameUserSettings.ini doesn't have any options that mention "replay" or "demo"
         // Same with HUD scale...
+
+        public static bool ConfigFileExists()
+        {
+            if (!File.Exists(fullConfigPath))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public static ProgramConfig GetConfig()
+        {
+            var configText = string.Join("\n", File.ReadAllText(fullConfigPath));
+            ProgramConfig cfg = JsonConvert.DeserializeObject<ProgramConfig>(configText);
+            if (cfg == null)
+            {
+                throw new Exception($"Error deserializing {fullConfigPath}.");
+            }
+
+            return cfg;
+        }
+
+        public static void VerifyConfig(ProgramConfig cfg)
+        {
+            // verify all properties
+            string invalidProperties = "";
+            if (string.IsNullOrWhiteSpace(cfg.SecretKey))
+            {
+                invalidProperties += "SecretKey cannot be empty.\n";
+            }
+            if (cfg.HUDScale < 25 || cfg.HUDScale > 150)
+            {
+                invalidProperties += "Invalid HUD scale (must be between 25 and 150).\n";
+            }
+            if (string.IsNullOrWhiteSpace(cfg.ImageLocation))
+            {
+                invalidProperties += "ImageLocation cannot be empty.\n";
+            }
+            if (!imageLocationRegex.Match(cfg.ImageLocation).Success)
+            {
+                invalidProperties += "ImageLocation URL is invalid.\n";
+            }
+            if (string.IsNullOrWhiteSpace(cfg.UploadEndpoint))
+            {
+                invalidProperties += "UploadEndpoint cannot be empty.\n";
+            }
+            if (!uploadEndpointRegex.Match(cfg.UploadEndpoint).Success)
+            {
+                invalidProperties += "UploadEndpoint URL is invalid.\n";
+            }
+
+            if (!string.IsNullOrWhiteSpace(invalidProperties))
+            {
+                throw new Exception(invalidProperties);
+            }
+        }
+
+        public static void SaveConfig(ProgramConfig config)
+        {
+            Directory.CreateDirectory(configFolder);
+            using (var stream = File.Create(fullConfigPath))
+            {
+                string cfgString = JsonConvert.SerializeObject(config, Formatting.Indented);
+                var cfgBytes = Encoding.UTF8.GetBytes(cfgString);
+                var cfgBytesLen = Encoding.UTF8.GetByteCount(cfgString);
+                stream.Write(cfgBytes, 0, cfgBytesLen);
+            }
+        }
+
+        public static void OpenConfigLocation()
+        {
+            System.Diagnostics.Process.Start(configFolder);
+        }
     }
 }

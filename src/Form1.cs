@@ -24,9 +24,6 @@ namespace FortniteOverlay
                 ShowConsole         = showConsoleCheckBox.Checked,
                 DebugOverlay        = debugOverlayCheckbox.Checked,
                 EnableOverlay       = showOverlayCheckbox.Checked,
-                HideStaleImages     = hideStaleImagesCheckbox.Checked,
-                MinimizeToTray      = minimizeTrayCheckbox.Checked,
-                HUDScale            = Convert.ToInt32(hudScaleNumericUpDown.Value),
             };
         }
 
@@ -98,11 +95,6 @@ namespace FortniteOverlay
             SetControlProperty(squadmate3UpButton,   "Visible", (squadmates > 2));
         }
 
-        public void SetHUDScale(int scale)
-        {
-            SetControlProperty(hudScaleNumericUpDown, "Value", (decimal)scale);
-        }
-
         public void SetUpdateNotice(string text, string url = "")
         {
             updateNoticeLinkLabel.Text = text;
@@ -133,7 +125,7 @@ namespace FortniteOverlay
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            if (this.WindowState == FormWindowState.Minimized && minimizeTrayCheckbox.Checked)
+            if (this.WindowState == FormWindowState.Minimized && Program.config.MinimizeToTray)
             {
                 Hide();
                 notifyIcon.Visible = true;
@@ -239,6 +231,21 @@ namespace FortniteOverlay
             Program.fortniters[indexB] = temp;
             Program.UpdateFormElements();
         }
+
+        private void editConfigButton_Click(object sender, EventArgs e)
+        {
+            FormCollection forms = Application.OpenForms;
+            foreach(Form form in forms)
+            {
+                if (form.Name == "ConfigForm")
+                {
+                    form.Focus();
+                    return;
+                }
+            }
+
+            new ConfigForm().Show();
+        }
     }
 
     public class ProgramOptions
@@ -248,8 +255,5 @@ namespace FortniteOverlay
         public bool ShowConsole;
         public bool DebugOverlay;
         public bool EnableOverlay;
-        public bool HideStaleImages;
-        public bool MinimizeToTray;
-        public int HUDScale;
     }
 }

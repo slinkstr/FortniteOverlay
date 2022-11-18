@@ -10,14 +10,17 @@ Uses ~5.5MB/hour per person down and ~5.5MB/hour up. Doesn't upload or download 
 
 # Config
 
-Requires config.json next to the executable. An example is below.
+Config file is %LOCALAPPDATA%/FortniteOverlay/config.json and will be created on first launch if it doesn't already exist.
+
+Example config:
 
 ```
 {
-    "UploadEndpoint": "http://example.com/fortnitegear/upload.php",
-    "SecretKey": "SECRET_KEY",
-    "ImageLocation": "http://example.com/fortnitegear/images",
-    "HUDScale": 100
+  "UploadEndpoint": "https://example.com/fortnitegear/upload.php",
+  "SecretKey": "SECRET_KEY_HERE",
+  "ImageLocation": "http://example.com/fortnitegear/images/",
+  "HUDScale": 100,
+  "MinimizeToTray": true
 }
 ```
 

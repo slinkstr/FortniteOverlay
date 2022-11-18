@@ -119,6 +119,7 @@ namespace FortniteOverlay
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "OverlayForm";
             this.Opacity = 0.9D;
+            this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "OverlayForm";
             this.TopMost = true;

@@ -9,6 +9,9 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static FortniteOverlay.Util.ImageUtil;
@@ -21,6 +24,7 @@ namespace FortniteOverlay
         // debugging
         public static bool enableInOtherWindows = false;
 
+        public static ConfigForm configForm;
         public static DateTime lastDown;
         public static DateTime lastUp;
         public static Form1 form;
@@ -31,9 +35,9 @@ namespace FortniteOverlay
         public static OverlayForm overlayForm;
         public static ProcMon procMon = new ProcMon("FortniteClient-Win64-Shipping");
         public static ProgramConfig config;
-        public static Timer checkForUpdatesTimer = new Timer();
-        public static Timer updateTimer = new Timer();
         public static string hostName;
+        public static System.Windows.Forms.Timer checkForUpdatesTimer = new System.Windows.Forms.Timer();
+        public static System.Windows.Forms.Timer updateTimer = new System.Windows.Forms.Timer();
 
         [STAThread]
         static void Main()
@@ -48,36 +52,20 @@ namespace FortniteOverlay
             httpClient.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("FortniteOverlay", Application.ProductVersion));
             httpClient.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("(+https://github.com/slinkstr/FortniteOverlay)"));
 
-            // config file checks
-            if (!File.Exists("config.json"))
+            if (!ConfigFileExists())
             {
-                MessageBox.Show("No config.json found.", "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Environment.Exit(1);
-            }
-            var configText = string.Join("\n", File.ReadAllLines("config.json"));
-            try { config = JsonConvert.DeserializeObject<ProgramConfig>(configText); }
-            catch (Exception exc)
-            {
-                MessageBox.Show("Error processing config.json:\n" + exc.Message, "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Environment.Exit(1);
-            }
-            var invalidProperties = config.GetType().GetProperties().Where(x => x.GetValue(config) == null || string.IsNullOrWhiteSpace(x.GetValue(config).ToString()));
-            if (invalidProperties.Count() > 0)
-            {
-                string err = "";
-                foreach (var prop in invalidProperties) { err += prop.Name + " is invalid.\n"; }
-                err.Substring(0, err.Length - 1);
-                MessageBox.Show("Error processing config.json:\n" + err, "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Environment.Exit(1);
+                SaveConfig(new ProgramConfig());
+                new ConfigForm().ShowDialog();
             }
 
-            if(config.HUDScale > 125 || config.HUDScale < 25)
+            try
             {
-                MessageBox.Show("HUD Scale is invalid - must be between 25 and 125 inclusive.\nValue given was: " + config.HUDScale, "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                config = GetConfig();
+                VerifyConfig(config);
             }
-            else
+            catch (Exception exc)
             {
-                form.SetHUDScale(config.HUDScale);
+                new Thread(() => MessageBox.Show(exc.Message, "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Error)).Start();
             }
 
             // Rendering and upload/download events
@@ -155,13 +143,12 @@ namespace FortniteOverlay
             if (!procMon.Focused)      { return; }
             if (fortniters.Count == 0) { return; }
 
-            int hudScale = form.ProgramOptions().HUDScale;
             var screen = TakeScreenshot(procMon.WindowSize);
-            if (!IsMapVisible(screen, pixelPositions, hudScale))
+            if (!IsMapVisible(screen, pixelPositions, config.HUDScale))
             {
                 return;
             }
-            var gearBitmap = RenderGear(screen, pixelPositions, hudScale);
+            var gearBitmap = RenderGear(screen, pixelPositions, config.HUDScale);
 
             var stream = new MemoryStream();
             gearBitmap.Save(stream, ImageFormat.Jpeg);
@@ -272,9 +259,8 @@ namespace FortniteOverlay
 
         private static void ShowDebugOverlay()
         {
-            int hudScale = form.ProgramOptions().HUDScale;
             var screen = TakeScreenshot(procMon.WindowSize);
-            var debugBitmap = RenderGearDebug(screen, pixelPositions, hudScale);
+            var debugBitmap = RenderGearDebug(screen, pixelPositions, config.HUDScale);
             overlayForm.SetDebugOverlay(debugBitmap);
         }
 
@@ -299,7 +285,7 @@ namespace FortniteOverlay
             {
                 if (fortniters.Count > i)
                 {
-                    if (fortniters[i].IsFaded && form.ProgramOptions().HideStaleImages)
+                    if (fortniters[i].IsFaded)
                     {
                         overlayForm.SetSquadGear(i, null);
                     }
@@ -338,9 +324,10 @@ namespace FortniteOverlay
 
     public class ProgramConfig
     {
-        public string UploadEndpoint { get; set; }
-        public string SecretKey { get; set; }
-        public string ImageLocation { get; set; }
-        public int HUDScale { get; set; }
+        public string UploadEndpoint { get; set; } = "https://example.com/fortnitegear/upload.php";
+        public string SecretKey { get; set; } = "SECRET_KEY_HERE";
+        public string ImageLocation { get; set; } = "http://example.com/fortnitegear/images/";
+        public int HUDScale { get; set; } = 100;
+        public bool MinimizeToTray { get; set; } = true;
     }
 }
