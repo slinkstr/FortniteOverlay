@@ -20,7 +20,7 @@ namespace FortniteOverlay.Util
 
         public void ReadLogFile(object sender, DoWorkEventArgs e)
         {
-            //LogFile = "Test-3teammates.log";
+            LogFile = "Test-3teammates.log";
             var fs = new FileStream(LogDir + "\\" + LogFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             long totalLenCached = 0;
             using (var sr = new StreamReader(fs))

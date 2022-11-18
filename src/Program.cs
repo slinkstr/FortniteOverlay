@@ -22,7 +22,7 @@ namespace FortniteOverlay
     internal static class Program
     {
         // debugging
-        public static bool enableInOtherWindows = false;
+        public static bool enableInOtherWindows = true;
 
         public static ConfigForm configForm;
         public static DateTime lastDown;
@@ -140,8 +140,8 @@ namespace FortniteOverlay
 
         public static async Task UploadGear()
         {
-            if (!procMon.Focused)      { return; }
-            if (fortniters.Count == 0) { return; }
+            if (!procMon.Focused && !enableInOtherWindows) { return; }
+            if (fortniters.Count == 0)                     { return; }
 
             var screen = TakeScreenshot(procMon.WindowSize);
             if (!IsMapVisible(screen, pixelPositions, config.HUDScale))
@@ -182,8 +182,8 @@ namespace FortniteOverlay
 
         public static async Task DownloadGear()
         {
-            if (!procMon.ValidHandle)  { return; }
-            if (fortniters.Count == 0) { return; }
+            if (!procMon.ValidHandle && !enableInOtherWindows)  { return; }
+            //if (fortniters.Count == 0)                          { return; }
             lastDown = DateTime.Now;
 
             // get list of all users

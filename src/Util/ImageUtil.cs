@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FortniteOverlay.Properties;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -39,11 +40,7 @@ namespace FortniteOverlay.Util
                 int width = bmp.Width;
                 int height = bmp.Height;
 
-                Image outdated = null;
-                using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("FortniteOverlay.outdated.png"))
-                {
-                    outdated = Image.FromStream(stream);
-                }
+                Image outdated = Resources.outdated;
 
                 Rectangle rect = new Rectangle(0, 0, width, height);
                 using (Brush darken = new SolidBrush(Color.FromArgb(96, Color.Black)))

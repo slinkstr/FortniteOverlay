@@ -13,6 +13,8 @@ namespace FortniteOverlay
             InitializeComponent();
             Text += " v" + Application.ProductVersion;
             consoleHeight = consoleLogTextBox.Size.Height;
+            Icon = Icon.ExtractAssociatedIcon(AppDomain.CurrentDomain.FriendlyName);
+            notifyIcon.Icon = Icon.ExtractAssociatedIcon(AppDomain.CurrentDomain.FriendlyName);
         }
 
         public ProgramOptions ProgramOptions()

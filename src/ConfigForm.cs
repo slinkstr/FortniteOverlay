@@ -19,6 +19,7 @@ namespace FortniteOverlay
         public ConfigForm()
         {
             InitializeComponent();
+            Icon = Icon.ExtractAssociatedIcon(AppDomain.CurrentDomain.FriendlyName);
         }
 
         private void ConfigForm_Load(object sender, EventArgs e)

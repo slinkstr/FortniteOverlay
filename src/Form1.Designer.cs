@@ -31,7 +31,6 @@ namespace FortniteOverlay
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.uploadFrequencyNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.uploadFrequencyLabel = new System.Windows.Forms.Label();
             this.downloadFrequencyNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -293,7 +292,6 @@ namespace FortniteOverlay
             // 
             // notifyIcon
             // 
-            this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
             this.notifyIcon.Text = "FortniteOverlay";
             this.notifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseClick);
             // 
@@ -575,7 +573,6 @@ namespace FortniteOverlay
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(784, 464);
             this.Controls.Add(this.mainTableLayoutPanel);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "FortniteOverlay";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.form1_FormClosed);
