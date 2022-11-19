@@ -20,11 +20,33 @@ namespace FortniteOverlay
         {
             InitializeComponent();
             Icon = Icon.ExtractAssociatedIcon(AppDomain.CurrentDomain.FriendlyName);
+            PropagateTooltips(this.Controls);
         }
 
         private void ConfigForm_Load(object sender, EventArgs e)
         {
             LoadConfigFromFile();
+        }
+
+        private void PropagateTooltips(Control.ControlCollection controls, string tooltip = "")
+        {
+            if (controls == null)
+            {
+                return;
+            }
+
+            foreach(Control control in controls)
+            {
+                string curToolTip = toolTip1.GetToolTip(control);
+                if (string.IsNullOrWhiteSpace(curToolTip))
+                {
+                    if (!string.IsNullOrWhiteSpace(tooltip))
+                    {
+                        toolTip1.SetToolTip(control, tooltip);
+                    }
+                }
+                PropagateTooltips(control.Controls, curToolTip);
+            }
         }
 
         private void uploadEndpointTextBoxEx_TextChanged(object sender, EventArgs e)
