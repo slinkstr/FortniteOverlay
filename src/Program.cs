@@ -83,7 +83,7 @@ namespace FortniteOverlay
             procMonWorker.RunWorkerAsync();
 
             // Update checking
-#if RELEASE
+#if !DEBUG
             _ = CheckForUpdates();
 #endif
             checkForUpdatesTimer.Tick += new EventHandler(GetNewestVersionEvent);
