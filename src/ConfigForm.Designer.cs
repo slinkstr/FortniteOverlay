@@ -48,6 +48,7 @@
             this.imageLocationPanel = new System.Windows.Forms.Panel();
             this.hudScalePanel = new System.Windows.Forms.Panel();
             this.controlTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.autorunCheckBox = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.hudScaleNumericUpDown)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -125,9 +126,9 @@
             // saveButton
             // 
             this.saveButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.saveButton.Location = new System.Drawing.Point(3, 3);
+            this.saveButton.Location = new System.Drawing.Point(86, 3);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(66, 50);
+            this.saveButton.Size = new System.Drawing.Size(77, 44);
             this.saveButton.TabIndex = 10;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
@@ -136,9 +137,9 @@
             // loadButton
             // 
             this.loadButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.loadButton.Location = new System.Drawing.Point(75, 3);
+            this.loadButton.Location = new System.Drawing.Point(169, 3);
             this.loadButton.Name = "loadButton";
-            this.loadButton.Size = new System.Drawing.Size(66, 50);
+            this.loadButton.Size = new System.Drawing.Size(77, 44);
             this.loadButton.TabIndex = 11;
             this.loadButton.Text = "Load";
             this.loadButton.UseVisualStyleBackColor = true;
@@ -147,9 +148,9 @@
             // cancelButton
             // 
             this.cancelButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cancelButton.Location = new System.Drawing.Point(147, 3);
+            this.cancelButton.Location = new System.Drawing.Point(252, 3);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(68, 50);
+            this.cancelButton.Size = new System.Drawing.Size(79, 44);
             this.cancelButton.TabIndex = 12;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -192,9 +193,9 @@
             // 
             this.minimizeToTrayCheckBox.AutoSize = true;
             this.minimizeToTrayCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.minimizeToTrayCheckBox.Location = new System.Drawing.Point(8, 212);
+            this.minimizeToTrayCheckBox.Location = new System.Drawing.Point(8, 184);
             this.minimizeToTrayCheckBox.Name = "minimizeToTrayCheckBox";
-            this.minimizeToTrayCheckBox.Size = new System.Drawing.Size(110, 45);
+            this.minimizeToTrayCheckBox.Size = new System.Drawing.Size(328, 38);
             this.minimizeToTrayCheckBox.TabIndex = 13;
             this.minimizeToTrayCheckBox.Text = "Minimize to Tray";
             this.toolTip1.SetToolTip(this.minimizeToTrayCheckBox, "Whether or not to minimize the program to the system tray.");
@@ -203,9 +204,9 @@
             // openFileLocationButton
             // 
             this.openFileLocationButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.openFileLocationButton.Location = new System.Drawing.Point(8, 263);
+            this.openFileLocationButton.Location = new System.Drawing.Point(3, 3);
             this.openFileLocationButton.Name = "openFileLocationButton";
-            this.openFileLocationButton.Size = new System.Drawing.Size(110, 50);
+            this.openFileLocationButton.Size = new System.Drawing.Size(77, 44);
             this.openFileLocationButton.TabIndex = 14;
             this.openFileLocationButton.Text = "Open File Location";
             this.openFileLocationButton.UseVisualStyleBackColor = true;
@@ -213,104 +214,112 @@
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 65F));
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.secretKeyPanel, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.openFileLocationButton, 0, 5);
             this.tableLayoutPanel1.Controls.Add(this.uploadEndpointPanel, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.minimizeToTrayCheckBox, 0, 4);
             this.tableLayoutPanel1.Controls.Add(this.imageLocationPanel, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.hudScalePanel, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.controlTableLayoutPanel, 1, 5);
+            this.tableLayoutPanel1.Controls.Add(this.controlTableLayoutPanel, 0, 6);
+            this.tableLayoutPanel1.Controls.Add(this.autorunCheckBox, 0, 5);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(5);
-            this.tableLayoutPanel1.RowCount = 6;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(344, 321);
+            this.tableLayoutPanel1.RowCount = 7;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28531F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28531F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28531F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28531F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28531F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28816F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28531F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(344, 324);
             this.tableLayoutPanel1.TabIndex = 15;
             // 
             // secretKeyPanel
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.secretKeyPanel, 2);
             this.secretKeyPanel.Controls.Add(this.label1);
             this.secretKeyPanel.Controls.Add(this.secretKeyTextBoxEx);
             this.secretKeyPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.secretKeyPanel.Location = new System.Drawing.Point(5, 5);
             this.secretKeyPanel.Margin = new System.Windows.Forms.Padding(0);
             this.secretKeyPanel.Name = "secretKeyPanel";
-            this.secretKeyPanel.Size = new System.Drawing.Size(334, 51);
+            this.secretKeyPanel.Size = new System.Drawing.Size(334, 44);
             this.secretKeyPanel.TabIndex = 0;
             this.toolTip1.SetToolTip(this.secretKeyPanel, "Secret key to upload images to your server.  Keep this private!");
             // 
             // uploadEndpointPanel
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.uploadEndpointPanel, 2);
             this.uploadEndpointPanel.Controls.Add(this.label2);
             this.uploadEndpointPanel.Controls.Add(this.uploadEndpointTextBoxEx);
             this.uploadEndpointPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.uploadEndpointPanel.Location = new System.Drawing.Point(5, 56);
+            this.uploadEndpointPanel.Location = new System.Drawing.Point(5, 49);
             this.uploadEndpointPanel.Margin = new System.Windows.Forms.Padding(0);
             this.uploadEndpointPanel.Name = "uploadEndpointPanel";
-            this.uploadEndpointPanel.Size = new System.Drawing.Size(334, 51);
+            this.uploadEndpointPanel.Size = new System.Drawing.Size(334, 44);
             this.uploadEndpointPanel.TabIndex = 1;
             this.toolTip1.SetToolTip(this.uploadEndpointPanel, "URL to upload images to. Must end with \".php\".");
             // 
             // imageLocationPanel
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.imageLocationPanel, 2);
             this.imageLocationPanel.Controls.Add(this.label3);
             this.imageLocationPanel.Controls.Add(this.imageLocationTextBoxEx);
             this.imageLocationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.imageLocationPanel.Location = new System.Drawing.Point(5, 107);
+            this.imageLocationPanel.Location = new System.Drawing.Point(5, 93);
             this.imageLocationPanel.Margin = new System.Windows.Forms.Padding(0);
             this.imageLocationPanel.Name = "imageLocationPanel";
-            this.imageLocationPanel.Size = new System.Drawing.Size(334, 51);
+            this.imageLocationPanel.Size = new System.Drawing.Size(334, 44);
             this.imageLocationPanel.TabIndex = 2;
             this.toolTip1.SetToolTip(this.imageLocationPanel, "URL to look for uploaded images at, usually right next to the upload endpoint. Mu" +
         "st end with \"/\".");
             // 
             // hudScalePanel
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.hudScalePanel, 2);
             this.hudScalePanel.Controls.Add(this.label4);
             this.hudScalePanel.Controls.Add(this.hudScaleNumericUpDown);
             this.hudScalePanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.hudScalePanel.Location = new System.Drawing.Point(5, 158);
+            this.hudScalePanel.Location = new System.Drawing.Point(5, 137);
             this.hudScalePanel.Margin = new System.Windows.Forms.Padding(0);
             this.hudScalePanel.Name = "hudScalePanel";
-            this.hudScalePanel.Size = new System.Drawing.Size(334, 51);
+            this.hudScalePanel.Size = new System.Drawing.Size(334, 44);
             this.hudScalePanel.TabIndex = 3;
             this.toolTip1.SetToolTip(this.hudScalePanel, "The HUD scale you use in-game. NOTE: All calculations are designed for 100% and d" +
         "erived. Rounding errors may occur.");
             // 
             // controlTableLayoutPanel
             // 
-            this.controlTableLayoutPanel.ColumnCount = 3;
-            this.controlTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.controlTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.controlTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.controlTableLayoutPanel.Controls.Add(this.cancelButton, 2, 0);
-            this.controlTableLayoutPanel.Controls.Add(this.saveButton, 0, 0);
-            this.controlTableLayoutPanel.Controls.Add(this.loadButton, 1, 0);
+            this.controlTableLayoutPanel.ColumnCount = 4;
+            this.controlTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.controlTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.controlTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.controlTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.controlTableLayoutPanel.Controls.Add(this.cancelButton, 3, 0);
+            this.controlTableLayoutPanel.Controls.Add(this.loadButton, 2, 0);
+            this.controlTableLayoutPanel.Controls.Add(this.saveButton, 1, 0);
+            this.controlTableLayoutPanel.Controls.Add(this.openFileLocationButton, 0, 0);
             this.controlTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.controlTableLayoutPanel.Location = new System.Drawing.Point(121, 260);
+            this.controlTableLayoutPanel.Location = new System.Drawing.Point(5, 269);
             this.controlTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this.controlTableLayoutPanel.Name = "controlTableLayoutPanel";
             this.controlTableLayoutPanel.RowCount = 1;
             this.controlTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.controlTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.controlTableLayoutPanel.Size = new System.Drawing.Size(218, 56);
+            this.controlTableLayoutPanel.Size = new System.Drawing.Size(334, 50);
             this.controlTableLayoutPanel.TabIndex = 16;
+            // 
+            // autorunCheckBox
+            // 
+            this.autorunCheckBox.AutoSize = true;
+            this.autorunCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.autorunCheckBox.Location = new System.Drawing.Point(8, 228);
+            this.autorunCheckBox.Name = "autorunCheckBox";
+            this.autorunCheckBox.Size = new System.Drawing.Size(328, 38);
+            this.autorunCheckBox.TabIndex = 17;
+            this.autorunCheckBox.Text = "Run at Startup";
+            this.autorunCheckBox.UseVisualStyleBackColor = true;
+            this.autorunCheckBox.CheckedChanged += new System.EventHandler(this.autostartCheckBox_CheckedChanged);
             // 
             // toolTip1
             // 
@@ -322,7 +331,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(344, 321);
+            this.ClientSize = new System.Drawing.Size(344, 324);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "ConfigForm";
             this.Text = "Configuration";
@@ -365,5 +374,6 @@
         private System.Windows.Forms.Panel hudScalePanel;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.TableLayoutPanel controlTableLayoutPanel;
+        private System.Windows.Forms.CheckBox autorunCheckBox;
     }
 }

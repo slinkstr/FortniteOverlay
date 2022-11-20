@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -25,57 +27,45 @@ namespace FortniteOverlay
 
         private void ConfigForm_Load(object sender, EventArgs e)
         {
-            LoadConfigFromFile();
+            ConfigLoadFromFile();
+            autorunCheckBox.Checked = AutorunEnabled();
         }
 
-        private void PropagateTooltips(Control.ControlCollection controls, string tooltip = "")
+        // ****************************************************************************************************
+        // HELPER METHODS
+        // ****************************************************************************************************
+        private static bool AutorunEnabled()
         {
-            if (controls == null)
+            string startupFolder = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
+            var proc = System.Diagnostics.Process.GetCurrentProcess();
+            var shortcut = Path.Combine(startupFolder, proc.ProcessName + ".lnk");
+            if (File.Exists(shortcut))
             {
-                return;
-            }
-
-            foreach(Control control in controls)
-            {
-                string curToolTip = toolTip1.GetToolTip(control);
-                if (string.IsNullOrWhiteSpace(curToolTip))
-                {
-                    if (!string.IsNullOrWhiteSpace(tooltip))
-                    {
-                        toolTip1.SetToolTip(control, tooltip);
-                    }
-                }
-                PropagateTooltips(control.Controls, curToolTip);
-            }
-        }
-
-        private void uploadEndpointTextBoxEx_TextChanged(object sender, EventArgs e)
-        {
-            TextBoxEx textBox = (TextBoxEx)sender;
-            if (MiscUtil.uploadEndpointRegex.Match(textBox.Text).Success)
-            {
-                textBox.BorderColor = Color.Green;
+                return true;
             }
             else
             {
-                textBox.BorderColor = Color.Red;
+                return false;
             }
         }
 
-        private void imageLocationTextBoxEx_TextChanged(object sender, EventArgs e)
+        private static void AutorunSet(bool enabled)
         {
-            TextBoxEx textBox = (TextBoxEx)sender;
-            if (MiscUtil.imageLocationRegex.Match(textBox.Text).Success)
+            string startupFolder = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
+            var proc = System.Diagnostics.Process.GetCurrentProcess();
+            var shortcut = Path.Combine(startupFolder, proc.ProcessName + ".lnk");
+
+            if (enabled)
             {
-                textBox.BorderColor = Color.Green;
+                CreateShortcut(shortcut, proc.MainModule.FileName);
             }
             else
             {
-                textBox.BorderColor = Color.Red;
+                File.Delete(shortcut);
             }
         }
 
-        private void LoadConfigFromFile()
+        private void ConfigLoadFromFile()
         {
             ProgramConfig cfg;
             try
@@ -95,7 +85,7 @@ namespace FortniteOverlay
             minimizeToTrayCheckBox.Checked = cfg.MinimizeToTray;
         }
 
-        private void SaveConfigToFile()
+        private void ConfigSaveToFile()
         {
             ProgramConfig cfg = new ProgramConfig()
             {
@@ -109,26 +99,57 @@ namespace FortniteOverlay
             MiscUtil.SaveConfig(cfg);
         }
 
-        private void saveButton_Click(object sender, EventArgs e)
+        private static void CreateShortcut(string dest, string targetFile)
         {
-            SaveConfigToFile();
-            Close();
+            // https://stackoverflow.com/a/19914018
+            Type t = Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8")); //Windows Script Host Shell Object
+            dynamic shell = Activator.CreateInstance(t);
+            try
+            {
+                var lnk = shell.CreateShortcut(dest);
+                try
+                {
+                    string icon = targetFile.Replace("\\", "/") + ", 0";
+                    lnk.TargetPath = targetFile;
+                    lnk.IconLocation = icon;
+                    lnk.WorkingDirectory = Path.GetDirectoryName(targetFile);
+                    lnk.Save();
+                }
+                finally
+                {
+                    Marshal.FinalReleaseComObject(lnk);
+                }
+            }
+            finally
+            {
+                Marshal.FinalReleaseComObject(shell);
+            }
         }
 
-        private void resetButton_Click(object sender, EventArgs e)
+        private void PropagateTooltips(Control.ControlCollection controls, string tooltip = "")
         {
-            LoadConfigFromFile();
+            if (controls == null)
+            {
+                return;
+            }
+
+            foreach (Control control in controls)
+            {
+                string curToolTip = toolTip1.GetToolTip(control);
+                if (string.IsNullOrWhiteSpace(curToolTip))
+                {
+                    if (!string.IsNullOrWhiteSpace(tooltip))
+                    {
+                        toolTip1.SetToolTip(control, tooltip);
+                    }
+                }
+                PropagateTooltips(control.Controls, curToolTip);
+            }
         }
 
-        private void cancelButton_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void openFileLocationButton_Click(object sender, EventArgs e)
-        {
-            MiscUtil.OpenConfigLocation();
-        }
+        // ****************************************************************************************************
+        // CONTROL EVENT HANDLERS
+        // ****************************************************************************************************
 
         private void ConfigForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -142,6 +163,59 @@ namespace FortniteOverlay
             {
                 MessageBox.Show(exc.Message, "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 e.Cancel = true;
+            }
+        }
+
+        private void autostartCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox checkBox = (CheckBox)sender;
+            AutorunSet(checkBox.Checked);
+        }
+
+        private void openFileLocationButton_Click(object sender, EventArgs e)
+        {
+            MiscUtil.OpenConfigLocation();
+        }
+
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void imageLocationTextBoxEx_TextChanged(object sender, EventArgs e)
+        {
+            TextBoxEx textBox = (TextBoxEx)sender;
+            if (MiscUtil.imageLocationRegex.Match(textBox.Text).Success)
+            {
+                textBox.BorderColor = Color.Green;
+            }
+            else
+            {
+                textBox.BorderColor = Color.Red;
+            }
+        }
+
+        private void resetButton_Click(object sender, EventArgs e)
+        {
+            ConfigLoadFromFile();
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            ConfigSaveToFile();
+            Close();
+        }
+
+        private void uploadEndpointTextBoxEx_TextChanged(object sender, EventArgs e)
+        {
+            TextBoxEx textBox = (TextBoxEx)sender;
+            if (MiscUtil.uploadEndpointRegex.Match(textBox.Text).Success)
+            {
+                textBox.BorderColor = Color.Green;
+            }
+            else
+            {
+                textBox.BorderColor = Color.Red;
             }
         }
     }
