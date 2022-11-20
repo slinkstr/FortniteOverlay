@@ -72,7 +72,7 @@ namespace FortniteOverlay.Util
             return true;
         }
 
-        public static ProgramConfig GetConfig()
+        public static ProgramConfig ConfigLoad()
         {
             var configText = string.Join("\n", File.ReadAllText(fullConfigPath));
             ProgramConfig cfg = JsonConvert.DeserializeObject<ProgramConfig>(configText);
@@ -84,7 +84,19 @@ namespace FortniteOverlay.Util
             return cfg;
         }
 
-        public static void VerifyConfig(ProgramConfig cfg)
+        public static void ConfigSave(ProgramConfig config)
+        {
+            Directory.CreateDirectory(configFolder);
+            using (var stream = File.Create(fullConfigPath))
+            {
+                string cfgString = JsonConvert.SerializeObject(config, Formatting.Indented);
+                var cfgBytes = Encoding.UTF8.GetBytes(cfgString);
+                var cfgBytesLen = Encoding.UTF8.GetByteCount(cfgString);
+                stream.Write(cfgBytes, 0, cfgBytesLen);
+            }
+        }
+
+        public static void ConfigVerify(ProgramConfig cfg)
         {
             // verify all properties
             string invalidProperties = "";
@@ -119,21 +131,14 @@ namespace FortniteOverlay.Util
             }
         }
 
-        public static void SaveConfig(ProgramConfig config)
-        {
-            Directory.CreateDirectory(configFolder);
-            using (var stream = File.Create(fullConfigPath))
-            {
-                string cfgString = JsonConvert.SerializeObject(config, Formatting.Indented);
-                var cfgBytes = Encoding.UTF8.GetBytes(cfgString);
-                var cfgBytesLen = Encoding.UTF8.GetByteCount(cfgString);
-                stream.Write(cfgBytes, 0, cfgBytesLen);
-            }
-        }
-
-        public static void OpenConfigLocation()
+        public static void ConfigOpenFileLocation()
         {
             System.Diagnostics.Process.Start(configFolder);
+        }
+
+        public static int MinMax(int min, int value, int max)
+        {
+            return Math.Min(Math.Max(min, value), max);
         }
     }
 }

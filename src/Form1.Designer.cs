@@ -31,11 +31,6 @@ namespace FortniteOverlay
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.uploadFrequencyNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.uploadFrequencyLabel = new System.Windows.Forms.Label();
-            this.downloadFrequencyNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.downloadFrequencyLabel = new System.Windows.Forms.Label();
-            this.showOverlayCheckbox = new System.Windows.Forms.CheckBox();
             this.consoleLogTextBox = new System.Windows.Forms.TextBox();
             this.selfGearPictureBox1 = new System.Windows.Forms.PictureBox();
             this.previewLabel = new System.Windows.Forms.Label();
@@ -45,15 +40,12 @@ namespace FortniteOverlay
             this.squadmate1NameTextBox = new System.Windows.Forms.Label();
             this.squadmate2NameTextBox = new System.Windows.Forms.Label();
             this.squadmate3NameTextBox = new System.Windows.Forms.Label();
-            this.showConsoleCheckBox = new System.Windows.Forms.CheckBox();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.debugOverlayCheckbox = new System.Windows.Forms.CheckBox();
             this.updateNoticeLinkLabel = new System.Windows.Forms.LinkLabel();
             this.infoTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.previewTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.configTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.uploadTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.downloadTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.editConfigButton = new System.Windows.Forms.Button();
             this.squadmatesTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.squadmate2ArrowTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
@@ -64,8 +56,6 @@ namespace FortniteOverlay
             this.squadmate3ArrowTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.squadmate3UpButton = new System.Windows.Forms.Button();
             this.mainTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            ((System.ComponentModel.ISupportInitialize)(this.uploadFrequencyNumericUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.downloadFrequencyNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selfGearPictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmate1GearPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmate2GearPictureBox)).BeginInit();
@@ -73,95 +63,12 @@ namespace FortniteOverlay
             this.infoTableLayoutPanel.SuspendLayout();
             this.previewTableLayoutPanel.SuspendLayout();
             this.configTableLayoutPanel.SuspendLayout();
-            this.uploadTableLayoutPanel.SuspendLayout();
-            this.downloadTableLayoutPanel.SuspendLayout();
             this.squadmatesTableLayoutPanel.SuspendLayout();
             this.squadmate2ArrowTableLayoutPanel.SuspendLayout();
             this.squadmate1ArrowTableLayoutPanel.SuspendLayout();
             this.squadmate3ArrowTableLayoutPanel.SuspendLayout();
             this.mainTableLayoutPanel.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // uploadFrequencyNumericUpDown
-            // 
-            this.uploadFrequencyNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.uploadFrequencyNumericUpDown.Location = new System.Drawing.Point(3, 5);
-            this.uploadFrequencyNumericUpDown.Maximum = new decimal(new int[] {
-            120,
-            0,
-            0,
-            0});
-            this.uploadFrequencyNumericUpDown.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.uploadFrequencyNumericUpDown.Name = "uploadFrequencyNumericUpDown";
-            this.uploadFrequencyNumericUpDown.Size = new System.Drawing.Size(52, 20);
-            this.uploadFrequencyNumericUpDown.TabIndex = 1;
-            this.uploadFrequencyNumericUpDown.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            // 
-            // uploadFrequencyLabel
-            // 
-            this.uploadFrequencyLabel.AutoSize = true;
-            this.uploadFrequencyLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.uploadFrequencyLabel.Location = new System.Drawing.Point(61, 0);
-            this.uploadFrequencyLabel.Name = "uploadFrequencyLabel";
-            this.uploadFrequencyLabel.Size = new System.Drawing.Size(111, 30);
-            this.uploadFrequencyLabel.TabIndex = 2;
-            this.uploadFrequencyLabel.Text = "Upload Frequency (sec)";
-            this.uploadFrequencyLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // downloadFrequencyNumericUpDown
-            // 
-            this.downloadFrequencyNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.downloadFrequencyNumericUpDown.Location = new System.Drawing.Point(3, 5);
-            this.downloadFrequencyNumericUpDown.Maximum = new decimal(new int[] {
-            120,
-            0,
-            0,
-            0});
-            this.downloadFrequencyNumericUpDown.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.downloadFrequencyNumericUpDown.Name = "downloadFrequencyNumericUpDown";
-            this.downloadFrequencyNumericUpDown.Size = new System.Drawing.Size(52, 20);
-            this.downloadFrequencyNumericUpDown.TabIndex = 3;
-            this.downloadFrequencyNumericUpDown.Value = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            // 
-            // downloadFrequencyLabel
-            // 
-            this.downloadFrequencyLabel.AutoSize = true;
-            this.downloadFrequencyLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.downloadFrequencyLabel.Location = new System.Drawing.Point(61, 0);
-            this.downloadFrequencyLabel.Name = "downloadFrequencyLabel";
-            this.downloadFrequencyLabel.Size = new System.Drawing.Size(111, 30);
-            this.downloadFrequencyLabel.TabIndex = 4;
-            this.downloadFrequencyLabel.Text = "Download Frequency (sec)";
-            this.downloadFrequencyLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // showOverlayCheckbox
-            // 
-            this.showOverlayCheckbox.AutoSize = true;
-            this.showOverlayCheckbox.Checked = true;
-            this.showOverlayCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showOverlayCheckbox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.showOverlayCheckbox.Location = new System.Drawing.Point(178, 33);
-            this.showOverlayCheckbox.Name = "showOverlayCheckbox";
-            this.showOverlayCheckbox.Size = new System.Drawing.Size(169, 24);
-            this.showOverlayCheckbox.TabIndex = 5;
-            this.showOverlayCheckbox.Text = "Enable Overlay";
-            this.showOverlayCheckbox.UseVisualStyleBackColor = true;
             // 
             // consoleLogTextBox
             // 
@@ -276,20 +183,6 @@ namespace FortniteOverlay
             this.squadmate3NameTextBox.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.squadmate3NameTextBox.DoubleClick += new System.EventHandler(this.squadmate3NameTextBox_DoubleClick);
             // 
-            // showConsoleCheckBox
-            // 
-            this.showConsoleCheckBox.AutoSize = true;
-            this.showConsoleCheckBox.Checked = true;
-            this.showConsoleCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.showConsoleCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.showConsoleCheckBox.Location = new System.Drawing.Point(3, 33);
-            this.showConsoleCheckBox.Name = "showConsoleCheckBox";
-            this.showConsoleCheckBox.Size = new System.Drawing.Size(169, 24);
-            this.showConsoleCheckBox.TabIndex = 22;
-            this.showConsoleCheckBox.Text = "Show console";
-            this.showConsoleCheckBox.UseVisualStyleBackColor = true;
-            this.showConsoleCheckBox.CheckedChanged += new System.EventHandler(this.showConsoleCheckBox_CheckedChanged);
-            // 
             // notifyIcon
             // 
             this.notifyIcon.Text = "FortniteOverlay";
@@ -299,9 +192,9 @@ namespace FortniteOverlay
             // 
             this.debugOverlayCheckbox.AutoSize = true;
             this.debugOverlayCheckbox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.debugOverlayCheckbox.Location = new System.Drawing.Point(3, 63);
+            this.debugOverlayCheckbox.Location = new System.Drawing.Point(178, 3);
             this.debugOverlayCheckbox.Name = "debugOverlayCheckbox";
-            this.debugOverlayCheckbox.Size = new System.Drawing.Size(169, 24);
+            this.debugOverlayCheckbox.Size = new System.Drawing.Size(169, 34);
             this.debugOverlayCheckbox.TabIndex = 23;
             this.debugOverlayCheckbox.Text = "Debug overlay";
             this.debugOverlayCheckbox.UseVisualStyleBackColor = true;
@@ -327,7 +220,7 @@ namespace FortniteOverlay
             this.infoTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this.infoTableLayoutPanel.Name = "infoTableLayoutPanel";
             this.infoTableLayoutPanel.RowCount = 3;
-            this.infoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 90F));
+            this.infoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.infoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.infoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.infoTableLayoutPanel.Size = new System.Drawing.Size(350, 238);
@@ -356,63 +249,24 @@ namespace FortniteOverlay
             this.configTableLayoutPanel.ColumnCount = 2;
             this.configTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.configTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.configTableLayoutPanel.Controls.Add(this.uploadTableLayoutPanel, 0, 0);
-            this.configTableLayoutPanel.Controls.Add(this.downloadTableLayoutPanel, 1, 0);
-            this.configTableLayoutPanel.Controls.Add(this.showConsoleCheckBox, 0, 1);
-            this.configTableLayoutPanel.Controls.Add(this.showOverlayCheckbox, 1, 1);
-            this.configTableLayoutPanel.Controls.Add(this.editConfigButton, 1, 2);
-            this.configTableLayoutPanel.Controls.Add(this.debugOverlayCheckbox, 0, 2);
+            this.configTableLayoutPanel.Controls.Add(this.editConfigButton, 0, 0);
+            this.configTableLayoutPanel.Controls.Add(this.debugOverlayCheckbox, 1, 0);
             this.configTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.configTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.configTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this.configTableLayoutPanel.Name = "configTableLayoutPanel";
-            this.configTableLayoutPanel.RowCount = 3;
-            this.configTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.configTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.configTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.configTableLayoutPanel.RowCount = 1;
+            this.configTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.configTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.configTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.configTableLayoutPanel.Size = new System.Drawing.Size(350, 90);
+            this.configTableLayoutPanel.Size = new System.Drawing.Size(350, 40);
             this.configTableLayoutPanel.TabIndex = 0;
-            // 
-            // uploadTableLayoutPanel
-            // 
-            this.uploadTableLayoutPanel.ColumnCount = 2;
-            this.uploadTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.uploadTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 66.66666F));
-            this.uploadTableLayoutPanel.Controls.Add(this.uploadFrequencyLabel, 1, 0);
-            this.uploadTableLayoutPanel.Controls.Add(this.uploadFrequencyNumericUpDown, 0, 0);
-            this.uploadTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.uploadTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
-            this.uploadTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.uploadTableLayoutPanel.Name = "uploadTableLayoutPanel";
-            this.uploadTableLayoutPanel.RowCount = 1;
-            this.uploadTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.uploadTableLayoutPanel.Size = new System.Drawing.Size(175, 30);
-            this.uploadTableLayoutPanel.TabIndex = 0;
-            // 
-            // downloadTableLayoutPanel
-            // 
-            this.downloadTableLayoutPanel.ColumnCount = 2;
-            this.downloadTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.downloadTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 66.66666F));
-            this.downloadTableLayoutPanel.Controls.Add(this.downloadFrequencyNumericUpDown, 0, 0);
-            this.downloadTableLayoutPanel.Controls.Add(this.downloadFrequencyLabel, 1, 0);
-            this.downloadTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.downloadTableLayoutPanel.Location = new System.Drawing.Point(175, 0);
-            this.downloadTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.downloadTableLayoutPanel.Name = "downloadTableLayoutPanel";
-            this.downloadTableLayoutPanel.RowCount = 1;
-            this.downloadTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.downloadTableLayoutPanel.Size = new System.Drawing.Size(175, 30);
-            this.downloadTableLayoutPanel.TabIndex = 0;
             // 
             // editConfigButton
             // 
             this.editConfigButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.editConfigButton.Location = new System.Drawing.Point(178, 63);
+            this.editConfigButton.Location = new System.Drawing.Point(3, 3);
             this.editConfigButton.Name = "editConfigButton";
-            this.editConfigButton.Size = new System.Drawing.Size(169, 24);
+            this.editConfigButton.Size = new System.Drawing.Size(169, 34);
             this.editConfigButton.TabIndex = 26;
             this.editConfigButton.Text = "Edit Config";
             this.editConfigButton.UseVisualStyleBackColor = true;
@@ -577,8 +431,6 @@ namespace FortniteOverlay
             this.Text = "FortniteOverlay";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Resize += new System.EventHandler(this.Form1_Resize);
-            ((System.ComponentModel.ISupportInitialize)(this.uploadFrequencyNumericUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.downloadFrequencyNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.selfGearPictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmate1GearPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmate2GearPictureBox)).EndInit();
@@ -587,10 +439,6 @@ namespace FortniteOverlay
             this.previewTableLayoutPanel.ResumeLayout(false);
             this.configTableLayoutPanel.ResumeLayout(false);
             this.configTableLayoutPanel.PerformLayout();
-            this.uploadTableLayoutPanel.ResumeLayout(false);
-            this.uploadTableLayoutPanel.PerformLayout();
-            this.downloadTableLayoutPanel.ResumeLayout(false);
-            this.downloadTableLayoutPanel.PerformLayout();
             this.squadmatesTableLayoutPanel.ResumeLayout(false);
             this.squadmate2ArrowTableLayoutPanel.ResumeLayout(false);
             this.squadmate1ArrowTableLayoutPanel.ResumeLayout(false);
@@ -602,11 +450,6 @@ namespace FortniteOverlay
         }
 
         #endregion
-        private System.Windows.Forms.NumericUpDown uploadFrequencyNumericUpDown;
-        private System.Windows.Forms.Label uploadFrequencyLabel;
-        private System.Windows.Forms.NumericUpDown downloadFrequencyNumericUpDown;
-        private System.Windows.Forms.Label downloadFrequencyLabel;
-        private CheckBox showOverlayCheckbox;
         private TextBox consoleLogTextBox;
         private PictureBox selfGearPictureBox1;
         private Label previewLabel;
@@ -616,15 +459,12 @@ namespace FortniteOverlay
         private Label squadmate1NameTextBox;
         private Label squadmate2NameTextBox;
         private Label squadmate3NameTextBox;
-        private CheckBox showConsoleCheckBox;
         private NotifyIcon notifyIcon;
         private CheckBox debugOverlayCheckbox;
         private LinkLabel updateNoticeLinkLabel;
         private TableLayoutPanel infoTableLayoutPanel;
         private TableLayoutPanel previewTableLayoutPanel;
         private TableLayoutPanel configTableLayoutPanel;
-        private TableLayoutPanel uploadTableLayoutPanel;
-        private TableLayoutPanel downloadTableLayoutPanel;
         private TableLayoutPanel squadmatesTableLayoutPanel;
         private TableLayoutPanel mainTableLayoutPanel;
         private TableLayoutPanel squadmate2ArrowTableLayoutPanel;

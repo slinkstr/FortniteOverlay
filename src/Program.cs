@@ -53,14 +53,14 @@ namespace FortniteOverlay
 
             if (!ConfigFileExists())
             {
-                SaveConfig(new ProgramConfig());
+                ConfigSave(new ProgramConfig());
                 new ConfigForm().ShowDialog();
             }
 
             try
             {
-                config = GetConfig();
-                VerifyConfig(config);
+                config = ConfigLoad();
+                ConfigVerify(config);
             }
             catch (Exception exc)
             {
@@ -103,15 +103,14 @@ namespace FortniteOverlay
         public static async void UpdateEvent(Object obj, EventArgs evtargs)
         {
             updateTimer.Stop();
-            var opts = form.CurrentProgramOptions();
             updateTimer.Interval = 500 * (procMon.ValidHandle ? 1 : 10);
 
             var tasks = new List<Task>();
-            if (lastUp.AddSeconds(opts.UploadFrequency) - DateTime.Now <= TimeSpan.FromSeconds(0.2))
+            if (lastUp.AddSeconds(config.UploadInterval) - DateTime.Now <= TimeSpan.FromSeconds(0.2))
             {
                 tasks.Add(UploadGear());
             }
-            if (lastDown.AddSeconds(opts.DownloadFrequency) - DateTime.Now <= TimeSpan.FromSeconds(0.2))
+            if (lastDown.AddSeconds(config.DownloadInterval) - DateTime.Now <= TimeSpan.FromSeconds(0.2))
             {
                 tasks.Add(DownloadGear());
             }
@@ -120,7 +119,7 @@ namespace FortniteOverlay
             if (procMon.Focused || enableInOtherWindows)
             {
                 ShowOverlay();
-                if (opts.DebugOverlay)
+                if (form.CurrentProgramOptions().DebugOverlay)
                 {
                     ShowDebugOverlay();
                 }
@@ -145,20 +144,38 @@ namespace FortniteOverlay
             if (fortniters.Count == 0)                     { return; }
 
             var screen = TakeScreenshot(procMon.WindowSize);
-            if (!IsMapVisible(screen, pixelPositions, config.HUDScale))
+
+            if (config.InventoryHotkey)
             {
-                return;
+                if (!IsMapVisible(screen, pixelPositions, config.HUDScale))
+                {
+                    return;
+                }
             }
-            var gearBitmap = RenderGear(screen, pixelPositions, config.HUDScale);
+            else
+            {
+                if (!IsGoldBarsVisible(screen, pixelPositions, config.HUDScale))
+                {
+                    return;
+                }
+                if (IsSpectatingTextVisible(screen, pixelPositions, config.HUDScale))
+                {
+                    return;
+                }
+            }
+
+            var gearBitmap = RenderGear(screen, pixelPositions, config.HUDScale, config.InventoryHotkey);
 
             var stream = new MemoryStream();
             gearBitmap.Save(stream, ImageFormat.Jpeg);
             stream.Seek(0, SeekOrigin.Begin);
 
-            var formData = new MultipartFormDataContent();
-            formData.Add(new StringContent(config.SecretKey), "secret");
-            formData.Add(new StringContent(hostName), "filename");
-            formData.Add(new ByteArrayContent(stream.ToArray()), "gear", "image.jpg");
+            var formData = new MultipartFormDataContent
+            {
+                { new StringContent(config.SecretKey), "secret" },
+                { new StringContent(hostName), "filename" },
+                { new ByteArrayContent(stream.ToArray()), "gear", "image.jpg" }
+            };
 
             HttpResponseMessage response = null;
             string responseString = "";
@@ -260,8 +277,8 @@ namespace FortniteOverlay
 
         private static void ShowDebugOverlay()
         {
-            var screen = TakeScreenshot(procMon.WindowSize);
-            var debugBitmap = RenderGearDebug(screen, pixelPositions, config.HUDScale);
+            var debugBitmap = new Bitmap(procMon.WindowSize.Width, procMon.WindowSize.Height);
+            RenderGearDebug(ref debugBitmap, pixelPositions, config.HUDScale, config.InventoryHotkey);
             overlayForm.SetDebugOverlay(debugBitmap);
         }
 
@@ -325,10 +342,16 @@ namespace FortniteOverlay
 
     public class ProgramConfig
     {
-        public string UploadEndpoint { get; set; } = "https://example.com/fortnitegear/upload.php";
         public string SecretKey { get; set; } = "SECRET_KEY_HERE";
+        public string UploadEndpoint { get; set; } = "https://example.com/fortnitegear/upload.php";
         public string ImageLocation { get; set; } = "http://example.com/fortnitegear/images/";
+        public int UploadInterval { get; set; } = 5;
+        public int DownloadInterval { get; set; } = 5;
         public int HUDScale { get; set; } = 100;
+        public bool InventoryHotkey { get; set; } = true;
+        public bool ShowConsole { get; set; } = true;
+        public bool EnableOverlay { get; set; } = true;
         public bool MinimizeToTray { get; set; } = true;
+        // run at startup is handled by the config form
     }
 }

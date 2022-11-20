@@ -70,7 +70,7 @@ namespace FortniteOverlay
             ProgramConfig cfg;
             try
             {
-                cfg = MiscUtil.GetConfig();
+                cfg = MiscUtil.ConfigLoad();
             }
             catch (Exception exc)
             {
@@ -78,25 +78,35 @@ namespace FortniteOverlay
                 return;
             }
 
-            secretKeyTextBoxEx.Text = cfg.SecretKey;
-            uploadEndpointTextBoxEx.Text = cfg.UploadEndpoint;
-            imageLocationTextBoxEx.Text = cfg.ImageLocation;
-            hudScaleNumericUpDown.Value = Math.Min(Math.Max(25, cfg.HUDScale), 150);
-            minimizeToTrayCheckBox.Checked = cfg.MinimizeToTray;
+            secretKeyTextBoxEx.Text             = cfg.SecretKey;
+            uploadEndpointTextBoxEx.Text        = cfg.UploadEndpoint;
+            imageLocationTextBoxEx.Text         = cfg.ImageLocation;
+            uploadIntervalNumericUpDown.Value   = MiscUtil.MinMax((int)uploadIntervalNumericUpDown.Minimum,   cfg.UploadInterval, (int)uploadIntervalNumericUpDown.Maximum);
+            downloadIntervalNumericUpDown.Value = MiscUtil.MinMax((int)downloadIntervalNumericUpDown.Minimum, cfg.UploadInterval, (int)downloadIntervalNumericUpDown.Maximum);
+            hudScaleNumericUpDown.Value         = MiscUtil.MinMax((int)hudScaleNumericUpDown.Minimum,         cfg.HUDScale,       (int)hudScaleNumericUpDown.Maximum);
+            inventoryHotkeyCheckBox.Checked     = cfg.InventoryHotkey;
+            showConsoleCheckBox.Checked         = cfg.ShowConsole;
+            enableOverlayCheckBox.Checked       = cfg.EnableOverlay;
+            minimizeToTrayCheckBox.Checked      = cfg.MinimizeToTray;
         }
 
         private void ConfigSaveToFile()
         {
             ProgramConfig cfg = new ProgramConfig()
             {
-                SecretKey = secretKeyTextBoxEx.Text,
-                UploadEndpoint = uploadEndpointTextBoxEx.Text,
-                ImageLocation = imageLocationTextBoxEx.Text,
-                HUDScale = (int)hudScaleNumericUpDown.Value,
-                MinimizeToTray = minimizeToTrayCheckBox.Checked,
+                SecretKey         = secretKeyTextBoxEx.Text,
+                UploadEndpoint    = uploadEndpointTextBoxEx.Text,
+                ImageLocation     = imageLocationTextBoxEx.Text,
+                UploadInterval    = (int)uploadIntervalNumericUpDown.Value,
+                DownloadInterval  = (int)uploadIntervalNumericUpDown.Value,
+                HUDScale          = (int)hudScaleNumericUpDown.Value,
+                InventoryHotkey   = inventoryHotkeyCheckBox.Checked,
+                ShowConsole       = showConsoleCheckBox.Checked,
+                EnableOverlay     = enableOverlayCheckBox.Checked,
+                MinimizeToTray    = minimizeToTrayCheckBox.Checked,
             };
 
-            MiscUtil.SaveConfig(cfg);
+            MiscUtil.ConfigSave(cfg);
         }
 
         private static void CreateShortcut(string dest, string targetFile)
@@ -154,8 +164,8 @@ namespace FortniteOverlay
         {
             try
             {
-                var cfg = MiscUtil.GetConfig();
-                MiscUtil.VerifyConfig(cfg);
+                var cfg = MiscUtil.ConfigLoad();
+                MiscUtil.ConfigVerify(cfg);
                 Program.config = cfg;
             }
             catch (Exception exc)
@@ -173,7 +183,7 @@ namespace FortniteOverlay
 
         private void openFileLocationButton_Click(object sender, EventArgs e)
         {
-            MiscUtil.OpenConfigLocation();
+            MiscUtil.ConfigOpenFileLocation();
         }
 
         private void cancelButton_Click(object sender, EventArgs e)

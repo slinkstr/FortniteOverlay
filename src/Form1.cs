@@ -24,11 +24,7 @@ namespace FortniteOverlay
         {
             return new ProgramOptions()
             {
-                UploadFrequency = Convert.ToInt32(uploadFrequencyNumericUpDown.Value),
-                DownloadFrequency = Convert.ToInt32(downloadFrequencyNumericUpDown.Value),
-                ShowConsole = showConsoleCheckBox.Checked,
-                DebugOverlay = debugOverlayCheckbox.Checked,
-                EnableOverlay = showOverlayCheckbox.Checked,
+                DebugOverlay = debugOverlayCheckbox.Checked
             };
         }
 
@@ -247,10 +243,6 @@ namespace FortniteOverlay
 
     public class ProgramOptions
     {
-        public int UploadFrequency;
-        public int DownloadFrequency;
-        public bool ShowConsole;
         public bool DebugOverlay;
-        public bool EnableOverlay;
     }
 }
