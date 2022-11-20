@@ -11,6 +11,9 @@ namespace FortniteOverlay
             InitializeComponent();
         }
 
+        // ****************************************************************************************************
+        // HELPER METHODS
+        // ****************************************************************************************************
         public void SetDebugOverlay(Bitmap bmp)
         {
             SetControlProperty(debugPictureBox, "Image", bmp);
@@ -33,8 +36,7 @@ namespace FortniteOverlay
                     throw new Exception("Invalid index in SetSquadGear");
             }
         }
-
-        public void SetControlProperty(Control control, string propertyName, object data)
+        public static void SetControlProperty(Control control, string propertyName, object data)
         {
             if (control.InvokeRequired)
             {
@@ -46,6 +48,9 @@ namespace FortniteOverlay
             }
         }
 
+        // ****************************************************************************************************
+        // CONTROL EVENT HANDLERS
+        // ****************************************************************************************************
         private void OverlayForm_Resize(object sender, EventArgs e)
         {
             var form = (OverlayForm)sender;

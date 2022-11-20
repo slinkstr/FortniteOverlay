@@ -103,7 +103,7 @@ namespace FortniteOverlay
         public static async void UpdateEvent(Object obj, EventArgs evtargs)
         {
             updateTimer.Stop();
-            var opts = form.ProgramOptions();
+            var opts = form.CurrentProgramOptions();
             updateTimer.Interval = 500 * (procMon.ValidHandle ? 1 : 10);
 
             var tasks = new List<Task>();

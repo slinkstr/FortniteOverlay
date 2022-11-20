@@ -150,7 +150,6 @@ namespace FortniteOverlay
         // ****************************************************************************************************
         // CONTROL EVENT HANDLERS
         // ****************************************************************************************************
-
         private void ConfigForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             try
