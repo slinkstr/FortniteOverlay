@@ -47,10 +47,13 @@ namespace FortniteOverlay.Util
         public static bool IsGoldBarsVisible(Bitmap screenshot, PixelPositions positions, int hudScale)
         {
             if (screenshot == null) { return false; }
-            Color pukeYellow = Color.FromArgb(110, 59, 0);
+            Color paleYellow = Color.FromArgb(228, 222, 140);
             var scaledPos = ScalePositions(positions, hudScale);
             var pix = screenshot.GetPixel(scaledPos.GoldBars[0], scaledPos.GoldBars[1]);
-            if (pix.GetHue() > 30 && pix.GetHue() < 35)
+            if (pix.GetHue() > 52
+             && pix.GetHue() < 62
+             && pix.GetBrightness() > 0.70
+             && pix.GetBrightness() < 0.95)
             {
                 return true;
             }
@@ -81,6 +84,28 @@ namespace FortniteOverlay.Util
                 return false;
             }
             return false;
+        }
+
+        public static bool IsCrownVisible(Bitmap screenshot, List<PixelPositions> positions, int hudScale)
+        {
+            return IsCrownVisible(screenshot, MatchingPosition(screenshot, positions), hudScale);
+        }
+
+        public static bool IsCrownVisible(Bitmap screenshot, PixelPositions positions, int hudScale)
+        {
+            if (screenshot == null) { return false; }
+            var scaledPos = ScalePositions(positions, hudScale);
+            var pix = screenshot.GetPixel(scaledPos.Crown[0], scaledPos.Crown[1]);
+            if (pix.GetHue() > 45
+             && pix.GetHue() < 60
+             && pix.GetSaturation() > 0.86)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public static Bitmap MarkStaleImage(Bitmap bmp)
@@ -143,16 +168,13 @@ namespace FortniteOverlay.Util
                 }
 
                 // keys
-                Color yellowish = Color.FromArgb(244, 219, 93);
-                var pix = screenshot.GetPixel(scaledPos.CrownPos[0], scaledPos.CrownPos[1] + crownOffset);
-                bool crownVisible = yellowish.GetHue() - 10 < pix.GetHue() && yellowish.GetHue() + 10 > pix.GetHue();
-                if (crownVisible)
+                if (IsCrownVisible(screenshot, positions, hudScale))
                 {
-                    g.DrawImage(screenshot, new Rectangle(scaledPos.SlotSize * 5, 0, scaledPos.SlotSize, scaledPos.SlotSize), new Rectangle(scaledPos.KeyPosCrown[0], scaledPos.KeyPosCrown[1] + crownOffset, scaledPos.SlotSize, scaledPos.SlotSize), GraphicsUnit.Pixel);
+                    g.DrawImage(screenshot, new Rectangle(scaledPos.SlotSize * 5, 0, scaledPos.SlotSize, scaledPos.SlotSize), new Rectangle(scaledPos.KeysWithCrown[0], scaledPos.KeysWithCrown[1] + crownOffset, scaledPos.SlotSize, scaledPos.SlotSize), GraphicsUnit.Pixel);
                 }
                 else
                 {
-                    g.DrawImage(screenshot, new Rectangle(scaledPos.SlotSize * 5, 0, scaledPos.SlotSize, scaledPos.SlotSize), new Rectangle(scaledPos.KeyPos[0],      scaledPos.KeyPos[1]      + crownOffset, scaledPos.SlotSize, scaledPos.SlotSize), GraphicsUnit.Pixel);
+                    g.DrawImage(screenshot, new Rectangle(scaledPos.SlotSize * 5, 0, scaledPos.SlotSize, scaledPos.SlotSize), new Rectangle(scaledPos.Keys[0],      scaledPos.Keys[1]      + crownOffset, scaledPos.SlotSize, scaledPos.SlotSize), GraphicsUnit.Pixel);
                 }
             }
 
@@ -172,44 +194,26 @@ namespace FortniteOverlay.Util
             int crownOffset = inventoryHotkey ? positions.InventoryHotkeyOffset : 0;
             Pen pen = new Pen(Color.Red, 1);
 
-            Color pureWhite = Color.FromArgb(255, 255, 255);
-            Color fadedWhite = Color.FromArgb(127, 127, 127);
-
             var scaledPos = ScalePositions(positions, hudScale);
-
-            int slotSelected = 0;
-            for (int i = 0; i < scaledPos.Slots.Length; i++)
-            {
-                var pix = blankScreenshot.GetPixel(scaledPos.Slots[i][0], scaledPos.Slots[i][1]);
-                if (pix == pureWhite || pix == fadedWhite)
-                {
-                    slotSelected = i + 1;
-                }
-            }
 
             using (Graphics g = Graphics.FromImage(blankScreenshot))
             {
                 // Draw slot outlines
                 for (int i = 0; i < scaledPos.Slots.Length; i++)
                 {
-                    var ofs = (slotSelected == i + 1) ? scaledPos.SelectedSlotOffset : 0;
-                    g.DrawRectangle(pen, new Rectangle(scaledPos.Slots[i][0] - 1, scaledPos.Slots[i][1] - 1 + ofs, scaledPos.SlotSize + 1, scaledPos.SlotSize + 1));
+                    g.DrawRectangle(pen, new Rectangle(scaledPos.Slots[i][0] - 1, scaledPos.Slots[i][1] - 1, scaledPos.SlotSize + 1, scaledPos.SlotSize + 1));
                 }
 
-                // Crown/keys
-                Color yellowish = Color.FromArgb(244, 219, 93);
-                var pix = blankScreenshot.GetPixel(scaledPos.CrownPos[0], scaledPos.CrownPos[1]);
-                bool crownVisible = yellowish.GetHue() - 10 < pix.GetHue() && yellowish.GetHue() + 10 > pix.GetHue();
-                if (crownVisible) { g.DrawRectangle(pen, new Rectangle(scaledPos.KeyPosCrown[0] - 1, (scaledPos.KeyPosCrown[1] + crownOffset) - 1, scaledPos.SlotSize + 1, scaledPos.SlotSize + 1)); }
-                else              { g.DrawRectangle(pen, new Rectangle(scaledPos.KeyPos[0]      - 1, (scaledPos.KeyPos[1] + crownOffset)      - 1, scaledPos.SlotSize + 1, scaledPos.SlotSize + 1)); }
+                // Keys/crown
+                g.DrawEllipse(pen, scaledPos.Crown[0] - 1, scaledPos.Crown[1] - 1, 2, 2);
+                g.DrawRectangle(pen, new Rectangle(scaledPos.KeysWithCrown[0] - 1, (scaledPos.KeysWithCrown[1] + crownOffset) - 1, scaledPos.SlotSize + 1, scaledPos.SlotSize + 1));
+                g.DrawRectangle(pen, new Rectangle(scaledPos.Keys[0]      - 1, (scaledPos.Keys[1] + crownOffset)      - 1, scaledPos.SlotSize + 1, scaledPos.SlotSize + 1));
 
                 // Other points
                 g.DrawEllipse(pen, scaledPos.Map[0] - 1, scaledPos.Map[1] - 1, 2, 2);
                 g.DrawEllipse(pen, scaledPos.GoldBars[0] - 1, scaledPos.GoldBars[1] - 1, 2, 2);
                 g.DrawEllipse(pen, scaledPos.SpectatingText[0][0] - 1, scaledPos.SpectatingText[0][1] - 1, 2, 2);
                 g.DrawEllipse(pen, scaledPos.SpectatingText[1][0] - 1, scaledPos.SpectatingText[1][1] - 1, 2, 2);
-
-                g.DrawEllipse(pen, scaledPos.CrownPos[0] - 1, scaledPos.CrownPos[1] - 1, 2, 2);
             }
         }
 
@@ -259,19 +263,19 @@ namespace FortniteOverlay.Util
                 },
 
                 InventoryHotkeyOffset = (int)((double)reference.InventoryHotkeyOffset / (double)reference.Resolution[1] * height),
-                KeyPos = new int[2] {
-                    (int)((double)reference.KeyPos[0] / (double)reference.Resolution[0] * width),
-                    (int)((double)reference.KeyPos[1] / (double)reference.Resolution[1] * height),
+                Keys = new int[2] {
+                    (int)((double)reference.Keys[0] / (double)reference.Resolution[0] * width),
+                    (int)((double)reference.Keys[1] / (double)reference.Resolution[1] * height),
                 },
-                KeyPosCrown = new int[2]
+                KeysWithCrown = new int[2]
                 {
-                    (int)((double)reference.KeyPosCrown[0] / (double)reference.Resolution[0] * width),
-                    (int)((double)reference.KeyPosCrown[1] / (double)reference.Resolution[1] * height),
+                    (int)((double)reference.KeysWithCrown[0] / (double)reference.Resolution[0] * width),
+                    (int)((double)reference.KeysWithCrown[1] / (double)reference.Resolution[1] * height),
                 },
-                CrownPos = new int[2]
+                Crown = new int[2]
                 {
-                    (int)((double)reference.CrownPos[0] / (double)reference.Resolution[0] * width),
-                    (int)((double)reference.CrownPos[1] / (double)reference.Resolution[1] * height),
+                    (int)((double)reference.Crown[0] / (double)reference.Resolution[0] * width),
+                    (int)((double)reference.Crown[1] / (double)reference.Resolution[1] * height),
                 }
             };
         }
@@ -340,9 +344,9 @@ namespace FortniteOverlay.Util
                 },
 
                 InventoryHotkeyOffset = Convert.ToInt32(pos.InventoryHotkeyOffset * ((double)scale / 100)),
-                KeyPos = ScaleAboutBottomRight(pos.KeyPos[0], pos.KeyPos[1], pos.Resolution[0], pos.Resolution[1], scale),
-                KeyPosCrown = ScaleAboutBottomRight(pos.KeyPosCrown[0], pos.KeyPosCrown[1], pos.Resolution[0], pos.Resolution[1], scale),
-                CrownPos = ScaleAboutBottomRight(pos.CrownPos[0], pos.CrownPos[1], pos.Resolution[0], pos.Resolution[1], scale),
+                Keys = ScaleAboutBottomRight(pos.Keys[0], pos.Keys[1], pos.Resolution[0], pos.Resolution[1], scale),
+                KeysWithCrown = ScaleAboutBottomRight(pos.KeysWithCrown[0], pos.KeysWithCrown[1], pos.Resolution[0], pos.Resolution[1], scale),
+                Crown = ScaleAboutBottomRight(pos.Crown[0], pos.Crown[1], pos.Resolution[0], pos.Resolution[1], scale),
             };
 
             return newPos;
@@ -370,9 +374,9 @@ namespace FortniteOverlay.Util
             public int[][] SpectatingText { get; set; }
 
             public int InventoryHotkeyOffset { get; set; }
-            public int[] KeyPos { get; set; }
-            public int[] KeyPosCrown { get; set; }
-            public int[] CrownPos { get; set; }
+            public int[] Keys { get; set; }
+            public int[] KeysWithCrown { get; set; }
+            public int[] Crown { get; set; }
         }
 
         public class PixelPositions_1440p : PixelPositions
@@ -392,7 +396,7 @@ namespace FortniteOverlay.Util
                 };
 
                 Map                = new int[2] { 2512, 47 };
-                GoldBars           = new int[2] { 2526, 1232 };
+                GoldBars           = new int[2] { 2518, 1153 };
                 SpectatingText     = new int[2][]
                 {
                     new int[] { 1181, 26 },
@@ -400,9 +404,9 @@ namespace FortniteOverlay.Util
                 };
 
                 InventoryHotkeyOffset = 65;
-                KeyPos             = new int[2] { 2456, 927  };
-                KeyPosCrown        = new int[2] { 2350, 944  };
-                CrownPos           = new int[2] { 2490, 1000 };
+                Keys             = new int[2] { 2456, 927  };
+                KeysWithCrown        = new int[2] { 2350, 944  };
+                Crown           = new int[2] { 2490, 1000 };
             }
         }
 
@@ -423,7 +427,7 @@ namespace FortniteOverlay.Util
                 };
 
                 Map                = new int[2] { 1884, 35  };
-                GoldBars           = new int[2] { 1885, 872 };
+                GoldBars           = new int[2] { 1889, 866 };
                 SpectatingText     = new int[2][]
                 {
                     new int[] { 885, 20 },
@@ -431,9 +435,9 @@ namespace FortniteOverlay.Util
                 };
 
                 InventoryHotkeyOffset = 49;
-                KeyPos             = new int[2] { 1842, 694 };
-                KeyPosCrown        = new int[2] { 1762, 707 };
-                CrownPos           = new int[2] { 1866, 750 };
+                Keys             = new int[2] { 1842, 694 };
+                KeysWithCrown        = new int[2] { 1762, 707 };
+                Crown           = new int[2] { 1866, 750 };
             }
         }
     }

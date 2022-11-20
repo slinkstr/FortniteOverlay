@@ -81,9 +81,9 @@ namespace FortniteOverlay
             secretKeyTextBoxEx.Text             = cfg.SecretKey;
             uploadEndpointTextBoxEx.Text        = cfg.UploadEndpoint;
             imageLocationTextBoxEx.Text         = cfg.ImageLocation;
-            uploadIntervalNumericUpDown.Value   = MiscUtil.MinMax((int)uploadIntervalNumericUpDown.Minimum,   cfg.UploadInterval, (int)uploadIntervalNumericUpDown.Maximum);
-            downloadIntervalNumericUpDown.Value = MiscUtil.MinMax((int)downloadIntervalNumericUpDown.Minimum, cfg.UploadInterval, (int)downloadIntervalNumericUpDown.Maximum);
-            hudScaleNumericUpDown.Value         = MiscUtil.MinMax((int)hudScaleNumericUpDown.Minimum,         cfg.HUDScale,       (int)hudScaleNumericUpDown.Maximum);
+            uploadIntervalNumericUpDown.Value   = MiscUtil.MinMax((int)uploadIntervalNumericUpDown.Minimum,   cfg.UploadInterval,   (int)uploadIntervalNumericUpDown.Maximum);
+            downloadIntervalNumericUpDown.Value = MiscUtil.MinMax((int)downloadIntervalNumericUpDown.Minimum, cfg.DownloadInterval, (int)downloadIntervalNumericUpDown.Maximum);
+            hudScaleNumericUpDown.Value         = MiscUtil.MinMax((int)hudScaleNumericUpDown.Minimum,         cfg.HUDScale,         (int)hudScaleNumericUpDown.Maximum);
             inventoryHotkeyCheckBox.Checked     = cfg.InventoryHotkey;
             showConsoleCheckBox.Checked         = cfg.ShowConsole;
             enableOverlayCheckBox.Checked       = cfg.EnableOverlay;
@@ -98,7 +98,7 @@ namespace FortniteOverlay
                 UploadEndpoint    = uploadEndpointTextBoxEx.Text,
                 ImageLocation     = imageLocationTextBoxEx.Text,
                 UploadInterval    = (int)uploadIntervalNumericUpDown.Value,
-                DownloadInterval  = (int)uploadIntervalNumericUpDown.Value,
+                DownloadInterval  = (int)downloadIntervalNumericUpDown.Value,
                 HUDScale          = (int)hudScaleNumericUpDown.Value,
                 InventoryHotkey   = inventoryHotkeyCheckBox.Checked,
                 ShowConsole       = showConsoleCheckBox.Checked,
