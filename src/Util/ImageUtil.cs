@@ -26,16 +26,17 @@ namespace FortniteOverlay.Util
         public static bool IsMapVisible(Bitmap screenshot, PixelPositions positions, int hudScale)
         {
             if (screenshot == null) { return false; }
-            Color pureWhite = Color.FromArgb(255, 255, 255);
             var scaledPos = ScalePositions(positions, hudScale);
             var pix = screenshot.GetPixel(scaledPos.Map[0], scaledPos.Map[1]);
-            if (pix == pureWhite)
+            
+            //if (pix.R < 250 || pix.G < 250 || pix.B < 250)
+            if (pix.R != 255 || pix.G != 255 || pix.B != 255)
             {
-                return true;
+                return false;
             }
             else
             {
-                return false;
+                return true;
             }
         }
 
@@ -71,19 +72,25 @@ namespace FortniteOverlay.Util
         public static bool IsSpectatingTextVisible(Bitmap screenshot, PixelPositions positions, int hudScale)
         {
             if (screenshot == null) { return false; }
-            Color pureWhite = Color.FromArgb(255, 255, 255);
             var scaledPos = ScalePositions(positions, hudScale);
+
             var pix = screenshot.GetPixel(scaledPos.SpectatingText[0][0], scaledPos.SpectatingText[0][1]);
-            if (pix != pureWhite)
+
+            //if (pix.R < 250 || pix.G < 250 || pix.B < 250)
+            if (pix.R != 255 || pix.G != 255 || pix.B != 255)
             {
                 return false;
             }
+
             pix = screenshot.GetPixel(scaledPos.SpectatingText[1][0], scaledPos.SpectatingText[1][1]);
-            if (pix != pureWhite)
+
+            //if (pix.R < 250 || pix.G < 250 || pix.B < 250)
+            if (pix.R != 255 || pix.G != 255 || pix.B != 255)
             {
                 return false;
             }
-            return false;
+
+            return true;
         }
 
         public static bool IsCrownVisible(Bitmap screenshot, List<PixelPositions> positions, int hudScale)
@@ -152,10 +159,19 @@ namespace FortniteOverlay.Util
             for (int i = 0; i < scaledPos.Slots.Length; i++)
             {
                 var pix = screenshot.GetPixel(scaledPos.Slots[i][0], scaledPos.Slots[i][1]);
-                if (pix == pureWhite || pix == fadedWhite)
+
+                //if (pix.R < 240 || pix.G < 240 || pix.B < 240)
+                if (pix.R != 255 || pix.G != 255 || pix.B != 255)
                 {
-                    slotSelected = i + 1;
+                    //if (!(pix.R > 120 && pix.R < 135) || !(pix.G > 120 && pix.G < 135) || !(pix.B > 120 && pix.B < 135))
+                    if (pix.R != 127 || pix.G != 127 || pix.B != 127)
+                    {
+                        continue;
+                    }
                 }
+
+                slotSelected = i + 1;
+                break;
             }
 
             Bitmap bitmap = new Bitmap((scaledPos.SlotSize * 6), scaledPos.SlotSize);
