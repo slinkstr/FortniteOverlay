@@ -45,7 +45,6 @@ namespace FortniteOverlay
             this.updateNoticeLinkLabel = new System.Windows.Forms.LinkLabel();
             this.infoTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.previewTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.configTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.editConfigButton = new System.Windows.Forms.Button();
             this.squadmatesTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.squadmate2ArrowTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
@@ -62,7 +61,6 @@ namespace FortniteOverlay
             ((System.ComponentModel.ISupportInitialize)(this.squadmate3GearPictureBox)).BeginInit();
             this.infoTableLayoutPanel.SuspendLayout();
             this.previewTableLayoutPanel.SuspendLayout();
-            this.configTableLayoutPanel.SuspendLayout();
             this.squadmatesTableLayoutPanel.SuspendLayout();
             this.squadmate2ArrowTableLayoutPanel.SuspendLayout();
             this.squadmate1ArrowTableLayoutPanel.SuspendLayout();
@@ -81,7 +79,7 @@ namespace FortniteOverlay
             this.consoleLogTextBox.ReadOnly = true;
             this.consoleLogTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.consoleLogTextBox.Size = new System.Drawing.Size(778, 200);
-            this.consoleLogTextBox.TabIndex = 6;
+            this.consoleLogTextBox.TabIndex = 2;
             this.consoleLogTextBox.WordWrap = false;
             // 
             // selfGearPictureBox1
@@ -195,7 +193,7 @@ namespace FortniteOverlay
             this.debugOverlayCheckbox.Location = new System.Drawing.Point(178, 3);
             this.debugOverlayCheckbox.Name = "debugOverlayCheckbox";
             this.debugOverlayCheckbox.Size = new System.Drawing.Size(169, 34);
-            this.debugOverlayCheckbox.TabIndex = 23;
+            this.debugOverlayCheckbox.TabIndex = 1;
             this.debugOverlayCheckbox.Text = "Debug overlay";
             this.debugOverlayCheckbox.UseVisualStyleBackColor = true;
             // 
@@ -205,16 +203,18 @@ namespace FortniteOverlay
             this.updateNoticeLinkLabel.Location = new System.Drawing.Point(356, 441);
             this.updateNoticeLinkLabel.Name = "updateNoticeLinkLabel";
             this.updateNoticeLinkLabel.Size = new System.Drawing.Size(422, 20);
-            this.updateNoticeLinkLabel.TabIndex = 25;
+            this.updateNoticeLinkLabel.TabIndex = 3;
             this.updateNoticeLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.updateNoticeLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.updateNoticeLinkLabel_LinkClicked);
             // 
             // infoTableLayoutPanel
             // 
-            this.infoTableLayoutPanel.ColumnCount = 1;
-            this.infoTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.infoTableLayoutPanel.ColumnCount = 2;
+            this.infoTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.infoTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.infoTableLayoutPanel.Controls.Add(this.previewTableLayoutPanel, 0, 2);
-            this.infoTableLayoutPanel.Controls.Add(this.configTableLayoutPanel, 0, 0);
+            this.infoTableLayoutPanel.Controls.Add(this.debugOverlayCheckbox, 1, 0);
+            this.infoTableLayoutPanel.Controls.Add(this.editConfigButton, 0, 0);
             this.infoTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.infoTableLayoutPanel.Location = new System.Drawing.Point(3, 3);
             this.infoTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
@@ -224,11 +224,12 @@ namespace FortniteOverlay
             this.infoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.infoTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.infoTableLayoutPanel.Size = new System.Drawing.Size(350, 238);
-            this.infoTableLayoutPanel.TabIndex = 27;
+            this.infoTableLayoutPanel.TabIndex = 0;
             // 
             // previewTableLayoutPanel
             // 
             this.previewTableLayoutPanel.ColumnCount = 2;
+            this.infoTableLayoutPanel.SetColumnSpan(this.previewTableLayoutPanel, 2);
             this.previewTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.previewTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80F));
             this.previewTableLayoutPanel.Controls.Add(this.selfGearPictureBox1, 1, 0);
@@ -244,30 +245,13 @@ namespace FortniteOverlay
             this.previewTableLayoutPanel.Size = new System.Drawing.Size(350, 80);
             this.previewTableLayoutPanel.TabIndex = 0;
             // 
-            // configTableLayoutPanel
-            // 
-            this.configTableLayoutPanel.ColumnCount = 2;
-            this.configTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.configTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.configTableLayoutPanel.Controls.Add(this.editConfigButton, 0, 0);
-            this.configTableLayoutPanel.Controls.Add(this.debugOverlayCheckbox, 1, 0);
-            this.configTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.configTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
-            this.configTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.configTableLayoutPanel.Name = "configTableLayoutPanel";
-            this.configTableLayoutPanel.RowCount = 1;
-            this.configTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.configTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.configTableLayoutPanel.Size = new System.Drawing.Size(350, 40);
-            this.configTableLayoutPanel.TabIndex = 0;
-            // 
             // editConfigButton
             // 
             this.editConfigButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.editConfigButton.Location = new System.Drawing.Point(3, 3);
             this.editConfigButton.Name = "editConfigButton";
             this.editConfigButton.Size = new System.Drawing.Size(169, 34);
-            this.editConfigButton.TabIndex = 26;
+            this.editConfigButton.TabIndex = 0;
             this.editConfigButton.Text = "Edit Config";
             this.editConfigButton.UseVisualStyleBackColor = true;
             this.editConfigButton.Click += new System.EventHandler(this.editConfigButton_Click);
@@ -296,7 +280,7 @@ namespace FortniteOverlay
             this.squadmatesTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.squadmatesTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.squadmatesTableLayoutPanel.Size = new System.Drawing.Size(428, 238);
-            this.squadmatesTableLayoutPanel.TabIndex = 28;
+            this.squadmatesTableLayoutPanel.TabIndex = 1;
             // 
             // squadmate2ArrowTableLayoutPanel
             // 
@@ -313,7 +297,7 @@ namespace FortniteOverlay
             this.squadmate2ArrowTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.squadmate2ArrowTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.squadmate2ArrowTableLayoutPanel.Size = new System.Drawing.Size(40, 79);
-            this.squadmate2ArrowTableLayoutPanel.TabIndex = 24;
+            this.squadmate2ArrowTableLayoutPanel.TabIndex = 1;
             // 
             // squadmate2DownButton
             // 
@@ -322,7 +306,7 @@ namespace FortniteOverlay
             this.squadmate2DownButton.Margin = new System.Windows.Forms.Padding(3, 0, 3, 6);
             this.squadmate2DownButton.Name = "squadmate2DownButton";
             this.squadmate2DownButton.Size = new System.Drawing.Size(34, 34);
-            this.squadmate2DownButton.TabIndex = 2;
+            this.squadmate2DownButton.TabIndex = 1;
             this.squadmate2DownButton.Text = "↓";
             this.squadmate2DownButton.UseVisualStyleBackColor = true;
             this.squadmate2DownButton.Visible = false;
@@ -335,7 +319,7 @@ namespace FortniteOverlay
             this.squadmate2UpButton.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
             this.squadmate2UpButton.Name = "squadmate2UpButton";
             this.squadmate2UpButton.Size = new System.Drawing.Size(34, 33);
-            this.squadmate2UpButton.TabIndex = 1;
+            this.squadmate2UpButton.TabIndex = 0;
             this.squadmate2UpButton.Text = "↑";
             this.squadmate2UpButton.UseVisualStyleBackColor = true;
             this.squadmate2UpButton.Visible = false;
@@ -355,7 +339,7 @@ namespace FortniteOverlay
             this.squadmate1ArrowTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.squadmate1ArrowTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.squadmate1ArrowTableLayoutPanel.Size = new System.Drawing.Size(40, 79);
-            this.squadmate1ArrowTableLayoutPanel.TabIndex = 23;
+            this.squadmate1ArrowTableLayoutPanel.TabIndex = 0;
             // 
             // squadmate1DownButton
             // 
@@ -384,7 +368,7 @@ namespace FortniteOverlay
             this.squadmate3ArrowTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.squadmate3ArrowTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.squadmate3ArrowTableLayoutPanel.Size = new System.Drawing.Size(40, 80);
-            this.squadmate3ArrowTableLayoutPanel.TabIndex = 22;
+            this.squadmate3ArrowTableLayoutPanel.TabIndex = 2;
             // 
             // squadmate3UpButton
             // 
@@ -393,7 +377,7 @@ namespace FortniteOverlay
             this.squadmate3UpButton.Margin = new System.Windows.Forms.Padding(3, 6, 3, 0);
             this.squadmate3UpButton.Name = "squadmate3UpButton";
             this.squadmate3UpButton.Size = new System.Drawing.Size(34, 34);
-            this.squadmate3UpButton.TabIndex = 1;
+            this.squadmate3UpButton.TabIndex = 0;
             this.squadmate3UpButton.Text = "↑";
             this.squadmate3UpButton.UseVisualStyleBackColor = true;
             this.squadmate3UpButton.Visible = false;
@@ -436,9 +420,8 @@ namespace FortniteOverlay
             ((System.ComponentModel.ISupportInitialize)(this.squadmate2GearPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmate3GearPictureBox)).EndInit();
             this.infoTableLayoutPanel.ResumeLayout(false);
+            this.infoTableLayoutPanel.PerformLayout();
             this.previewTableLayoutPanel.ResumeLayout(false);
-            this.configTableLayoutPanel.ResumeLayout(false);
-            this.configTableLayoutPanel.PerformLayout();
             this.squadmatesTableLayoutPanel.ResumeLayout(false);
             this.squadmate2ArrowTableLayoutPanel.ResumeLayout(false);
             this.squadmate1ArrowTableLayoutPanel.ResumeLayout(false);
@@ -464,7 +447,6 @@ namespace FortniteOverlay
         private LinkLabel updateNoticeLinkLabel;
         private TableLayoutPanel infoTableLayoutPanel;
         private TableLayoutPanel previewTableLayoutPanel;
-        private TableLayoutPanel configTableLayoutPanel;
         private TableLayoutPanel squadmatesTableLayoutPanel;
         private TableLayoutPanel mainTableLayoutPanel;
         private TableLayoutPanel squadmate2ArrowTableLayoutPanel;

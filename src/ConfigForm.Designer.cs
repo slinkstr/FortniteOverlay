@@ -89,7 +89,7 @@
             0});
             this.hudScaleNumericUpDown.Name = "hudScaleNumericUpDown";
             this.hudScaleNumericUpDown.Size = new System.Drawing.Size(227, 20);
-            this.hudScaleNumericUpDown.TabIndex = 3;
+            this.hudScaleNumericUpDown.TabIndex = 1;
             this.hudScaleNumericUpDown.Value = new decimal(new int[] {
             25,
             0,
@@ -103,7 +103,7 @@
             this.label1.Margin = new System.Windows.Forms.Padding(3);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(59, 13);
-            this.label1.TabIndex = 4;
+            this.label1.TabIndex = 0;
             this.label1.Text = "Secret Key";
             // 
             // label2
@@ -113,7 +113,7 @@
             this.label2.Margin = new System.Windows.Forms.Padding(3);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(86, 13);
-            this.label2.TabIndex = 7;
+            this.label2.TabIndex = 0;
             this.label2.Text = "Upload Endpoint";
             // 
             // label3
@@ -123,7 +123,7 @@
             this.label3.Margin = new System.Windows.Forms.Padding(3);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(80, 13);
-            this.label3.TabIndex = 8;
+            this.label3.TabIndex = 0;
             this.label3.Text = "Image Location";
             // 
             // label4
@@ -133,7 +133,7 @@
             this.label4.Margin = new System.Windows.Forms.Padding(3);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(61, 13);
-            this.label4.TabIndex = 9;
+            this.label4.TabIndex = 0;
             this.label4.Text = "HUD Scale";
             // 
             // saveButton
@@ -142,7 +142,7 @@
             this.saveButton.Location = new System.Drawing.Point(120, 3);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(111, 52);
-            this.saveButton.TabIndex = 10;
+            this.saveButton.TabIndex = 1;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
@@ -153,7 +153,7 @@
             this.loadButton.Location = new System.Drawing.Point(237, 3);
             this.loadButton.Name = "loadButton";
             this.loadButton.Size = new System.Drawing.Size(111, 52);
-            this.loadButton.TabIndex = 11;
+            this.loadButton.TabIndex = 2;
             this.loadButton.Text = "Load";
             this.loadButton.UseVisualStyleBackColor = true;
             this.loadButton.Click += new System.EventHandler(this.resetButton_Click);
@@ -164,7 +164,7 @@
             this.cancelButton.Location = new System.Drawing.Point(354, 3);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(112, 52);
-            this.cancelButton.TabIndex = 12;
+            this.cancelButton.TabIndex = 3;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
@@ -176,7 +176,7 @@
             this.minimizeToTrayCheckBox.Location = new System.Drawing.Point(8, 344);
             this.minimizeToTrayCheckBox.Name = "minimizeToTrayCheckBox";
             this.minimizeToTrayCheckBox.Size = new System.Drawing.Size(228, 50);
-            this.minimizeToTrayCheckBox.TabIndex = 13;
+            this.minimizeToTrayCheckBox.TabIndex = 9;
             this.minimizeToTrayCheckBox.Text = "Minimize to Tray";
             this.toolTip1.SetToolTip(this.minimizeToTrayCheckBox, "Whether or not to minimize the program to the system tray.");
             this.minimizeToTrayCheckBox.UseVisualStyleBackColor = true;
@@ -187,7 +187,7 @@
             this.openFileLocationButton.Location = new System.Drawing.Point(3, 3);
             this.openFileLocationButton.Name = "openFileLocationButton";
             this.openFileLocationButton.Size = new System.Drawing.Size(111, 52);
-            this.openFileLocationButton.TabIndex = 14;
+            this.openFileLocationButton.TabIndex = 0;
             this.openFileLocationButton.Text = "Open File Location";
             this.openFileLocationButton.UseVisualStyleBackColor = true;
             this.openFileLocationButton.Click += new System.EventHandler(this.openFileLocationButton_Click);
@@ -233,7 +233,7 @@
             this.autorunCheckBox.Location = new System.Drawing.Point(242, 344);
             this.autorunCheckBox.Name = "autorunCheckBox";
             this.autorunCheckBox.Size = new System.Drawing.Size(229, 50);
-            this.autorunCheckBox.TabIndex = 17;
+            this.autorunCheckBox.TabIndex = 10;
             this.autorunCheckBox.Text = "Run at Startup";
             this.autorunCheckBox.UseVisualStyleBackColor = true;
             this.autorunCheckBox.CheckedChanged += new System.EventHandler(this.autostartCheckBox_CheckedChanged);
@@ -259,7 +259,7 @@
             this.secretKeyTextBoxEx.Location = new System.Drawing.Point(3, 20);
             this.secretKeyTextBoxEx.Name = "secretKeyTextBoxEx";
             this.secretKeyTextBoxEx.Size = new System.Drawing.Size(462, 20);
-            this.secretKeyTextBoxEx.TabIndex = 0;
+            this.secretKeyTextBoxEx.TabIndex = 1;
             this.secretKeyTextBoxEx.UseSystemPasswordChar = true;
             // 
             // uploadEndpointPanel
@@ -308,7 +308,7 @@
             this.imageLocationTextBoxEx.Location = new System.Drawing.Point(3, 20);
             this.imageLocationTextBoxEx.Name = "imageLocationTextBoxEx";
             this.imageLocationTextBoxEx.Size = new System.Drawing.Size(462, 20);
-            this.imageLocationTextBoxEx.TabIndex = 2;
+            this.imageLocationTextBoxEx.TabIndex = 1;
             this.imageLocationTextBoxEx.TextChanged += new System.EventHandler(this.imageLocationTextBoxEx_TextChanged);
             // 
             // controlTableLayoutPanel
@@ -341,7 +341,7 @@
             this.hudScalePanel.Margin = new System.Windows.Forms.Padding(0);
             this.hudScalePanel.Name = "hudScalePanel";
             this.hudScalePanel.Size = new System.Drawing.Size(234, 56);
-            this.hudScalePanel.TabIndex = 3;
+            this.hudScalePanel.TabIndex = 5;
             this.toolTip1.SetToolTip(this.hudScalePanel, "The HUD scale you use in-game. NOTE: All calculations are designed for 100% and d" +
         "erived. Rounding errors may occur.");
             // 
@@ -352,7 +352,7 @@
             this.inventoryHotkeyCheckBox.Location = new System.Drawing.Point(242, 232);
             this.inventoryHotkeyCheckBox.Name = "inventoryHotkeyCheckBox";
             this.inventoryHotkeyCheckBox.Size = new System.Drawing.Size(229, 50);
-            this.inventoryHotkeyCheckBox.TabIndex = 20;
+            this.inventoryHotkeyCheckBox.TabIndex = 6;
             this.inventoryHotkeyCheckBox.Text = "\"Map and Backpack Keys\" enabled";
             this.inventoryHotkeyCheckBox.UseVisualStyleBackColor = true;
             // 
@@ -365,7 +365,7 @@
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(234, 56);
-            this.panel1.TabIndex = 21;
+            this.panel1.TabIndex = 3;
             // 
             // label5
             // 
@@ -374,7 +374,7 @@
             this.label5.Margin = new System.Windows.Forms.Padding(3);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(127, 13);
-            this.label5.TabIndex = 1;
+            this.label5.TabIndex = 0;
             this.label5.Text = "Upload interval (seconds)";
             // 
             // uploadIntervalNumericUpDown
@@ -393,7 +393,7 @@
             0});
             this.uploadIntervalNumericUpDown.Name = "uploadIntervalNumericUpDown";
             this.uploadIntervalNumericUpDown.Size = new System.Drawing.Size(228, 20);
-            this.uploadIntervalNumericUpDown.TabIndex = 0;
+            this.uploadIntervalNumericUpDown.TabIndex = 1;
             this.uploadIntervalNumericUpDown.Value = new decimal(new int[] {
             1,
             0,
@@ -409,7 +409,7 @@
             this.panel2.Margin = new System.Windows.Forms.Padding(0);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(235, 56);
-            this.panel2.TabIndex = 22;
+            this.panel2.TabIndex = 4;
             // 
             // downloadIntervalNumericUpDown
             // 
@@ -441,7 +441,7 @@
             this.label6.Margin = new System.Windows.Forms.Padding(3);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(141, 13);
-            this.label6.TabIndex = 2;
+            this.label6.TabIndex = 0;
             this.label6.Text = "Download interval (seconds)";
             // 
             // showConsoleCheckBox
@@ -451,7 +451,7 @@
             this.showConsoleCheckBox.Location = new System.Drawing.Point(8, 288);
             this.showConsoleCheckBox.Name = "showConsoleCheckBox";
             this.showConsoleCheckBox.Size = new System.Drawing.Size(228, 50);
-            this.showConsoleCheckBox.TabIndex = 23;
+            this.showConsoleCheckBox.TabIndex = 7;
             this.showConsoleCheckBox.Text = "Show console";
             this.showConsoleCheckBox.UseVisualStyleBackColor = true;
             // 
@@ -462,7 +462,7 @@
             this.enableOverlayCheckBox.Location = new System.Drawing.Point(242, 288);
             this.enableOverlayCheckBox.Name = "enableOverlayCheckBox";
             this.enableOverlayCheckBox.Size = new System.Drawing.Size(229, 50);
-            this.enableOverlayCheckBox.TabIndex = 24;
+            this.enableOverlayCheckBox.TabIndex = 8;
             this.enableOverlayCheckBox.Text = "Enable overlay";
             this.enableOverlayCheckBox.UseVisualStyleBackColor = true;
             // 
