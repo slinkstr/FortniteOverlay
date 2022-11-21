@@ -399,10 +399,10 @@ namespace FortniteOverlay.Util
         {
             public PixelPositions_1440p()
             {
-                Resolution         = new int[2] { 2560, 1440 };
-                SelectedSlotOffset = -13;
-                SlotSize           = 104;
-                Slots              = new int[5][]
+                Resolution            = new int[2] { 2560, 1440 };
+                SelectedSlotOffset    = -13;
+                SlotSize              = 104;
+                Slots                 = new int[5][]
                 {
                     new int[] { 2009, 1227 },
                     new int[] { 2118, 1227 },
@@ -411,18 +411,18 @@ namespace FortniteOverlay.Util
                     new int[] { 2444, 1227 }
                 };
 
-                Map                = new int[2] { 2512, 47 };
-                GoldBars           = new int[2] { 2518, 1153 };
-                SpectatingText     = new int[2][]
+                Map                   = new int[2] { 2512, 47 };
+                GoldBars              = new int[2] { 2518, 1153 };
+                SpectatingText        = new int[2][]
                 {
                     new int[] { 1181, 26 },
                     new int[] { 1200, 26 },
                 };
 
                 InventoryHotkeyOffset = 65;
-                Keys             = new int[2] { 2456, 927  };
-                KeysWithCrown        = new int[2] { 2350, 944  };
-                Crown           = new int[2] { 2490, 1000 };
+                Keys                  = new int[2] { 2456, 927  };
+                KeysWithCrown         = new int[2] { 2350, 944  };
+                Crown                 = new int[2] { 2490, 1000 };
             }
         }
 
@@ -430,10 +430,10 @@ namespace FortniteOverlay.Util
         {
             public PixelPositions_1080p()
             {
-                Resolution         = new int[2] { 1920, 1080 };
-                SelectedSlotOffset = -11;
-                SlotSize           = 78;
-                Slots              = new int[5][]
+                Resolution            = new int[2] { 1920, 1080 };
+                SelectedSlotOffset    = -11;
+                SlotSize              = 78;
+                Slots                 = new int[5][]
                 {
                     new int[] { 1507, 920 },
                     new int[] { 1589, 920 },
@@ -442,18 +442,18 @@ namespace FortniteOverlay.Util
                     new int[] { 1833, 920 }
                 };
 
-                Map                = new int[2] { 1884, 35  };
-                GoldBars           = new int[2] { 1889, 866 };
-                SpectatingText     = new int[2][]
+                Map                   = new int[2] { 1884, 35  };
+                GoldBars              = new int[2] { 1889, 866 };
+                SpectatingText        = new int[2][]
                 {
                     new int[] { 885, 20 },
                     new int[] { 900, 20 },
                 };
 
                 InventoryHotkeyOffset = 49;
-                Keys             = new int[2] { 1842, 694 };
-                KeysWithCrown        = new int[2] { 1762, 707 };
-                Crown           = new int[2] { 1866, 750 };
+                Keys                  = new int[2] { 1842, 694 };
+                KeysWithCrown         = new int[2] { 1762, 707 };
+                Crown                 = new int[2] { 1866, 750 };
             }
         }
     }
