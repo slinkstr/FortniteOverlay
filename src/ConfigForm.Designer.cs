@@ -353,7 +353,8 @@
             this.inventoryHotkeyCheckBox.Name = "inventoryHotkeyCheckBox";
             this.inventoryHotkeyCheckBox.Size = new System.Drawing.Size(229, 50);
             this.inventoryHotkeyCheckBox.TabIndex = 6;
-            this.inventoryHotkeyCheckBox.Text = "\"Map and Backpack Keys\" enabled";
+            this.inventoryHotkeyCheckBox.Text = "\"Map && Backpack Keys\" enabled";
+            this.toolTip1.SetToolTip(this.inventoryHotkeyCheckBox, "Your in-game \"Map & Backpack Keys\" setting.");
             this.inventoryHotkeyCheckBox.UseVisualStyleBackColor = true;
             // 
             // panel1
