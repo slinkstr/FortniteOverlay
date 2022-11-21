@@ -149,11 +149,8 @@ namespace FortniteOverlay.Util
 
         public static Bitmap RenderGear(Bitmap screenshot, PixelPositions positions, int hudScale, bool inventoryHotkey)
         {
-            int crownOffset = inventoryHotkey ? positions.InventoryHotkeyOffset : 0;
-            Color pureWhite = Color.FromArgb(255, 255, 255);
-            Color fadedWhite = Color.FromArgb(127, 127, 127);
-
             var scaledPos = ScalePositions(positions, hudScale);
+            int crownOffset = inventoryHotkey ? 0 : scaledPos.InventoryHotkeyOffset;
 
             int slotSelected = 0;
             for (int i = 0; i < scaledPos.Slots.Length; i++)
@@ -207,10 +204,10 @@ namespace FortniteOverlay.Util
 
         public static void RenderGearDebug(ref Bitmap blankScreenshot, PixelPositions positions, int hudScale, bool inventoryHotkey)
         {
-            int crownOffset = inventoryHotkey ? positions.InventoryHotkeyOffset : 0;
             Pen pen = new Pen(Color.Red, 1);
 
             var scaledPos = ScalePositions(positions, hudScale);
+            int crownOffset = inventoryHotkey ? 0 : scaledPos.InventoryHotkeyOffset;
 
             using (Graphics g = Graphics.FromImage(blankScreenshot))
             {
