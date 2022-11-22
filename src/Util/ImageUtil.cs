@@ -48,7 +48,6 @@ namespace FortniteOverlay.Util
         public static bool IsGoldBarsVisible(Bitmap screenshot, PixelPositions positions, int hudScale)
         {
             if (screenshot == null) { return false; }
-            Color paleYellow = Color.FromArgb(228, 222, 140);
             var scaledPos = ScalePositions(positions, hudScale);
             var pix = screenshot.GetPixel(scaledPos.GoldBars[0], scaledPos.GoldBars[1]);
             if (pix.GetHue() > 52

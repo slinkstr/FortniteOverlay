@@ -178,7 +178,6 @@
             this.minimizeToTrayCheckBox.Size = new System.Drawing.Size(228, 50);
             this.minimizeToTrayCheckBox.TabIndex = 9;
             this.minimizeToTrayCheckBox.Text = "Minimize to Tray";
-            this.toolTip1.SetToolTip(this.minimizeToTrayCheckBox, "Whether or not to minimize the program to the system tray.");
             this.minimizeToTrayCheckBox.UseVisualStyleBackColor = true;
             // 
             // openFileLocationButton
