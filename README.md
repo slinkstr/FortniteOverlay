@@ -4,44 +4,58 @@
 
 Gear overlay for Fortnite. Automatically gets current squad as you play and overlays a screenshot of their gear in the top-left corner if they're also running it.
 
-Designed for 100% HUD scale at 1080p/1440p. Other resolutions and scales are calculated from these and may not be accurate.
+Designed for 100% HUD scale at 1080p or 1440p. Other resolutions and scales are calculated from these and may not be accurate.
 
-Uses ~5.5MB/hour per person down and ~5.5MB/hour up. Doesn't upload or download unless Fortnite is open and you're in a party with other players.
+Downloads ~5MB/hr per squadmate and uploads ~5MB/hr. Doesn't download or upload unless Fortnite is open and you're in a party with other players.
 
-# Config
+## Config
 
 Config file is %LOCALAPPDATA%/FortniteOverlay/config.json and will be created on first launch if it doesn't already exist.
 
-Example config:
+Secret key, upload endpoint, and image location need to be provided by someone with a server; see [Server Setup](#server-setup) to host.
 
-```
-{
-  "UploadEndpoint": "https://example.com/fortnitegear/upload.php",
-  "SecretKey": "SECRET_KEY_HERE",
-  "ImageLocation": "http://example.com/fortnitegear/images/",
-  "HUDScale": 100,
-  "MinimizeToTray": true
-}
-```
+## Server Setup
 
-# Server setup
-
-I am using [ShareX-Custom-Upload](https://github.com/Inteliboi/ShareX-Custom-Upload) slightly tweaked, included as upload.php.
+Server uses NGINX autoindexing and a [modified ShareX uploader (included as upload.php)](upload.php) to send and receive images.
 
 Make sure to change the secret key.
 
-Below is a snippet from my NGINX config to enable auto-indexing. (The json format is very handy.)
+Example NGINX config:
 
 ```
-location /fortnitegear {
-    location ~ \.php$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+server {
+    listen 443 ssl;
+    server_name example.com;
+
+    root /var/www/example.com;
+    index index.html index.htm index.php;
+    location / {
+        try_files $uri $uri/ =404;
     }
 
-    location ~ /images {
-        autoindex on;
-        autoindex_format json;
+    location /fortnitegear {
+        location ~ \.php$ {
+            include snippets/fastcgi-php.conf;
+            fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+        }
+
+        location ~ /images {
+            autoindex on;
+            autoindex_format json;
+        }
     }
 }
+```
+
+Folder structure:
+
+```
+var
+└─ www
+   └─ example.com
+      ├─ ...
+      └─ fortnitegear
+         ├─ upload.php
+         └─ images
+            └─ ...
 ```
