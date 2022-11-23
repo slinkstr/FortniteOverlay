@@ -1,6 +1,8 @@
 # FortniteOverlay
 
-![Preview screenshot](PreviewScreenshot.jpg)
+![Screenshot of the overlay in-game.](preview-ingame.png)
+
+![Screenshot of the main and config window.](preview-window.png)
 
 Gear overlay for Fortnite. Automatically gets current squad as you play and overlays a screenshot of their gear in the top-left corner if they're also running it.
 
