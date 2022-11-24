@@ -92,16 +92,16 @@ namespace FortniteOverlay.Util
             return true;
         }
 
-        public static bool IsCrownVisible(Bitmap screenshot, List<PixelPositions> positions, int hudScale)
+        public static bool IsCrownVisible(Bitmap screenshot, List<PixelPositions> positions, int hudScale, bool inventoryHotkey)
         {
-            return IsCrownVisible(screenshot, MatchingPosition(screenshot, positions), hudScale);
+            return IsCrownVisible(screenshot, MatchingPosition(screenshot, positions), hudScale, inventoryHotkey);
         }
 
-        public static bool IsCrownVisible(Bitmap screenshot, PixelPositions positions, int hudScale)
+        public static bool IsCrownVisible(Bitmap screenshot, PixelPositions positions, int hudScale, bool inventoryHotkey)
         {
             if (screenshot == null) { return false; }
             var scaledPos = ScalePositions(positions, hudScale);
-            var pix = screenshot.GetPixel(scaledPos.Crown[0], scaledPos.Crown[1]);
+            var pix = screenshot.GetPixel(scaledPos.Crown[0], scaledPos.Crown[1] + (inventoryHotkey ? 0 : scaledPos.InventoryHotkeyOffset));
             if (pix.GetHue() > 45
              && pix.GetHue() < 60
              && pix.GetSaturation() > 0.86)
@@ -149,7 +149,7 @@ namespace FortniteOverlay.Util
         public static Bitmap RenderGear(Bitmap screenshot, PixelPositions positions, int hudScale, bool inventoryHotkey)
         {
             var scaledPos = ScalePositions(positions, hudScale);
-            int crownOffset = inventoryHotkey ? 0 : scaledPos.InventoryHotkeyOffset;
+            int hotkeyOffset = inventoryHotkey ? 0 : scaledPos.InventoryHotkeyOffset;
 
             int slotSelected = 0;
             for (int i = 0; i < scaledPos.Slots.Length; i++)
@@ -176,17 +176,17 @@ namespace FortniteOverlay.Util
                 for (int i = 0; i < scaledPos.Slots.Length; i++)
                 {
                     var ofs = (slotSelected == i + 1) ? scaledPos.SelectedSlotOffset : 0;
-                    g.DrawImage(screenshot, new Rectangle(i * scaledPos.SlotSize, 0, scaledPos.SlotSize, scaledPos.SlotSize), new Rectangle(scaledPos.Slots[i][0], scaledPos.Slots[i][1] + ofs, scaledPos.SlotSize, scaledPos.SlotSize), GraphicsUnit.Pixel);
+                    g.DrawImage(screenshot, new Rectangle(i * scaledPos.SlotSize, 0, scaledPos.SlotSize, scaledPos.SlotSize), new Rectangle(scaledPos.Slots[i][0],      scaledPos.Slots[i][1] + ofs,               scaledPos.SlotSize, scaledPos.SlotSize), GraphicsUnit.Pixel);
                 }
 
                 // keys
-                if (IsCrownVisible(screenshot, positions, hudScale))
+                if (IsCrownVisible(screenshot, positions, hudScale, inventoryHotkey))
                 {
-                    g.DrawImage(screenshot, new Rectangle(scaledPos.SlotSize * 5, 0, scaledPos.SlotSize, scaledPos.SlotSize), new Rectangle(scaledPos.KeysWithCrown[0], scaledPos.KeysWithCrown[1] + crownOffset, scaledPos.SlotSize, scaledPos.SlotSize), GraphicsUnit.Pixel);
+                    g.DrawImage(screenshot, new Rectangle(scaledPos.SlotSize * 5, 0, scaledPos.SlotSize, scaledPos.SlotSize), new Rectangle(scaledPos.KeysWithCrown[0], scaledPos.KeysWithCrown[1] + hotkeyOffset, scaledPos.SlotSize, scaledPos.SlotSize), GraphicsUnit.Pixel);
                 }
                 else
                 {
-                    g.DrawImage(screenshot, new Rectangle(scaledPos.SlotSize * 5, 0, scaledPos.SlotSize, scaledPos.SlotSize), new Rectangle(scaledPos.Keys[0],      scaledPos.Keys[1]      + crownOffset, scaledPos.SlotSize, scaledPos.SlotSize), GraphicsUnit.Pixel);
+                    g.DrawImage(screenshot, new Rectangle(scaledPos.SlotSize * 5, 0, scaledPos.SlotSize, scaledPos.SlotSize), new Rectangle(scaledPos.Keys[0],          scaledPos.Keys[1]          + hotkeyOffset, scaledPos.SlotSize, scaledPos.SlotSize), GraphicsUnit.Pixel);
                 }
             }
 
@@ -217,9 +217,9 @@ namespace FortniteOverlay.Util
                 }
 
                 // Keys/crown
-                g.DrawEllipse(pen, scaledPos.Crown[0] - 1, scaledPos.Crown[1] - 1, 2, 2);
-                g.DrawRectangle(pen, new Rectangle(scaledPos.KeysWithCrown[0] - 1, (scaledPos.KeysWithCrown[1] + crownOffset) - 1, scaledPos.SlotSize + 1, scaledPos.SlotSize + 1));
-                g.DrawRectangle(pen, new Rectangle(scaledPos.Keys[0]      - 1, (scaledPos.Keys[1] + crownOffset)      - 1, scaledPos.SlotSize + 1, scaledPos.SlotSize + 1));
+                g.DrawEllipse(pen, scaledPos.Crown[0] - 1, scaledPos.Crown[1] - 1 + crownOffset, 2, 2);
+                g.DrawRectangle(pen, new Rectangle(scaledPos.KeysWithCrown[0] - 1, scaledPos.KeysWithCrown[1] + crownOffset - 1, scaledPos.SlotSize + 1, scaledPos.SlotSize + 1));
+                g.DrawRectangle(pen, new Rectangle(scaledPos.Keys[0]          - 1, scaledPos.Keys[1]          + crownOffset - 1, scaledPos.SlotSize + 1, scaledPos.SlotSize + 1));
 
                 // Other points
                 g.DrawEllipse(pen, scaledPos.Map[0] - 1, scaledPos.Map[1] - 1, 2, 2);
