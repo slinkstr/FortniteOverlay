@@ -103,7 +103,7 @@ namespace FortniteOverlay.Util
             var scaledPos = ScalePositions(positions, hudScale);
             var pix = screenshot.GetPixel(scaledPos.Crown[0], scaledPos.Crown[1] + (inventoryHotkey ? 0 : scaledPos.InventoryHotkeyOffset));
             if (pix.GetHue() > 45
-             && pix.GetHue() < 60
+             && pix.GetHue() < 64
              && pix.GetSaturation() > 0.86)
             {
                 return true;
