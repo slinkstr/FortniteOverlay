@@ -277,7 +277,12 @@ namespace FortniteOverlay
 
         private static void ShowDebugOverlay()
         {
-            var debugBitmap = new Bitmap(procMon.WindowSize.Width, procMon.WindowSize.Height);
+            Rectangle bounds = procMon.WindowSize;
+            if (bounds.Width <= 0 || bounds.Height <= 0)
+            {
+                bounds = Screen.GetBounds(Point.Empty);
+            }
+            var debugBitmap = new Bitmap(bounds.Width, bounds.Height);
             RenderGearDebug(ref debugBitmap, pixelPositions, config.HUDScale, config.InventoryHotkey);
             overlayForm.SetDebugOverlay(debugBitmap);
         }
