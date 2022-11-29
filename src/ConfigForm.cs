@@ -160,6 +160,11 @@ namespace FortniteOverlay
         // ****************************************************************************************************
         // CONTROL EVENT HANDLERS
         // ****************************************************************************************************
+        private void ConfigForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Program.form.ShowHideConsole(Program.config.ShowConsole);
+        }
+
         private void ConfigForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             try

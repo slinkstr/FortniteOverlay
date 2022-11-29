@@ -11,8 +11,8 @@ namespace FortniteOverlay
         public Form1()
         {
             InitializeComponent();
-            Text += " v" + Application.ProductVersion;
             consoleHeight = consoleLogTextBox.Size.Height;
+            Text += " v" + Application.ProductVersion;
             Icon = Icon.ExtractAssociatedIcon(AppDomain.CurrentDomain.FriendlyName);
             notifyIcon.Icon = Icon.ExtractAssociatedIcon(AppDomain.CurrentDomain.FriendlyName);
         }
@@ -108,6 +108,19 @@ namespace FortniteOverlay
             updateNoticeLinkLabel.LinkVisited = false;
         }
 
+        public void ShowHideConsole(bool showConsole)
+        {
+            if (consoleLogTextBox.Visible == showConsole)
+            {
+                return;
+            }
+
+            int tableRow = mainTableLayoutPanel.GetRow(consoleLogTextBox);
+            consoleLogTextBox.Visible = showConsole;
+            mainTableLayoutPanel.RowStyles[tableRow].Height = showConsole ? consoleHeight : 0;
+            Size = new Size(Size.Width, Size.Height + (showConsole ? consoleHeight : consoleHeight * -1));
+        }
+
         public void ShowHideSortButtons(int squadmates)
         {
             SetControlProperty(squadmate1DownButton, "Visible", (squadmates > 1));
@@ -129,6 +142,14 @@ namespace FortniteOverlay
         // ****************************************************************************************************
         // CONTROL EVENT HANDLERS
         // ****************************************************************************************************
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            notifyIcon.Icon = null;
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            ShowHideConsole(Program.config.ShowConsole);
+        }
         private void Form1_Resize(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Minimized && Program.config.MinimizeToTray)
@@ -136,10 +157,6 @@ namespace FortniteOverlay
                 Hide();
                 notifyIcon.Visible = true;
             }
-        }
-        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            notifyIcon.Icon = null;
         }
 
         private void editConfigButton_Click(object sender, EventArgs e)

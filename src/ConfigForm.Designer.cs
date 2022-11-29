@@ -42,11 +42,8 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.autorunCheckBox = new System.Windows.Forms.CheckBox();
             this.secretKeyPanel = new System.Windows.Forms.Panel();
-            this.secretKeyTextBoxEx = new FortniteOverlay.TextBoxEx();
             this.uploadEndpointPanel = new System.Windows.Forms.Panel();
-            this.uploadEndpointTextBoxEx = new FortniteOverlay.TextBoxEx();
             this.imageLocationPanel = new System.Windows.Forms.Panel();
-            this.imageLocationTextBoxEx = new FortniteOverlay.TextBoxEx();
             this.controlTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.hudScalePanel = new System.Windows.Forms.Panel();
             this.inventoryHotkeyCheckBox = new System.Windows.Forms.CheckBox();
@@ -59,6 +56,9 @@
             this.showConsoleCheckBox = new System.Windows.Forms.CheckBox();
             this.enableOverlayCheckBox = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.secretKeyTextBoxEx = new FortniteOverlay.TextBoxEx();
+            this.uploadEndpointTextBoxEx = new FortniteOverlay.TextBoxEx();
+            this.imageLocationTextBoxEx = new FortniteOverlay.TextBoxEx();
             ((System.ComponentModel.ISupportInitialize)(this.hudScaleNumericUpDown)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.secretKeyPanel.SuspendLayout();
@@ -102,9 +102,9 @@
             this.label1.Location = new System.Drawing.Point(3, 3);
             this.label1.Margin = new System.Windows.Forms.Padding(3);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(59, 13);
+            this.label1.Size = new System.Drawing.Size(58, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Secret Key";
+            this.label1.Text = "Secret key";
             // 
             // label2
             // 
@@ -112,9 +112,9 @@
             this.label2.Location = new System.Drawing.Point(3, 3);
             this.label2.Margin = new System.Windows.Forms.Padding(3);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(86, 13);
+            this.label2.Size = new System.Drawing.Size(85, 13);
             this.label2.TabIndex = 0;
-            this.label2.Text = "Upload Endpoint";
+            this.label2.Text = "Upload endpoint";
             // 
             // label3
             // 
@@ -122,9 +122,9 @@
             this.label3.Location = new System.Drawing.Point(3, 3);
             this.label3.Margin = new System.Windows.Forms.Padding(3);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(80, 13);
+            this.label3.Size = new System.Drawing.Size(76, 13);
             this.label3.TabIndex = 0;
-            this.label3.Text = "Image Location";
+            this.label3.Text = "Image location";
             // 
             // label4
             // 
@@ -132,9 +132,9 @@
             this.label4.Location = new System.Drawing.Point(3, 3);
             this.label4.Margin = new System.Windows.Forms.Padding(3);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(61, 13);
+            this.label4.Size = new System.Drawing.Size(59, 13);
             this.label4.TabIndex = 0;
-            this.label4.Text = "HUD Scale";
+            this.label4.Text = "HUD scale";
             // 
             // saveButton
             // 
@@ -177,7 +177,7 @@
             this.minimizeToTrayCheckBox.Name = "minimizeToTrayCheckBox";
             this.minimizeToTrayCheckBox.Size = new System.Drawing.Size(228, 50);
             this.minimizeToTrayCheckBox.TabIndex = 9;
-            this.minimizeToTrayCheckBox.Text = "Minimize to Tray";
+            this.minimizeToTrayCheckBox.Text = "Minimize to tray";
             this.minimizeToTrayCheckBox.UseVisualStyleBackColor = true;
             // 
             // openFileLocationButton
@@ -233,7 +233,7 @@
             this.autorunCheckBox.Name = "autorunCheckBox";
             this.autorunCheckBox.Size = new System.Drawing.Size(229, 50);
             this.autorunCheckBox.TabIndex = 10;
-            this.autorunCheckBox.Text = "Run at Startup";
+            this.autorunCheckBox.Text = "Run at system startup";
             this.autorunCheckBox.UseVisualStyleBackColor = true;
             this.autorunCheckBox.CheckedChanged += new System.EventHandler(this.autostartCheckBox_CheckedChanged);
             // 
@@ -250,17 +250,6 @@
             this.secretKeyPanel.TabIndex = 0;
             this.toolTip1.SetToolTip(this.secretKeyPanel, "Secret key to upload images to your server.  Keep this private!");
             // 
-            // secretKeyTextBoxEx
-            // 
-            this.secretKeyTextBoxEx.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.secretKeyTextBoxEx.BorderColor = System.Drawing.Color.Transparent;
-            this.secretKeyTextBoxEx.Location = new System.Drawing.Point(3, 20);
-            this.secretKeyTextBoxEx.Name = "secretKeyTextBoxEx";
-            this.secretKeyTextBoxEx.Size = new System.Drawing.Size(462, 20);
-            this.secretKeyTextBoxEx.TabIndex = 1;
-            this.secretKeyTextBoxEx.UseSystemPasswordChar = true;
-            // 
             // uploadEndpointPanel
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.uploadEndpointPanel, 2);
@@ -273,17 +262,6 @@
             this.uploadEndpointPanel.Size = new System.Drawing.Size(469, 56);
             this.uploadEndpointPanel.TabIndex = 1;
             this.toolTip1.SetToolTip(this.uploadEndpointPanel, "URL to upload images to. Must end with \".php\".");
-            // 
-            // uploadEndpointTextBoxEx
-            // 
-            this.uploadEndpointTextBoxEx.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.uploadEndpointTextBoxEx.BorderColor = System.Drawing.Color.Transparent;
-            this.uploadEndpointTextBoxEx.Location = new System.Drawing.Point(3, 20);
-            this.uploadEndpointTextBoxEx.Name = "uploadEndpointTextBoxEx";
-            this.uploadEndpointTextBoxEx.Size = new System.Drawing.Size(462, 20);
-            this.uploadEndpointTextBoxEx.TabIndex = 1;
-            this.uploadEndpointTextBoxEx.TextChanged += new System.EventHandler(this.uploadEndpointTextBoxEx_TextChanged);
             // 
             // imageLocationPanel
             // 
@@ -298,17 +276,6 @@
             this.imageLocationPanel.TabIndex = 2;
             this.toolTip1.SetToolTip(this.imageLocationPanel, "URL to look for uploaded images at, usually right next to the upload endpoint. Mu" +
         "st end with \"/\".");
-            // 
-            // imageLocationTextBoxEx
-            // 
-            this.imageLocationTextBoxEx.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.imageLocationTextBoxEx.BorderColor = System.Drawing.Color.Transparent;
-            this.imageLocationTextBoxEx.Location = new System.Drawing.Point(3, 20);
-            this.imageLocationTextBoxEx.Name = "imageLocationTextBoxEx";
-            this.imageLocationTextBoxEx.Size = new System.Drawing.Size(462, 20);
-            this.imageLocationTextBoxEx.TabIndex = 1;
-            this.imageLocationTextBoxEx.TextChanged += new System.EventHandler(this.imageLocationTextBoxEx_TextChanged);
             // 
             // controlTableLayoutPanel
             // 
@@ -472,6 +439,39 @@
             this.toolTip1.InitialDelay = 500;
             this.toolTip1.ReshowDelay = 0;
             // 
+            // secretKeyTextBoxEx
+            // 
+            this.secretKeyTextBoxEx.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.secretKeyTextBoxEx.BorderColor = System.Drawing.Color.Transparent;
+            this.secretKeyTextBoxEx.Location = new System.Drawing.Point(3, 20);
+            this.secretKeyTextBoxEx.Name = "secretKeyTextBoxEx";
+            this.secretKeyTextBoxEx.Size = new System.Drawing.Size(462, 20);
+            this.secretKeyTextBoxEx.TabIndex = 1;
+            this.secretKeyTextBoxEx.UseSystemPasswordChar = true;
+            // 
+            // uploadEndpointTextBoxEx
+            // 
+            this.uploadEndpointTextBoxEx.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.uploadEndpointTextBoxEx.BorderColor = System.Drawing.Color.Transparent;
+            this.uploadEndpointTextBoxEx.Location = new System.Drawing.Point(3, 20);
+            this.uploadEndpointTextBoxEx.Name = "uploadEndpointTextBoxEx";
+            this.uploadEndpointTextBoxEx.Size = new System.Drawing.Size(462, 20);
+            this.uploadEndpointTextBoxEx.TabIndex = 1;
+            this.uploadEndpointTextBoxEx.TextChanged += new System.EventHandler(this.uploadEndpointTextBoxEx_TextChanged);
+            // 
+            // imageLocationTextBoxEx
+            // 
+            this.imageLocationTextBoxEx.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.imageLocationTextBoxEx.BorderColor = System.Drawing.Color.Transparent;
+            this.imageLocationTextBoxEx.Location = new System.Drawing.Point(3, 20);
+            this.imageLocationTextBoxEx.Name = "imageLocationTextBoxEx";
+            this.imageLocationTextBoxEx.Size = new System.Drawing.Size(462, 20);
+            this.imageLocationTextBoxEx.TabIndex = 1;
+            this.imageLocationTextBoxEx.TextChanged += new System.EventHandler(this.imageLocationTextBoxEx_TextChanged);
+            // 
             // ConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -481,6 +481,7 @@
             this.Name = "ConfigForm";
             this.Text = "Configuration";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ConfigForm_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ConfigForm_FormClosed);
             this.Load += new System.EventHandler(this.ConfigForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.hudScaleNumericUpDown)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);

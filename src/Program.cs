@@ -35,7 +35,7 @@ namespace FortniteOverlay
         public static ProcMon procMon = new ProcMon("FortniteClient-Win64-Shipping");
         public static ProgramConfig config;
         public static string hostName;
-        public static System.Windows.Forms.Timer checkForUpdatesTimer = new System.Windows.Forms.Timer();
+        public static System.Windows.Forms.Timer getNewestVersionTimer = new System.Windows.Forms.Timer();
         public static System.Windows.Forms.Timer updateTimer = new System.Windows.Forms.Timer();
 
         [STAThread]
@@ -82,22 +82,22 @@ namespace FortniteOverlay
             procMonWorker.DoWork += new DoWorkEventHandler(procMon.UpdateProcessStatus);
             procMonWorker.RunWorkerAsync();
 
-            // Update checking
 #if !DEBUG
+            // Update checking
             _ = CheckForUpdates();
+            getNewestVersionTimer.Tick += new EventHandler(GetNewestVersionEvent);
+            getNewestVersionTimer.Interval = (6 * 60 * 60 * 1000);
+            getNewestVersionTimer.Start();
 #endif
-            checkForUpdatesTimer.Tick += new EventHandler(GetNewestVersionEvent);
-            checkForUpdatesTimer.Interval = (6 * 60 * 60 * 1000);
-            checkForUpdatesTimer.Start();
 
             Application.Run(form);
         }
 
         public static async void GetNewestVersionEvent(Object obj, EventArgs evtargs)
         {
-            checkForUpdatesTimer.Stop();
+            getNewestVersionTimer.Stop();
             await CheckForUpdates();
-            checkForUpdatesTimer.Start();
+            getNewestVersionTimer.Start();
         }
 
         public static async void UpdateEvent(Object obj, EventArgs evtargs)

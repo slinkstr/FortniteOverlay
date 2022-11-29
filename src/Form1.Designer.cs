@@ -414,6 +414,7 @@ namespace FortniteOverlay
             this.Name = "Form1";
             this.Text = "FortniteOverlay";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.selfGearPictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmate1GearPictureBox)).EndInit();
