@@ -61,3 +61,9 @@ var
          └─ images
             └─ ...
 ```
+
+Example cronjob to purge images older than 1 day every day at midnight:
+
+```
+0 0 * * * find /var/www/example.com/fortnitegear/images -type f -mtime +1 -exec rm -f {} \;
+```
