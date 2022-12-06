@@ -42,8 +42,11 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.autorunCheckBox = new System.Windows.Forms.CheckBox();
             this.secretKeyPanel = new System.Windows.Forms.Panel();
+            this.secretKeyTextBoxEx = new FortniteOverlay.TextBoxEx();
             this.uploadEndpointPanel = new System.Windows.Forms.Panel();
+            this.uploadEndpointTextBoxEx = new FortniteOverlay.TextBoxEx();
             this.imageLocationPanel = new System.Windows.Forms.Panel();
+            this.imageLocationTextBoxEx = new FortniteOverlay.TextBoxEx();
             this.controlTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.hudScalePanel = new System.Windows.Forms.Panel();
             this.inventoryHotkeyCheckBox = new System.Windows.Forms.CheckBox();
@@ -56,9 +59,6 @@
             this.showConsoleCheckBox = new System.Windows.Forms.CheckBox();
             this.enableOverlayCheckBox = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.secretKeyTextBoxEx = new FortniteOverlay.TextBoxEx();
-            this.uploadEndpointTextBoxEx = new FortniteOverlay.TextBoxEx();
-            this.imageLocationTextBoxEx = new FortniteOverlay.TextBoxEx();
             ((System.ComponentModel.ISupportInitialize)(this.hudScaleNumericUpDown)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.secretKeyPanel.SuspendLayout();
@@ -250,6 +250,17 @@
             this.secretKeyPanel.TabIndex = 0;
             this.toolTip1.SetToolTip(this.secretKeyPanel, "Secret key to upload images to your server.  Keep this private!");
             // 
+            // secretKeyTextBoxEx
+            // 
+            this.secretKeyTextBoxEx.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.secretKeyTextBoxEx.BorderColor = System.Drawing.Color.Transparent;
+            this.secretKeyTextBoxEx.Location = new System.Drawing.Point(3, 20);
+            this.secretKeyTextBoxEx.Name = "secretKeyTextBoxEx";
+            this.secretKeyTextBoxEx.Size = new System.Drawing.Size(462, 20);
+            this.secretKeyTextBoxEx.TabIndex = 1;
+            this.secretKeyTextBoxEx.UseSystemPasswordChar = true;
+            // 
             // uploadEndpointPanel
             // 
             this.tableLayoutPanel1.SetColumnSpan(this.uploadEndpointPanel, 2);
@@ -262,6 +273,17 @@
             this.uploadEndpointPanel.Size = new System.Drawing.Size(469, 56);
             this.uploadEndpointPanel.TabIndex = 1;
             this.toolTip1.SetToolTip(this.uploadEndpointPanel, "URL to upload images to. Must end with \".php\".");
+            // 
+            // uploadEndpointTextBoxEx
+            // 
+            this.uploadEndpointTextBoxEx.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.uploadEndpointTextBoxEx.BorderColor = System.Drawing.Color.Transparent;
+            this.uploadEndpointTextBoxEx.Location = new System.Drawing.Point(3, 20);
+            this.uploadEndpointTextBoxEx.Name = "uploadEndpointTextBoxEx";
+            this.uploadEndpointTextBoxEx.Size = new System.Drawing.Size(462, 20);
+            this.uploadEndpointTextBoxEx.TabIndex = 1;
+            this.uploadEndpointTextBoxEx.TextChanged += new System.EventHandler(this.uploadEndpointTextBoxEx_TextChanged);
             // 
             // imageLocationPanel
             // 
@@ -276,6 +298,17 @@
             this.imageLocationPanel.TabIndex = 2;
             this.toolTip1.SetToolTip(this.imageLocationPanel, "URL to look for uploaded images at, usually right next to the upload endpoint. Mu" +
         "st end with \"/\".");
+            // 
+            // imageLocationTextBoxEx
+            // 
+            this.imageLocationTextBoxEx.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.imageLocationTextBoxEx.BorderColor = System.Drawing.Color.Transparent;
+            this.imageLocationTextBoxEx.Location = new System.Drawing.Point(3, 20);
+            this.imageLocationTextBoxEx.Name = "imageLocationTextBoxEx";
+            this.imageLocationTextBoxEx.Size = new System.Drawing.Size(462, 20);
+            this.imageLocationTextBoxEx.TabIndex = 1;
+            this.imageLocationTextBoxEx.TextChanged += new System.EventHandler(this.imageLocationTextBoxEx_TextChanged);
             // 
             // controlTableLayoutPanel
             // 
@@ -438,39 +471,6 @@
             this.toolTip1.AutoPopDelay = 0;
             this.toolTip1.InitialDelay = 500;
             this.toolTip1.ReshowDelay = 0;
-            // 
-            // secretKeyTextBoxEx
-            // 
-            this.secretKeyTextBoxEx.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.secretKeyTextBoxEx.BorderColor = System.Drawing.Color.Transparent;
-            this.secretKeyTextBoxEx.Location = new System.Drawing.Point(3, 20);
-            this.secretKeyTextBoxEx.Name = "secretKeyTextBoxEx";
-            this.secretKeyTextBoxEx.Size = new System.Drawing.Size(462, 20);
-            this.secretKeyTextBoxEx.TabIndex = 1;
-            this.secretKeyTextBoxEx.UseSystemPasswordChar = true;
-            // 
-            // uploadEndpointTextBoxEx
-            // 
-            this.uploadEndpointTextBoxEx.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.uploadEndpointTextBoxEx.BorderColor = System.Drawing.Color.Transparent;
-            this.uploadEndpointTextBoxEx.Location = new System.Drawing.Point(3, 20);
-            this.uploadEndpointTextBoxEx.Name = "uploadEndpointTextBoxEx";
-            this.uploadEndpointTextBoxEx.Size = new System.Drawing.Size(462, 20);
-            this.uploadEndpointTextBoxEx.TabIndex = 1;
-            this.uploadEndpointTextBoxEx.TextChanged += new System.EventHandler(this.uploadEndpointTextBoxEx_TextChanged);
-            // 
-            // imageLocationTextBoxEx
-            // 
-            this.imageLocationTextBoxEx.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.imageLocationTextBoxEx.BorderColor = System.Drawing.Color.Transparent;
-            this.imageLocationTextBoxEx.Location = new System.Drawing.Point(3, 20);
-            this.imageLocationTextBoxEx.Name = "imageLocationTextBoxEx";
-            this.imageLocationTextBoxEx.Size = new System.Drawing.Size(462, 20);
-            this.imageLocationTextBoxEx.TabIndex = 1;
-            this.imageLocationTextBoxEx.TextChanged += new System.EventHandler(this.imageLocationTextBoxEx_TextChanged);
             // 
             // ConfigForm
             // 

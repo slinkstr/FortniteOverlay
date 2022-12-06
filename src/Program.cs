@@ -164,7 +164,7 @@ namespace FortniteOverlay
                 }
             }
 
-            var gearBitmap = RenderGear(screen, pixelPositions, config.HUDScale, config.InventoryHotkey);
+            var gearBitmap = RenderGear(screen, pixelPositions, config.HUDScale);
 
             var stream = new MemoryStream();
             gearBitmap.Save(stream, ImageFormat.Jpeg);
@@ -283,7 +283,7 @@ namespace FortniteOverlay
                 bounds = Screen.GetBounds(Point.Empty);
             }
             var debugBitmap = new Bitmap(bounds.Width, bounds.Height);
-            RenderGearDebug(ref debugBitmap, pixelPositions, config.HUDScale, config.InventoryHotkey);
+            RenderGearDebug(ref debugBitmap, pixelPositions, config.HUDScale);
             overlayForm.SetDebugOverlay(debugBitmap);
         }
 
@@ -353,7 +353,7 @@ namespace FortniteOverlay
         public int UploadInterval { get; set; } = 5;
         public int DownloadInterval { get; set; } = 5;
         public int HUDScale { get; set; } = 100;
-        public bool InventoryHotkey { get; set; } = true;
+        public bool InventoryHotkey { get; set; } = false;
         public bool ShowConsole { get; set; } = true;
         public bool EnableOverlay { get; set; } = true;
         public bool MinimizeToTray { get; set; } = true;
