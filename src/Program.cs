@@ -86,7 +86,7 @@ namespace FortniteOverlay
             // Update checking
             _ = CheckForUpdates();
             getNewestVersionTimer.Tick += new EventHandler(GetNewestVersionEvent);
-            getNewestVersionTimer.Interval = (6 * 60 * 60 * 1000);
+            getNewestVersionTimer.Interval = (12 * 60 * 60 * 1000);
             getNewestVersionTimer.Start();
 #endif
 
@@ -96,6 +96,8 @@ namespace FortniteOverlay
         public static async void GetNewestVersionEvent(Object obj, EventArgs evtargs)
         {
             getNewestVersionTimer.Stop();
+            // short delay avoids DNS errors when PC wakes up
+            await Task.Delay(5000);
             await CheckForUpdates();
             getNewestVersionTimer.Start();
         }
@@ -103,7 +105,7 @@ namespace FortniteOverlay
         public static async void UpdateEvent(Object obj, EventArgs evtargs)
         {
             updateTimer.Stop();
-            updateTimer.Interval = 500 * (procMon.ValidHandle ? 1 : 10);
+            updateTimer.Interval = 500 * (procMon.ValidHandle ? 1 : 20);
 
             var tasks = new List<Task>();
             if (lastUp.AddSeconds(config.UploadInterval) - DateTime.Now <= TimeSpan.FromSeconds(0.2))
