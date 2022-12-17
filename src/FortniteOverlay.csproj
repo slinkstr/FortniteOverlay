@@ -52,7 +52,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>chunli.ico</ApplicationIcon>
+    <ApplicationIcon>FortniteOverlay.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>BB04042CF9D290C0FB3D60B23C09A34003337D46</ManifestCertificateThumbprint>
@@ -153,7 +153,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="chunli.ico" />
     <None Include="outdated.png" />
   </ItemGroup>
   <ItemGroup>
@@ -167,6 +166,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FortniteOverlay.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
