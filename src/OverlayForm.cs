@@ -14,6 +14,11 @@ namespace FortniteOverlay
         // ****************************************************************************************************
         // HELPER METHODS
         // ****************************************************************************************************
+        public Image GetDebugOverlay()
+        {
+            return debugPictureBox.Image;
+        }
+
         public void SetDebugOverlay(Bitmap bmp)
         {
             SetControlProperty(debugPictureBox, "Image", bmp);

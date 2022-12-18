@@ -38,6 +38,11 @@ namespace FortniteOverlay
         public static System.Windows.Forms.Timer getNewestVersionTimer = new System.Windows.Forms.Timer();
         public static System.Windows.Forms.Timer updateTimer = new System.Windows.Forms.Timer();
 
+        private static Bitmap screenBitmap;
+        private static int debugOverlayLastWidth;
+        private static int debugOverlayLastHeight;
+        private static int debugOverlayLastScale;
+
         [STAThread]
         static void Main()
         {
@@ -145,28 +150,28 @@ namespace FortniteOverlay
             if (!procMon.Focused && !enableInOtherWindows) { return; }
             if (fortniters.Count == 0)                     { return; }
 
-            var screen = TakeScreenshot(procMon.WindowSize);
+            TakeScreenshot(ref screenBitmap, procMon.WindowSize);
 
             if (config.InventoryHotkey)
             {
-                if (!IsMapVisible(screen, pixelPositions, config.HUDScale))
+                if (!IsMapVisible(screenBitmap, pixelPositions, config.HUDScale))
                 {
                     return;
                 }
             }
             else
             {
-                if (!IsGoldBarsVisible(screen, pixelPositions, config.HUDScale))
+                if (!IsGoldBarsVisible(screenBitmap, pixelPositions, config.HUDScale))
                 {
                     return;
                 }
-                if (IsSpectatingTextVisible(screen, pixelPositions, config.HUDScale))
+                if (IsSpectatingTextVisible(screenBitmap, pixelPositions, config.HUDScale))
                 {
                     return;
                 }
             }
 
-            var gearBitmap = RenderGear(screen, pixelPositions, config.HUDScale);
+            var gearBitmap = RenderGear(screenBitmap, pixelPositions, config.HUDScale);
 
             var stream = new MemoryStream();
             gearBitmap.Save(stream, ImageFormat.Jpeg);
@@ -284,9 +289,20 @@ namespace FortniteOverlay
             {
                 bounds = Screen.GetBounds(Point.Empty);
             }
-            var debugBitmap = new Bitmap(bounds.Width, bounds.Height);
-            RenderGearDebug(ref debugBitmap, pixelPositions, config.HUDScale);
-            overlayForm.SetDebugOverlay(debugBitmap);
+
+            if (overlayForm.GetDebugOverlay() == null ||
+                debugOverlayLastWidth != bounds.Width ||
+                debugOverlayLastHeight != bounds.Height ||
+                debugOverlayLastScale != config.HUDScale)
+            {
+                debugOverlayLastWidth = bounds.Width;
+                debugOverlayLastHeight = bounds.Height;
+                debugOverlayLastScale = config.HUDScale;
+
+                var debugBitmap = new Bitmap(bounds.Width, bounds.Height);
+                RenderGearDebug(ref debugBitmap, pixelPositions, config.HUDScale);
+                overlayForm.SetDebugOverlay(debugBitmap);
+            }
         }
 
         public static void UpdateFormElements()
