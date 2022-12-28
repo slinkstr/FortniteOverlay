@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "FortniteOverlay"
-#define MyAppVersion "v1.7.3"
+#define MyAppVersion "v1.7.4"
 #define MyAppPublisher "slinkstr"
 #define MyAppURL "https://github.com/slinkstr/FortniteOverlay"
 #define MyAppExeName "FortniteOverlay.exe"
@@ -24,8 +24,8 @@ DisableProgramGroupPage=yes
 ;PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=commandline
 OutputDir=.
-OutputBaseFilename={#MyAppName}-{#MyAppVersion}-Setup
-SetupIconFile=..\src\chunli.ico
+OutputBaseFilename={#MyAppName}-{#MyAppVersion}-Installer
+SetupIconFile=..\src\FortniteOverlay.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
