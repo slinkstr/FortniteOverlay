@@ -82,25 +82,40 @@ namespace FortniteOverlay.Util
             if (match.Success)
             {
                 string name = match.Groups["DisplayName"].ToString();
-                int index = Int32.Parse(match.Groups["PartyIndex"].ToString());
+                int partyIndex = Int32.Parse(match.Groups["PartyIndex"].ToString());
 
-                if (Program.hostName == name)                    { return; }
+                if (Program.hostName == name) { return; }
 
                 var matchingPlayer = Program.fortniters.FirstOrDefault(x => x.Name == name);
                 if (matchingPlayer != null)
                 {
-                    matchingPlayer.PartyIndex = index;
+                    matchingPlayer.PartyIndex = partyIndex;
                     return;
                 }
 
                 Fortniter newJoin = new Fortniter()
                 {
                     Name = name,
-                    PartyIndex = index,
+                    PartyIndex = partyIndex,
+                    Index = Array.IndexOf(Program.order, name)
                 };
-
+                    
                 Program.fortniters.Add(newJoin);
-                Program.form.Log("[PartyMemberJoinedAlt] Name: " + name + ", index: " + index);
+                Program.fortniters.Sort((x, y) => {
+                    if(x.Index == -1)
+                    {
+                        return 1;
+                    }
+                    else if(y.Index == -1)
+                    {
+                        return -1;
+                    }
+                    else
+                    {
+                        return x.Index.CompareTo(y.Index);
+                    }
+                });
+                Program.form.Log("[PartyMemberJoinedAlt] Name: " + newJoin.Name + ", index: " + newJoin.Index);
                 return;
             }
 

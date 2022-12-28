@@ -49,7 +49,6 @@
             this.imageLocationTextBoxEx = new FortniteOverlay.TextBoxEx();
             this.controlTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.hudScalePanel = new System.Windows.Forms.Panel();
-            this.inventoryHotkeyCheckBox = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
             this.uploadIntervalNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -59,6 +58,9 @@
             this.showConsoleCheckBox = new System.Windows.Forms.CheckBox();
             this.enableOverlayCheckBox = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.overlayOpacityNumericUpDown = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.hudScaleNumericUpDown)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.secretKeyPanel.SuspendLayout();
@@ -70,6 +72,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.uploadIntervalNumericUpDown)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.downloadIntervalNumericUpDown)).BeginInit();
+            this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.overlayOpacityNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // hudScaleNumericUpDown
@@ -203,11 +207,11 @@
             this.tableLayoutPanel1.Controls.Add(this.imageLocationPanel, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.controlTableLayoutPanel, 0, 7);
             this.tableLayoutPanel1.Controls.Add(this.hudScalePanel, 0, 4);
-            this.tableLayoutPanel1.Controls.Add(this.inventoryHotkeyCheckBox, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.panel2, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.showConsoleCheckBox, 0, 5);
             this.tableLayoutPanel1.Controls.Add(this.enableOverlayCheckBox, 1, 5);
+            this.tableLayoutPanel1.Controls.Add(this.panel3, 1, 4);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
@@ -222,6 +226,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.50141F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.50033F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.50362F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(479, 460);
             this.tableLayoutPanel1.TabIndex = 15;
             // 
@@ -344,18 +349,6 @@
             this.toolTip1.SetToolTip(this.hudScalePanel, "The HUD scale you use in-game. NOTE: All calculations are designed for 100% and d" +
         "erived. Rounding errors may occur.");
             // 
-            // inventoryHotkeyCheckBox
-            // 
-            this.inventoryHotkeyCheckBox.AutoSize = true;
-            this.inventoryHotkeyCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.inventoryHotkeyCheckBox.Location = new System.Drawing.Point(242, 232);
-            this.inventoryHotkeyCheckBox.Name = "inventoryHotkeyCheckBox";
-            this.inventoryHotkeyCheckBox.Size = new System.Drawing.Size(229, 50);
-            this.inventoryHotkeyCheckBox.TabIndex = 6;
-            this.inventoryHotkeyCheckBox.Text = "\"Map && Backpack Keys\" enabled";
-            this.toolTip1.SetToolTip(this.inventoryHotkeyCheckBox, "Your in-game \"Map & Backpack Keys\" setting.");
-            this.inventoryHotkeyCheckBox.UseVisualStyleBackColor = true;
-            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.label5);
@@ -380,7 +373,7 @@
             // uploadIntervalNumericUpDown
             // 
             this.uploadIntervalNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.uploadIntervalNumericUpDown.Location = new System.Drawing.Point(3, 19);
+            this.uploadIntervalNumericUpDown.Location = new System.Drawing.Point(3, 21);
             this.uploadIntervalNumericUpDown.Maximum = new decimal(new int[] {
             300,
             0,
@@ -414,7 +407,7 @@
             // downloadIntervalNumericUpDown
             // 
             this.downloadIntervalNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.downloadIntervalNumericUpDown.Location = new System.Drawing.Point(3, 19);
+            this.downloadIntervalNumericUpDown.Location = new System.Drawing.Point(3, 21);
             this.downloadIntervalNumericUpDown.Maximum = new decimal(new int[] {
             300,
             0,
@@ -472,6 +465,36 @@
             this.toolTip1.InitialDelay = 500;
             this.toolTip1.ReshowDelay = 0;
             // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.overlayOpacityNumericUpDown);
+            this.panel3.Controls.Add(this.label7);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel3.Location = new System.Drawing.Point(239, 229);
+            this.panel3.Margin = new System.Windows.Forms.Padding(0);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(235, 56);
+            this.panel3.TabIndex = 17;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(3, 3);
+            this.label7.Margin = new System.Windows.Forms.Padding(3);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(82, 13);
+            this.label7.TabIndex = 0;
+            this.label7.Text = "Overlay Opacity";
+            // 
+            // overlayOpacityNumericUpDown
+            // 
+            this.overlayOpacityNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.overlayOpacityNumericUpDown.Location = new System.Drawing.Point(3, 20);
+            this.overlayOpacityNumericUpDown.Name = "overlayOpacityNumericUpDown";
+            this.overlayOpacityNumericUpDown.Size = new System.Drawing.Size(228, 20);
+            this.overlayOpacityNumericUpDown.TabIndex = 1;
+            // 
             // ConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -501,6 +524,9 @@
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.downloadIntervalNumericUpDown)).EndInit();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.overlayOpacityNumericUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -531,10 +557,12 @@
         private System.Windows.Forms.NumericUpDown uploadIntervalNumericUpDown;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.CheckBox inventoryHotkeyCheckBox;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.CheckBox showConsoleCheckBox;
         private System.Windows.Forms.CheckBox enableOverlayCheckBox;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.NumericUpDown overlayOpacityNumericUpDown;
+        private System.Windows.Forms.Label label7;
     }
 }

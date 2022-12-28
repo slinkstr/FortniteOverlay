@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -41,6 +42,25 @@ namespace FortniteOverlay.Util
             {
                 Program.form.Log("Unable to check for updates. Error:\n" + exc.ToString());
                 Program.form.SetUpdateNotice("Unable to check for updates.");
+            }
+        }
+
+        public static async Task<String[]> GetOrder()
+        {
+            string url = "https://raw.githubusercontent.com/slinkstr/FortniteOverlay/master/order.json";
+            try
+            {
+                var response = await Program.httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+
+                string content = await response.Content.ReadAsStringAsync();
+                var jarr = JArray.Parse(content);
+                return jarr.ToObject<string[]>();
+            }
+            catch (Exception exc)
+            {
+                Program.form.Log("Unable to get squad order. Error:\n" + exc.ToString());
+                return new string[0];
             }
         }
 

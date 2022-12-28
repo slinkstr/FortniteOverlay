@@ -37,6 +37,7 @@ namespace FortniteOverlay
         public static string hostName;
         public static System.Windows.Forms.Timer getNewestVersionTimer = new System.Windows.Forms.Timer();
         public static System.Windows.Forms.Timer updateTimer = new System.Windows.Forms.Timer();
+        public static string[] order = new string[0];
 
         private static Bitmap screenBitmap;
         private static int debugOverlayLastWidth;
@@ -72,6 +73,9 @@ namespace FortniteOverlay
                 new Thread(() => MessageBox.Show(exc.Message, "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Error)).Start();
             }
 
+            // Hardcoded order
+            order = Task.Run(GetOrder).Result;
+
             // Rendering and upload/download events
             updateTimer.Tick += new EventHandler(UpdateEvent);
             updateTimer.Interval = 250;
@@ -87,13 +91,11 @@ namespace FortniteOverlay
             procMonWorker.DoWork += new DoWorkEventHandler(procMon.UpdateProcessStatus);
             procMonWorker.RunWorkerAsync();
 
-#if !DEBUG
             // Update checking
             _ = CheckForUpdates();
             getNewestVersionTimer.Tick += new EventHandler(GetNewestVersionEvent);
             getNewestVersionTimer.Interval = (12 * 60 * 60 * 1000);
             getNewestVersionTimer.Start();
-#endif
 
             Application.Run(form);
         }
@@ -102,7 +104,7 @@ namespace FortniteOverlay
         {
             getNewestVersionTimer.Stop();
             // short delay avoids DNS errors when PC wakes up
-            await Task.Delay(5000);
+            await Task.Delay(10000);
             await CheckForUpdates();
             getNewestVersionTimer.Start();
         }
@@ -126,6 +128,7 @@ namespace FortniteOverlay
             if (procMon.Focused || enableInOtherWindows)
             {
                 ShowOverlay();
+                overlayForm.SetOverlayOpacity(config.OverlayOpacity);
                 if (form.CurrentProgramOptions().DebugOverlay)
                 {
                     ShowDebugOverlay();
@@ -152,23 +155,13 @@ namespace FortniteOverlay
 
             TakeScreenshot(ref screenBitmap, procMon.WindowSize);
 
-            if (config.InventoryHotkey)
+            if (!IsGoldBarsVisible(screenBitmap, pixelPositions, config.HUDScale))
             {
-                if (!IsMapVisible(screenBitmap, pixelPositions, config.HUDScale))
-                {
-                    return;
-                }
+                return;
             }
-            else
+            if (IsSpectatingTextVisible(screenBitmap, pixelPositions, config.HUDScale))
             {
-                if (!IsGoldBarsVisible(screenBitmap, pixelPositions, config.HUDScale))
-                {
-                    return;
-                }
-                if (IsSpectatingTextVisible(screenBitmap, pixelPositions, config.HUDScale))
-                {
-                    return;
-                }
+                return;
             }
 
             var gearBitmap = RenderGear(screenBitmap, pixelPositions, config.HUDScale);
@@ -358,6 +351,7 @@ namespace FortniteOverlay
 
         public string Name { get; set; }
         public int PartyIndex { get; set; }
+        public int Index { get; set; }
         public Bitmap GearImage { get; set; }
         public DateTime GearModified { get; set; }
         public bool IsFaded { get; set; } = false;
@@ -371,7 +365,7 @@ namespace FortniteOverlay
         public int UploadInterval { get; set; } = 5;
         public int DownloadInterval { get; set; } = 5;
         public int HUDScale { get; set; } = 100;
-        public bool InventoryHotkey { get; set; } = false;
+        public int OverlayOpacity { get; set; } = 80;
         public bool ShowConsole { get; set; } = true;
         public bool EnableOverlay { get; set; } = true;
         public bool MinimizeToTray { get; set; } = true;

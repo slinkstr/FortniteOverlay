@@ -41,6 +41,13 @@ namespace FortniteOverlay
                     throw new Exception("Invalid index in SetSquadGear");
             }
         }
+
+        public void SetOverlayOpacity(int opacity)
+        {
+            double dec = (double)opacity / 100;
+            Opacity = dec;
+        }
+
         public static void SetControlProperty(Control control, string propertyName, object data)
         {
             if (control.InvokeRequired)

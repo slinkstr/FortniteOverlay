@@ -84,7 +84,7 @@ namespace FortniteOverlay
             uploadIntervalNumericUpDown.Value   = MiscUtil.MinMax((int)uploadIntervalNumericUpDown.Minimum,   cfg.UploadInterval,   (int)uploadIntervalNumericUpDown.Maximum);
             downloadIntervalNumericUpDown.Value = MiscUtil.MinMax((int)downloadIntervalNumericUpDown.Minimum, cfg.DownloadInterval, (int)downloadIntervalNumericUpDown.Maximum);
             hudScaleNumericUpDown.Value         = MiscUtil.MinMax((int)hudScaleNumericUpDown.Minimum,         cfg.HUDScale,         (int)hudScaleNumericUpDown.Maximum);
-            inventoryHotkeyCheckBox.Checked     = cfg.InventoryHotkey;
+            overlayOpacityNumericUpDown.Value   = cfg.OverlayOpacity;
             showConsoleCheckBox.Checked         = cfg.ShowConsole;
             enableOverlayCheckBox.Checked       = cfg.EnableOverlay;
             minimizeToTrayCheckBox.Checked      = cfg.MinimizeToTray;
@@ -100,7 +100,7 @@ namespace FortniteOverlay
                 UploadInterval    = (int)uploadIntervalNumericUpDown.Value,
                 DownloadInterval  = (int)downloadIntervalNumericUpDown.Value,
                 HUDScale          = (int)hudScaleNumericUpDown.Value,
-                InventoryHotkey   = inventoryHotkeyCheckBox.Checked,
+                OverlayOpacity    = (int)overlayOpacityNumericUpDown.Value,
                 ShowConsole       = showConsoleCheckBox.Checked,
                 EnableOverlay     = enableOverlayCheckBox.Checked,
                 MinimizeToTray    = minimizeToTrayCheckBox.Checked,
