@@ -101,20 +101,7 @@ namespace FortniteOverlay.Util
                 };
                     
                 Program.fortniters.Add(newJoin);
-                Program.fortniters.Sort((x, y) => {
-                    if(x.Index == -1)
-                    {
-                        return 1;
-                    }
-                    else if(y.Index == -1)
-                    {
-                        return -1;
-                    }
-                    else
-                    {
-                        return x.Index.CompareTo(y.Index);
-                    }
-                });
+                Program.fortniters.Sort(MiscUtil.SortFortniters);
                 Program.form.Log("[PartyMemberJoinedAlt] Name: " + newJoin.Name + ", index: " + newJoin.Index);
                 return;
             }

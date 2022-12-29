@@ -74,7 +74,7 @@ namespace FortniteOverlay
             }
 
             // Hardcoded order
-            order = Task.Run(GetOrder).Result;
+            _ = GetOrder();
 
             // Rendering and upload/download events
             updateTimer.Tick += new EventHandler(UpdateEvent);

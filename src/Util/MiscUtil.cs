@@ -45,7 +45,7 @@ namespace FortniteOverlay.Util
             }
         }
 
-        public static async Task<String[]> GetOrder()
+        public static async Task GetOrder()
         {
             string url = "https://raw.githubusercontent.com/slinkstr/FortniteOverlay/master/order.json";
             try
@@ -55,12 +55,28 @@ namespace FortniteOverlay.Util
 
                 string content = await response.Content.ReadAsStringAsync();
                 var jarr = JArray.Parse(content);
-                return jarr.ToObject<string[]>();
+                Program.order = jarr.ToObject<string[]>();
+                Program.fortniters.Sort(MiscUtil.SortFortniters);
             }
             catch (Exception exc)
             {
                 Program.form.Log("Unable to get squad order. Error:\n" + exc.ToString());
-                return new string[0];
+            }
+        }
+
+        public static int SortFortniters(Fortniter first, Fortniter second)
+        {
+            if (first.Index == -1)
+            {
+                return 1;
+            }
+            else if (second.Index == -1)
+            {
+                return -1;
+            }
+            else
+            {
+                return first.Index.CompareTo(second.Index);
             }
         }
 
