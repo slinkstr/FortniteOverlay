@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "FortniteOverlay"
-#define MyAppVersion "v1.7.5"
+#define MyAppVersion "v1.7.6"
 #define MyAppPublisher "slinkstr"
 #define MyAppURL "https://github.com/slinkstr/FortniteOverlay"
 #define MyAppExeName "FortniteOverlay.exe"

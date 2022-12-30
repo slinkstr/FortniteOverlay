@@ -3,10 +3,12 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace FortniteOverlay.Util
 {
@@ -56,6 +58,10 @@ namespace FortniteOverlay.Util
                 string content = await response.Content.ReadAsStringAsync();
                 var jarr = JArray.Parse(content);
                 Program.order = jarr.ToObject<string[]>();
+                foreach (var fortniter in Program.fortniters)
+                {
+                    fortniter.Index = Array.IndexOf(Program.order, fortniter.Name);
+                }
                 Program.fortniters.Sort(MiscUtil.SortFortniters);
             }
             catch (Exception exc)
