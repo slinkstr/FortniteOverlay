@@ -125,7 +125,7 @@ namespace FortniteOverlay
             }
             await Task.WhenAll(tasks);
 
-            if (procMon.Focused || enableInOtherWindows)
+            if (config.EnableOverlay && (procMon.Focused || enableInOtherWindows))
             {
                 ShowOverlay();
                 overlayForm.SetOverlayOpacity(config.OverlayOpacity);
