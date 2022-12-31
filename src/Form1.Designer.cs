@@ -37,9 +37,9 @@ namespace FortniteOverlay
             this.squadmate1GearPictureBox = new System.Windows.Forms.PictureBox();
             this.squadmate2GearPictureBox = new System.Windows.Forms.PictureBox();
             this.squadmate3GearPictureBox = new System.Windows.Forms.PictureBox();
-            this.squadmate1NameTextBox = new System.Windows.Forms.Label();
-            this.squadmate2NameTextBox = new System.Windows.Forms.Label();
-            this.squadmate3NameTextBox = new System.Windows.Forms.Label();
+            this.squadmate1NameLabel = new System.Windows.Forms.Label();
+            this.squadmate2NameLabel = new System.Windows.Forms.Label();
+            this.squadmate3NameLabel = new System.Windows.Forms.Label();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.debugOverlayCheckbox = new System.Windows.Forms.CheckBox();
             this.updateNoticeLinkLabel = new System.Windows.Forms.LinkLabel();
@@ -145,41 +145,41 @@ namespace FortniteOverlay
             this.squadmate3GearPictureBox.TabStop = false;
             this.squadmate3GearPictureBox.DoubleClick += new System.EventHandler(this.squadmate3GearPictureBox_DoubleClick);
             // 
-            // squadmate1NameTextBox
+            // squadmate1NameLabel
             // 
-            this.squadmate1NameTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.squadmate1NameTextBox.Location = new System.Drawing.Point(0, 0);
-            this.squadmate1NameTextBox.Margin = new System.Windows.Forms.Padding(0);
-            this.squadmate1NameTextBox.Name = "squadmate1NameTextBox";
-            this.squadmate1NameTextBox.Size = new System.Drawing.Size(80, 79);
-            this.squadmate1NameTextBox.TabIndex = 19;
-            this.squadmate1NameTextBox.Text = "squadmate1";
-            this.squadmate1NameTextBox.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.squadmate1NameTextBox.DoubleClick += new System.EventHandler(this.squadmate1NameTextBox_DoubleClick);
+            this.squadmate1NameLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.squadmate1NameLabel.Location = new System.Drawing.Point(0, 0);
+            this.squadmate1NameLabel.Margin = new System.Windows.Forms.Padding(0);
+            this.squadmate1NameLabel.Name = "squadmate1NameLabel";
+            this.squadmate1NameLabel.Size = new System.Drawing.Size(80, 79);
+            this.squadmate1NameLabel.TabIndex = 19;
+            this.squadmate1NameLabel.Text = "squadmate1";
+            this.squadmate1NameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.squadmate1NameLabel.DoubleClick += new System.EventHandler(this.squadmate1NameLabel_DoubleClick);
             // 
-            // squadmate2NameTextBox
+            // squadmate2NameLabel
             // 
-            this.squadmate2NameTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.squadmate2NameTextBox.Location = new System.Drawing.Point(0, 79);
-            this.squadmate2NameTextBox.Margin = new System.Windows.Forms.Padding(0);
-            this.squadmate2NameTextBox.Name = "squadmate2NameTextBox";
-            this.squadmate2NameTextBox.Size = new System.Drawing.Size(80, 79);
-            this.squadmate2NameTextBox.TabIndex = 20;
-            this.squadmate2NameTextBox.Text = "squadmate2";
-            this.squadmate2NameTextBox.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.squadmate2NameTextBox.DoubleClick += new System.EventHandler(this.squadmate2NameTextBox_DoubleClick);
+            this.squadmate2NameLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.squadmate2NameLabel.Location = new System.Drawing.Point(0, 79);
+            this.squadmate2NameLabel.Margin = new System.Windows.Forms.Padding(0);
+            this.squadmate2NameLabel.Name = "squadmate2NameLabel";
+            this.squadmate2NameLabel.Size = new System.Drawing.Size(80, 79);
+            this.squadmate2NameLabel.TabIndex = 20;
+            this.squadmate2NameLabel.Text = "squadmate2";
+            this.squadmate2NameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.squadmate2NameLabel.DoubleClick += new System.EventHandler(this.squadmate2NameLabel_DoubleClick);
             // 
-            // squadmate3NameTextBox
+            // squadmate3NameLabel
             // 
-            this.squadmate3NameTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.squadmate3NameTextBox.Location = new System.Drawing.Point(0, 158);
-            this.squadmate3NameTextBox.Margin = new System.Windows.Forms.Padding(0);
-            this.squadmate3NameTextBox.Name = "squadmate3NameTextBox";
-            this.squadmate3NameTextBox.Size = new System.Drawing.Size(80, 80);
-            this.squadmate3NameTextBox.TabIndex = 21;
-            this.squadmate3NameTextBox.Text = "squadmate3";
-            this.squadmate3NameTextBox.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.squadmate3NameTextBox.DoubleClick += new System.EventHandler(this.squadmate3NameTextBox_DoubleClick);
+            this.squadmate3NameLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.squadmate3NameLabel.Location = new System.Drawing.Point(0, 158);
+            this.squadmate3NameLabel.Margin = new System.Windows.Forms.Padding(0);
+            this.squadmate3NameLabel.Name = "squadmate3NameLabel";
+            this.squadmate3NameLabel.Size = new System.Drawing.Size(80, 80);
+            this.squadmate3NameLabel.TabIndex = 21;
+            this.squadmate3NameLabel.Text = "squadmate3";
+            this.squadmate3NameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.squadmate3NameLabel.DoubleClick += new System.EventHandler(this.squadmate3NameLabel_DoubleClick);
             // 
             // notifyIcon
             // 
@@ -265,11 +265,11 @@ namespace FortniteOverlay
             this.squadmatesTableLayoutPanel.Controls.Add(this.squadmate2ArrowTableLayoutPanel, 2, 1);
             this.squadmatesTableLayoutPanel.Controls.Add(this.squadmate1ArrowTableLayoutPanel, 2, 0);
             this.squadmatesTableLayoutPanel.Controls.Add(this.squadmate1GearPictureBox, 1, 0);
-            this.squadmatesTableLayoutPanel.Controls.Add(this.squadmate3NameTextBox, 0, 2);
+            this.squadmatesTableLayoutPanel.Controls.Add(this.squadmate3NameLabel, 0, 2);
             this.squadmatesTableLayoutPanel.Controls.Add(this.squadmate3GearPictureBox, 1, 2);
-            this.squadmatesTableLayoutPanel.Controls.Add(this.squadmate2NameTextBox, 0, 1);
+            this.squadmatesTableLayoutPanel.Controls.Add(this.squadmate2NameLabel, 0, 1);
             this.squadmatesTableLayoutPanel.Controls.Add(this.squadmate2GearPictureBox, 1, 1);
-            this.squadmatesTableLayoutPanel.Controls.Add(this.squadmate1NameTextBox, 0, 0);
+            this.squadmatesTableLayoutPanel.Controls.Add(this.squadmate1NameLabel, 0, 0);
             this.squadmatesTableLayoutPanel.Controls.Add(this.squadmate3ArrowTableLayoutPanel, 2, 2);
             this.squadmatesTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.squadmatesTableLayoutPanel.Location = new System.Drawing.Point(353, 3);
@@ -440,9 +440,9 @@ namespace FortniteOverlay
         private PictureBox squadmate1GearPictureBox;
         private PictureBox squadmate2GearPictureBox;
         private PictureBox squadmate3GearPictureBox;
-        private Label squadmate1NameTextBox;
-        private Label squadmate2NameTextBox;
-        private Label squadmate3NameTextBox;
+        private Label squadmate1NameLabel;
+        private Label squadmate2NameLabel;
+        private Label squadmate3NameLabel;
         private NotifyIcon notifyIcon;
         private CheckBox debugOverlayCheckbox;
         private LinkLabel updateNoticeLinkLabel;

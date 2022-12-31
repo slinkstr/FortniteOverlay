@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace FortniteOverlay
@@ -11,6 +12,14 @@ namespace FortniteOverlay
         public Form1()
         {
             InitializeComponent();
+            if (Program.config.DarkTheme)
+            {
+                ChangeTheme(Program.config.DarkTheme, new ProgramColorScheme_Dark(), this.Controls);
+            }
+            else
+            {
+                ChangeTheme(Program.config.DarkTheme, new ProgramColorScheme_Light(), this.Controls);
+            }
             consoleHeight = consoleLogTextBox.Size.Height;
             Text += " v" + Application.ProductVersion;
             Icon = Icon.ExtractAssociatedIcon(AppDomain.CurrentDomain.FriendlyName);
@@ -20,6 +29,58 @@ namespace FortniteOverlay
         // ****************************************************************************************************
         // HELPER METHODS
         // ****************************************************************************************************
+        [DllImport("dwmapi.dll", CharSet = CharSet.Unicode, PreserveSig = false)]
+        public static extern void DwmSetWindowAttribute(IntPtr hwnd, DWMWINDOWATTRIBUTE attribute, ref int pvAttribute, uint cbAttribute);
+        public enum DWMWINDOWATTRIBUTE : uint
+        {
+            DWMWA_NCRENDERING_ENABLED,
+            DWMWA_NCRENDERING_POLICY,
+            DWMWA_TRANSITIONS_FORCEDISABLED,
+            DWMWA_ALLOW_NCPAINT,
+            DWMWA_CAPTION_BUTTON_BOUNDS,
+            DWMWA_NONCLIENT_RTL_LAYOUT,
+            DWMWA_FORCE_ICONIC_REPRESENTATION,
+            DWMWA_FLIP3D_POLICY,
+            DWMWA_EXTENDED_FRAME_BOUNDS,
+            DWMWA_HAS_ICONIC_BITMAP,
+            DWMWA_DISALLOW_PEEK,
+            DWMWA_EXCLUDED_FROM_PEEK,
+            DWMWA_CLOAK,
+            DWMWA_CLOAKED,
+            DWMWA_FREEZE_REPRESENTATION,
+            DWMWA_PASSIVE_UPDATE_MODE,
+            DWMWA_USE_HOSTBACKDROPBRUSH,
+            DWMWA_USE_IMMERSIVE_DARK_MODE = 20,
+            DWMWA_WINDOW_CORNER_PREFERENCE = 33,
+            DWMWA_BORDER_COLOR,
+            DWMWA_CAPTION_COLOR,
+            DWMWA_TEXT_COLOR,
+            DWMWA_VISIBLE_FRAME_BORDER_THICKNESS,
+            DWMWA_SYSTEMBACKDROP_TYPE,
+            DWMWA_LAST
+        }
+
+        public void ChangeTheme(bool isDark, ProgramColorScheme colorScheme, Control.ControlCollection container)
+        {
+            var preference = Convert.ToInt32(isDark);
+            DwmSetWindowAttribute(this.Handle, DWMWINDOWATTRIBUTE.DWMWA_USE_IMMERSIVE_DARK_MODE, ref preference, sizeof(uint));
+
+            foreach (Control control in container)
+            {
+                if(control is Panel)
+                {
+                    ChangeTheme(isDark, colorScheme, control.Controls);
+                    control.BackColor = colorScheme.BackColor;
+                    control.ForeColor = colorScheme.ForeColor;
+                }
+                else
+                {
+                    control.BackColor = colorScheme.BackColor;
+                    control.ForeColor = colorScheme.ForeColor;
+                }
+            }
+        }
+
         public ProgramOptions CurrentProgramOptions()
         {
             return new ProgramOptions()
@@ -87,13 +148,13 @@ namespace FortniteOverlay
             switch (index)
             {
                 case 0:
-                    SetControlProperty(squadmate1NameTextBox, "Text", name);
+                    SetControlProperty(squadmate1NameLabel, "Text", name);
                     break;
                 case 1:
-                    SetControlProperty(squadmate2NameTextBox, "Text", name);
+                    SetControlProperty(squadmate2NameLabel, "Text", name);
                     break;
                 case 2:
-                    SetControlProperty(squadmate3NameTextBox, "Text", name);
+                    SetControlProperty(squadmate3NameLabel, "Text", name);
                     break;
                 default:
                     throw new Exception("Invalid index in SetSquadName");
@@ -210,7 +271,7 @@ namespace FortniteOverlay
             var box = (PictureBox)sender;
             if (box.Image != null) { Clipboard.SetDataObject(box.Image); }
         }
-        private void squadmate1NameTextBox_DoubleClick(object sender, EventArgs e)
+        private void squadmate1NameLabel_DoubleClick(object sender, EventArgs e)
         {
             var label = (Label)sender;
             if(!string.IsNullOrWhiteSpace(label.Text)) { Clipboard.SetText(label.Text); }
@@ -225,7 +286,7 @@ namespace FortniteOverlay
             var box = (PictureBox)sender;
             if (box.Image != null) { Clipboard.SetDataObject(box.Image); }
         }
-        private void squadmate2NameTextBox_DoubleClick(object sender, EventArgs e)
+        private void squadmate2NameLabel_DoubleClick(object sender, EventArgs e)
         {
             var label = (Label)sender;
             if (!string.IsNullOrWhiteSpace(label.Text)) { Clipboard.SetText(label.Text); }
@@ -240,7 +301,7 @@ namespace FortniteOverlay
             var box = (PictureBox)sender;
             if (box.Image != null) { Clipboard.SetDataObject(box.Image); }
         }
-        private void squadmate3NameTextBox_DoubleClick(object sender, EventArgs e)
+        private void squadmate3NameLabel_DoubleClick(object sender, EventArgs e)
         {
             var label = (Label)sender;
             if (!string.IsNullOrWhiteSpace(label.Text)) { Clipboard.SetText(label.Text); }

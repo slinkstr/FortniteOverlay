@@ -88,6 +88,7 @@ namespace FortniteOverlay
             showConsoleCheckBox.Checked         = cfg.ShowConsole;
             enableOverlayCheckBox.Checked       = cfg.EnableOverlay;
             minimizeToTrayCheckBox.Checked      = cfg.MinimizeToTray;
+            darkThemeCheckBox.Checked           = cfg.DarkTheme;
         }
 
         private void ConfigSaveToFile()
@@ -104,6 +105,7 @@ namespace FortniteOverlay
                 ShowConsole       = showConsoleCheckBox.Checked,
                 EnableOverlay     = enableOverlayCheckBox.Checked,
                 MinimizeToTray    = minimizeToTrayCheckBox.Checked,
+                DarkTheme         = darkThemeCheckBox.Checked,
             };
 
             MiscUtil.ConfigSave(cfg);
@@ -162,7 +164,7 @@ namespace FortniteOverlay
         // ****************************************************************************************************
         private void ConfigForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Program.form.ShowHideConsole(Program.config.ShowConsole);
+            Program.form?.ShowHideConsole(Program.config.ShowConsole);
         }
 
         private void ConfigForm_FormClosing(object sender, FormClosingEventArgs e)

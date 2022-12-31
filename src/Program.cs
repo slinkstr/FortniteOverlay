@@ -51,9 +51,6 @@ namespace FortniteOverlay
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            form = new Form1();
-            overlayForm = new OverlayForm();
-
             httpClient.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("FortniteOverlay", Application.ProductVersion));
             httpClient.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("(+https://github.com/slinkstr/FortniteOverlay)"));
 
@@ -97,6 +94,8 @@ namespace FortniteOverlay
             getNewestVersionTimer.Interval = (12 * 60 * 60 * 1000);
             getNewestVersionTimer.Start();
 
+            form = new Form1();
+            overlayForm = new OverlayForm();
             Application.Run(form);
         }
 
@@ -369,6 +368,31 @@ namespace FortniteOverlay
         public bool ShowConsole { get; set; } = true;
         public bool EnableOverlay { get; set; } = true;
         public bool MinimizeToTray { get; set; } = true;
+        public bool DarkTheme { get; set; } = true;
         // run at startup is handled by the config form
+    }
+
+    public class ProgramColorScheme
+    {
+        public Color BackColor { get; set; }
+        public Color ForeColor { get; set; }
+    }
+
+    public class ProgramColorScheme_Light : ProgramColorScheme
+    {
+        public ProgramColorScheme_Light()
+        {
+            BackColor = Color.FromArgb(240, 240, 240);
+            ForeColor = Color.FromArgb(0, 0, 0);
+        }
+    }
+
+    public class ProgramColorScheme_Dark : ProgramColorScheme
+    {
+        public ProgramColorScheme_Dark()
+        {
+            BackColor = Color.FromArgb(30, 30, 30); 
+            ForeColor = Color.FromArgb(209, 209, 209);
+        }
     }
 }
