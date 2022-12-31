@@ -87,13 +87,13 @@ namespace FortniteOverlay
             switch (index)
             {
                 case 0:
-                    SetControlProperty(squadmate1NameTextBox, "Text", name);
+                    SetControlProperty(squadmate1NameLabel, "Text", name);
                     break;
                 case 1:
-                    SetControlProperty(squadmate2NameTextBox, "Text", name);
+                    SetControlProperty(squadmate2NameLabel, "Text", name);
                     break;
                 case 2:
-                    SetControlProperty(squadmate3NameTextBox, "Text", name);
+                    SetControlProperty(squadmate3NameLabel, "Text", name);
                     break;
                 default:
                     throw new Exception("Invalid index in SetSquadName");
@@ -210,7 +210,7 @@ namespace FortniteOverlay
             var box = (PictureBox)sender;
             if (box.Image != null) { Clipboard.SetDataObject(box.Image); }
         }
-        private void squadmate1NameTextBox_DoubleClick(object sender, EventArgs e)
+        private void squadmate1NameLabel_DoubleClick(object sender, EventArgs e)
         {
             var label = (Label)sender;
             if(!string.IsNullOrWhiteSpace(label.Text)) { Clipboard.SetText(label.Text); }
@@ -225,7 +225,7 @@ namespace FortniteOverlay
             var box = (PictureBox)sender;
             if (box.Image != null) { Clipboard.SetDataObject(box.Image); }
         }
-        private void squadmate2NameTextBox_DoubleClick(object sender, EventArgs e)
+        private void squadmate2NameLabel_DoubleClick(object sender, EventArgs e)
         {
             var label = (Label)sender;
             if (!string.IsNullOrWhiteSpace(label.Text)) { Clipboard.SetText(label.Text); }
@@ -240,7 +240,7 @@ namespace FortniteOverlay
             var box = (PictureBox)sender;
             if (box.Image != null) { Clipboard.SetDataObject(box.Image); }
         }
-        private void squadmate3NameTextBox_DoubleClick(object sender, EventArgs e)
+        private void squadmate3NameLabel_DoubleClick(object sender, EventArgs e)
         {
             var label = (Label)sender;
             if (!string.IsNullOrWhiteSpace(label.Text)) { Clipboard.SetText(label.Text); }
