@@ -88,6 +88,7 @@ namespace FortniteOverlay
             showConsoleCheckBox.Checked         = cfg.ShowConsole;
             enableOverlayCheckBox.Checked       = cfg.EnableOverlay;
             minimizeToTrayCheckBox.Checked      = cfg.MinimizeToTray;
+            startMinimizedCheckBox.Checked      = cfg.StartMinimized;
         }
 
         private void ConfigSaveToFile()
@@ -104,6 +105,7 @@ namespace FortniteOverlay
                 ShowConsole       = showConsoleCheckBox.Checked,
                 EnableOverlay     = enableOverlayCheckBox.Checked,
                 MinimizeToTray    = minimizeToTrayCheckBox.Checked,
+                StartMinimized    = startMinimizedCheckBox.Checked,
             };
 
             MiscUtil.ConfigSave(cfg);

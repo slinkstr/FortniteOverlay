@@ -16,6 +16,11 @@ namespace FortniteOverlay
             Icon = Icon.ExtractAssociatedIcon(AppDomain.CurrentDomain.FriendlyName);
             notifyIcon.Icon = Icon.ExtractAssociatedIcon(AppDomain.CurrentDomain.FriendlyName);
         }
+        
+        protected override bool ShowWithoutActivation
+        {
+            get { return Program.config.StartMinimized; }
+        }
 
         // ****************************************************************************************************
         // HELPER METHODS
@@ -40,6 +45,16 @@ namespace FortniteOverlay
                 consoleLogTextBox.AppendText(message);
             }
             Console.Write(message);
+        }
+
+        public void MinimizeToTray()
+        {
+            if (WindowState == FormWindowState.Minimized && Program.config.MinimizeToTray)
+            {
+                Hide();
+                ShowInTaskbar = false;
+                notifyIcon.Visible = true;
+            }
         }
 
         public static void SetControlProperty(Control control, string propertyName, object data)
@@ -149,14 +164,15 @@ namespace FortniteOverlay
         private void Form1_Load(object sender, EventArgs e)
         {
             ShowHideConsole(Program.config.ShowConsole);
+            if(Program.config.StartMinimized)
+            {
+                WindowState = FormWindowState.Minimized;
+                MinimizeToTray();
+            }
         }
         private void Form1_Resize(object sender, EventArgs e)
         {
-            if (this.WindowState == FormWindowState.Minimized && Program.config.MinimizeToTray)
-            {
-                Hide();
-                notifyIcon.Visible = true;
-            }
+            MinimizeToTray();
         }
 
         private void editConfigButton_Click(object sender, EventArgs e)
