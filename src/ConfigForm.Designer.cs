@@ -60,8 +60,8 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.overlayOpacityNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.startMinimizedCheckBox = new System.Windows.Forms.CheckBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.hudScaleNumericUpDown)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.secretKeyPanel.SuspendLayout();
@@ -146,7 +146,7 @@
             this.saveButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.saveButton.Location = new System.Drawing.Point(120, 3);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(111, 49);
+            this.saveButton.Size = new System.Drawing.Size(111, 50);
             this.saveButton.TabIndex = 1;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
@@ -157,7 +157,7 @@
             this.loadButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.loadButton.Location = new System.Drawing.Point(237, 3);
             this.loadButton.Name = "loadButton";
-            this.loadButton.Size = new System.Drawing.Size(111, 49);
+            this.loadButton.Size = new System.Drawing.Size(111, 50);
             this.loadButton.TabIndex = 2;
             this.loadButton.Text = "Load";
             this.loadButton.UseVisualStyleBackColor = true;
@@ -168,7 +168,7 @@
             this.cancelButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cancelButton.Location = new System.Drawing.Point(354, 3);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(112, 49);
+            this.cancelButton.Size = new System.Drawing.Size(112, 50);
             this.cancelButton.TabIndex = 3;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -180,7 +180,7 @@
             this.minimizeToTrayCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.minimizeToTrayCheckBox.Location = new System.Drawing.Point(8, 303);
             this.minimizeToTrayCheckBox.Name = "minimizeToTrayCheckBox";
-            this.minimizeToTrayCheckBox.Size = new System.Drawing.Size(228, 44);
+            this.minimizeToTrayCheckBox.Size = new System.Drawing.Size(228, 43);
             this.minimizeToTrayCheckBox.TabIndex = 9;
             this.minimizeToTrayCheckBox.Text = "Minimize to tray";
             this.minimizeToTrayCheckBox.UseVisualStyleBackColor = true;
@@ -190,7 +190,7 @@
             this.openFileLocationButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.openFileLocationButton.Location = new System.Drawing.Point(3, 3);
             this.openFileLocationButton.Name = "openFileLocationButton";
-            this.openFileLocationButton.Size = new System.Drawing.Size(111, 49);
+            this.openFileLocationButton.Size = new System.Drawing.Size(111, 50);
             this.openFileLocationButton.TabIndex = 0;
             this.openFileLocationButton.Text = "Open File Location";
             this.openFileLocationButton.UseVisualStyleBackColor = true;
@@ -236,10 +236,10 @@
             // 
             this.autorunCheckBox.AutoSize = true;
             this.autorunCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.autorunCheckBox.Location = new System.Drawing.Point(242, 353);
+            this.autorunCheckBox.Location = new System.Drawing.Point(242, 352);
             this.autorunCheckBox.Name = "autorunCheckBox";
             this.autorunCheckBox.Size = new System.Drawing.Size(229, 44);
-            this.autorunCheckBox.TabIndex = 10;
+            this.autorunCheckBox.TabIndex = 11;
             this.autorunCheckBox.Text = "Run at system startup";
             this.autorunCheckBox.UseVisualStyleBackColor = true;
             this.autorunCheckBox.CheckedChanged += new System.EventHandler(this.autostartCheckBox_CheckedChanged);
@@ -330,12 +330,12 @@
             this.controlTableLayoutPanel.Controls.Add(this.saveButton, 1, 0);
             this.controlTableLayoutPanel.Controls.Add(this.openFileLocationButton, 0, 0);
             this.controlTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.controlTableLayoutPanel.Location = new System.Drawing.Point(5, 400);
+            this.controlTableLayoutPanel.Location = new System.Drawing.Point(5, 399);
             this.controlTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this.controlTableLayoutPanel.Name = "controlTableLayoutPanel";
             this.controlTableLayoutPanel.RowCount = 1;
             this.controlTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.controlTableLayoutPanel.Size = new System.Drawing.Size(469, 55);
+            this.controlTableLayoutPanel.Size = new System.Drawing.Size(469, 56);
             this.controlTableLayoutPanel.TabIndex = 16;
             // 
             // hudScalePanel
@@ -375,7 +375,7 @@
             // uploadIntervalNumericUpDown
             // 
             this.uploadIntervalNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.uploadIntervalNumericUpDown.Location = new System.Drawing.Point(3, 17);
+            this.uploadIntervalNumericUpDown.Location = new System.Drawing.Point(3, 20);
             this.uploadIntervalNumericUpDown.Maximum = new decimal(new int[] {
             300,
             0,
@@ -409,7 +409,7 @@
             // downloadIntervalNumericUpDown
             // 
             this.downloadIntervalNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.downloadIntervalNumericUpDown.Location = new System.Drawing.Point(3, 17);
+            this.downloadIntervalNumericUpDown.Location = new System.Drawing.Point(3, 20);
             this.downloadIntervalNumericUpDown.Maximum = new decimal(new int[] {
             300,
             0,
@@ -470,7 +470,7 @@
             this.panel3.Margin = new System.Windows.Forms.Padding(0);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(235, 49);
-            this.panel3.TabIndex = 17;
+            this.panel3.TabIndex = 6;
             // 
             // overlayOpacityNumericUpDown
             // 
@@ -491,22 +491,22 @@
             this.label7.TabIndex = 0;
             this.label7.Text = "Overlay Opacity";
             // 
-            // toolTip1
-            // 
-            this.toolTip1.AutoPopDelay = 0;
-            this.toolTip1.InitialDelay = 500;
-            this.toolTip1.ReshowDelay = 0;
-            // 
             // startMinimizedCheckBox
             // 
             this.startMinimizedCheckBox.AutoSize = true;
             this.startMinimizedCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.startMinimizedCheckBox.Location = new System.Drawing.Point(242, 303);
             this.startMinimizedCheckBox.Name = "startMinimizedCheckBox";
-            this.startMinimizedCheckBox.Size = new System.Drawing.Size(229, 44);
-            this.startMinimizedCheckBox.TabIndex = 18;
+            this.startMinimizedCheckBox.Size = new System.Drawing.Size(229, 43);
+            this.startMinimizedCheckBox.TabIndex = 10;
             this.startMinimizedCheckBox.Text = "Start minimized";
             this.startMinimizedCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.AutoPopDelay = 0;
+            this.toolTip1.InitialDelay = 500;
+            this.toolTip1.ReshowDelay = 0;
             // 
             // ConfigForm
             // 
