@@ -93,7 +93,7 @@
             0,
             0});
             this.hudScaleNumericUpDown.Name = "hudScaleNumericUpDown";
-            this.hudScaleNumericUpDown.Size = new System.Drawing.Size(227, 20);
+            this.hudScaleNumericUpDown.Size = new System.Drawing.Size(231, 20);
             this.hudScaleNumericUpDown.TabIndex = 1;
             this.hudScaleNumericUpDown.Value = new decimal(new int[] {
             25,
@@ -144,9 +144,9 @@
             // saveButton
             // 
             this.saveButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.saveButton.Location = new System.Drawing.Point(120, 3);
+            this.saveButton.Location = new System.Drawing.Point(121, 3);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(111, 50);
+            this.saveButton.Size = new System.Drawing.Size(112, 45);
             this.saveButton.TabIndex = 1;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
@@ -155,9 +155,9 @@
             // loadButton
             // 
             this.loadButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.loadButton.Location = new System.Drawing.Point(237, 3);
+            this.loadButton.Location = new System.Drawing.Point(239, 3);
             this.loadButton.Name = "loadButton";
-            this.loadButton.Size = new System.Drawing.Size(111, 50);
+            this.loadButton.Size = new System.Drawing.Size(112, 45);
             this.loadButton.TabIndex = 2;
             this.loadButton.Text = "Load";
             this.loadButton.UseVisualStyleBackColor = true;
@@ -166,9 +166,9 @@
             // cancelButton
             // 
             this.cancelButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cancelButton.Location = new System.Drawing.Point(354, 3);
+            this.cancelButton.Location = new System.Drawing.Point(357, 3);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(112, 50);
+            this.cancelButton.Size = new System.Drawing.Size(114, 45);
             this.cancelButton.TabIndex = 3;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -178,9 +178,9 @@
             // 
             this.minimizeToTrayCheckBox.AutoSize = true;
             this.minimizeToTrayCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.minimizeToTrayCheckBox.Location = new System.Drawing.Point(8, 303);
+            this.minimizeToTrayCheckBox.Location = new System.Drawing.Point(8, 308);
             this.minimizeToTrayCheckBox.Name = "minimizeToTrayCheckBox";
-            this.minimizeToTrayCheckBox.Size = new System.Drawing.Size(228, 43);
+            this.minimizeToTrayCheckBox.Size = new System.Drawing.Size(231, 44);
             this.minimizeToTrayCheckBox.TabIndex = 9;
             this.minimizeToTrayCheckBox.Text = "Minimize to tray";
             this.minimizeToTrayCheckBox.UseVisualStyleBackColor = true;
@@ -190,7 +190,7 @@
             this.openFileLocationButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.openFileLocationButton.Location = new System.Drawing.Point(3, 3);
             this.openFileLocationButton.Name = "openFileLocationButton";
-            this.openFileLocationButton.Size = new System.Drawing.Size(111, 50);
+            this.openFileLocationButton.Size = new System.Drawing.Size(112, 45);
             this.openFileLocationButton.TabIndex = 0;
             this.openFileLocationButton.Text = "Open File Location";
             this.openFileLocationButton.UseVisualStyleBackColor = true;
@@ -229,16 +229,16 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11111F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.1114F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11433F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(479, 460);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(484, 461);
             this.tableLayoutPanel1.TabIndex = 15;
             // 
             // autorunCheckBox
             // 
             this.autorunCheckBox.AutoSize = true;
             this.autorunCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.autorunCheckBox.Location = new System.Drawing.Point(242, 352);
+            this.autorunCheckBox.Location = new System.Drawing.Point(245, 358);
             this.autorunCheckBox.Name = "autorunCheckBox";
-            this.autorunCheckBox.Size = new System.Drawing.Size(229, 44);
+            this.autorunCheckBox.Size = new System.Drawing.Size(231, 44);
             this.autorunCheckBox.TabIndex = 11;
             this.autorunCheckBox.Text = "Run at system startup";
             this.autorunCheckBox.UseVisualStyleBackColor = true;
@@ -253,7 +253,7 @@
             this.secretKeyPanel.Location = new System.Drawing.Point(5, 5);
             this.secretKeyPanel.Margin = new System.Windows.Forms.Padding(0);
             this.secretKeyPanel.Name = "secretKeyPanel";
-            this.secretKeyPanel.Size = new System.Drawing.Size(469, 49);
+            this.secretKeyPanel.Size = new System.Drawing.Size(474, 50);
             this.secretKeyPanel.TabIndex = 0;
             this.toolTip1.SetToolTip(this.secretKeyPanel, "Secret key to upload images to your server.  Keep this private!");
             // 
@@ -264,7 +264,7 @@
             this.secretKeyTextBoxEx.BorderColor = System.Drawing.Color.Transparent;
             this.secretKeyTextBoxEx.Location = new System.Drawing.Point(3, 20);
             this.secretKeyTextBoxEx.Name = "secretKeyTextBoxEx";
-            this.secretKeyTextBoxEx.Size = new System.Drawing.Size(462, 20);
+            this.secretKeyTextBoxEx.Size = new System.Drawing.Size(468, 20);
             this.secretKeyTextBoxEx.TabIndex = 1;
             this.secretKeyTextBoxEx.UseSystemPasswordChar = true;
             // 
@@ -274,10 +274,10 @@
             this.uploadEndpointPanel.Controls.Add(this.label2);
             this.uploadEndpointPanel.Controls.Add(this.uploadEndpointTextBoxEx);
             this.uploadEndpointPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.uploadEndpointPanel.Location = new System.Drawing.Point(5, 54);
+            this.uploadEndpointPanel.Location = new System.Drawing.Point(5, 55);
             this.uploadEndpointPanel.Margin = new System.Windows.Forms.Padding(0);
             this.uploadEndpointPanel.Name = "uploadEndpointPanel";
-            this.uploadEndpointPanel.Size = new System.Drawing.Size(469, 49);
+            this.uploadEndpointPanel.Size = new System.Drawing.Size(474, 50);
             this.uploadEndpointPanel.TabIndex = 1;
             this.toolTip1.SetToolTip(this.uploadEndpointPanel, "URL to upload images to. Must end with \".php\".");
             // 
@@ -288,7 +288,7 @@
             this.uploadEndpointTextBoxEx.BorderColor = System.Drawing.Color.Transparent;
             this.uploadEndpointTextBoxEx.Location = new System.Drawing.Point(3, 20);
             this.uploadEndpointTextBoxEx.Name = "uploadEndpointTextBoxEx";
-            this.uploadEndpointTextBoxEx.Size = new System.Drawing.Size(462, 20);
+            this.uploadEndpointTextBoxEx.Size = new System.Drawing.Size(468, 20);
             this.uploadEndpointTextBoxEx.TabIndex = 1;
             this.uploadEndpointTextBoxEx.TextChanged += new System.EventHandler(this.uploadEndpointTextBoxEx_TextChanged);
             // 
@@ -298,10 +298,10 @@
             this.imageLocationPanel.Controls.Add(this.label3);
             this.imageLocationPanel.Controls.Add(this.imageLocationTextBoxEx);
             this.imageLocationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.imageLocationPanel.Location = new System.Drawing.Point(5, 103);
+            this.imageLocationPanel.Location = new System.Drawing.Point(5, 105);
             this.imageLocationPanel.Margin = new System.Windows.Forms.Padding(0);
             this.imageLocationPanel.Name = "imageLocationPanel";
-            this.imageLocationPanel.Size = new System.Drawing.Size(469, 49);
+            this.imageLocationPanel.Size = new System.Drawing.Size(474, 50);
             this.imageLocationPanel.TabIndex = 2;
             this.toolTip1.SetToolTip(this.imageLocationPanel, "URL to look for uploaded images at, usually right next to the upload endpoint. Mu" +
         "st end with \"/\".");
@@ -313,7 +313,7 @@
             this.imageLocationTextBoxEx.BorderColor = System.Drawing.Color.Transparent;
             this.imageLocationTextBoxEx.Location = new System.Drawing.Point(3, 20);
             this.imageLocationTextBoxEx.Name = "imageLocationTextBoxEx";
-            this.imageLocationTextBoxEx.Size = new System.Drawing.Size(462, 20);
+            this.imageLocationTextBoxEx.Size = new System.Drawing.Size(468, 20);
             this.imageLocationTextBoxEx.TabIndex = 1;
             this.imageLocationTextBoxEx.TextChanged += new System.EventHandler(this.imageLocationTextBoxEx_TextChanged);
             // 
@@ -330,12 +330,12 @@
             this.controlTableLayoutPanel.Controls.Add(this.saveButton, 1, 0);
             this.controlTableLayoutPanel.Controls.Add(this.openFileLocationButton, 0, 0);
             this.controlTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.controlTableLayoutPanel.Location = new System.Drawing.Point(5, 399);
+            this.controlTableLayoutPanel.Location = new System.Drawing.Point(5, 405);
             this.controlTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this.controlTableLayoutPanel.Name = "controlTableLayoutPanel";
             this.controlTableLayoutPanel.RowCount = 1;
             this.controlTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.controlTableLayoutPanel.Size = new System.Drawing.Size(469, 56);
+            this.controlTableLayoutPanel.Size = new System.Drawing.Size(474, 51);
             this.controlTableLayoutPanel.TabIndex = 16;
             // 
             // hudScalePanel
@@ -343,10 +343,10 @@
             this.hudScalePanel.Controls.Add(this.label4);
             this.hudScalePanel.Controls.Add(this.hudScaleNumericUpDown);
             this.hudScalePanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.hudScalePanel.Location = new System.Drawing.Point(5, 201);
+            this.hudScalePanel.Location = new System.Drawing.Point(5, 205);
             this.hudScalePanel.Margin = new System.Windows.Forms.Padding(0);
             this.hudScalePanel.Name = "hudScalePanel";
-            this.hudScalePanel.Size = new System.Drawing.Size(234, 49);
+            this.hudScalePanel.Size = new System.Drawing.Size(237, 50);
             this.hudScalePanel.TabIndex = 5;
             this.toolTip1.SetToolTip(this.hudScalePanel, "The HUD scale you use in-game. NOTE: All calculations are designed for 100% and d" +
         "erived. Rounding errors may occur.");
@@ -356,10 +356,10 @@
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.uploadIntervalNumericUpDown);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(5, 152);
+            this.panel1.Location = new System.Drawing.Point(5, 155);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(234, 49);
+            this.panel1.Size = new System.Drawing.Size(237, 50);
             this.panel1.TabIndex = 3;
             // 
             // label5
@@ -374,7 +374,6 @@
             // 
             // uploadIntervalNumericUpDown
             // 
-            this.uploadIntervalNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.uploadIntervalNumericUpDown.Location = new System.Drawing.Point(3, 20);
             this.uploadIntervalNumericUpDown.Maximum = new decimal(new int[] {
             300,
@@ -387,7 +386,7 @@
             0,
             0});
             this.uploadIntervalNumericUpDown.Name = "uploadIntervalNumericUpDown";
-            this.uploadIntervalNumericUpDown.Size = new System.Drawing.Size(228, 20);
+            this.uploadIntervalNumericUpDown.Size = new System.Drawing.Size(231, 20);
             this.uploadIntervalNumericUpDown.TabIndex = 1;
             this.uploadIntervalNumericUpDown.Value = new decimal(new int[] {
             1,
@@ -400,15 +399,16 @@
             this.panel2.Controls.Add(this.downloadIntervalNumericUpDown);
             this.panel2.Controls.Add(this.label6);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(239, 152);
+            this.panel2.Location = new System.Drawing.Point(242, 155);
             this.panel2.Margin = new System.Windows.Forms.Padding(0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(235, 49);
+            this.panel2.Size = new System.Drawing.Size(237, 50);
             this.panel2.TabIndex = 4;
             // 
             // downloadIntervalNumericUpDown
             // 
-            this.downloadIntervalNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.downloadIntervalNumericUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.downloadIntervalNumericUpDown.Location = new System.Drawing.Point(3, 20);
             this.downloadIntervalNumericUpDown.Maximum = new decimal(new int[] {
             300,
@@ -421,7 +421,7 @@
             0,
             0});
             this.downloadIntervalNumericUpDown.Name = "downloadIntervalNumericUpDown";
-            this.downloadIntervalNumericUpDown.Size = new System.Drawing.Size(229, 20);
+            this.downloadIntervalNumericUpDown.Size = new System.Drawing.Size(231, 20);
             this.downloadIntervalNumericUpDown.TabIndex = 1;
             this.downloadIntervalNumericUpDown.Value = new decimal(new int[] {
             1,
@@ -443,9 +443,9 @@
             // 
             this.showConsoleCheckBox.AutoSize = true;
             this.showConsoleCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.showConsoleCheckBox.Location = new System.Drawing.Point(8, 253);
+            this.showConsoleCheckBox.Location = new System.Drawing.Point(8, 258);
             this.showConsoleCheckBox.Name = "showConsoleCheckBox";
-            this.showConsoleCheckBox.Size = new System.Drawing.Size(228, 44);
+            this.showConsoleCheckBox.Size = new System.Drawing.Size(231, 44);
             this.showConsoleCheckBox.TabIndex = 7;
             this.showConsoleCheckBox.Text = "Show console";
             this.showConsoleCheckBox.UseVisualStyleBackColor = true;
@@ -454,9 +454,9 @@
             // 
             this.enableOverlayCheckBox.AutoSize = true;
             this.enableOverlayCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.enableOverlayCheckBox.Location = new System.Drawing.Point(242, 253);
+            this.enableOverlayCheckBox.Location = new System.Drawing.Point(245, 258);
             this.enableOverlayCheckBox.Name = "enableOverlayCheckBox";
-            this.enableOverlayCheckBox.Size = new System.Drawing.Size(229, 44);
+            this.enableOverlayCheckBox.Size = new System.Drawing.Size(231, 44);
             this.enableOverlayCheckBox.TabIndex = 8;
             this.enableOverlayCheckBox.Text = "Enable overlay";
             this.enableOverlayCheckBox.UseVisualStyleBackColor = true;
@@ -466,10 +466,10 @@
             this.panel3.Controls.Add(this.overlayOpacityNumericUpDown);
             this.panel3.Controls.Add(this.label7);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(239, 201);
+            this.panel3.Location = new System.Drawing.Point(242, 205);
             this.panel3.Margin = new System.Windows.Forms.Padding(0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(235, 49);
+            this.panel3.Size = new System.Drawing.Size(237, 50);
             this.panel3.TabIndex = 6;
             // 
             // overlayOpacityNumericUpDown
@@ -478,7 +478,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.overlayOpacityNumericUpDown.Location = new System.Drawing.Point(3, 20);
             this.overlayOpacityNumericUpDown.Name = "overlayOpacityNumericUpDown";
-            this.overlayOpacityNumericUpDown.Size = new System.Drawing.Size(228, 20);
+            this.overlayOpacityNumericUpDown.Size = new System.Drawing.Size(231, 20);
             this.overlayOpacityNumericUpDown.TabIndex = 1;
             // 
             // label7
@@ -495,9 +495,9 @@
             // 
             this.startMinimizedCheckBox.AutoSize = true;
             this.startMinimizedCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.startMinimizedCheckBox.Location = new System.Drawing.Point(242, 303);
+            this.startMinimizedCheckBox.Location = new System.Drawing.Point(245, 308);
             this.startMinimizedCheckBox.Name = "startMinimizedCheckBox";
-            this.startMinimizedCheckBox.Size = new System.Drawing.Size(229, 43);
+            this.startMinimizedCheckBox.Size = new System.Drawing.Size(231, 44);
             this.startMinimizedCheckBox.TabIndex = 10;
             this.startMinimizedCheckBox.Text = "Start minimized";
             this.startMinimizedCheckBox.UseVisualStyleBackColor = true;
@@ -512,7 +512,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(479, 460);
+            this.ClientSize = new System.Drawing.Size(484, 461);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "ConfigForm";
             this.Text = "Configuration";
