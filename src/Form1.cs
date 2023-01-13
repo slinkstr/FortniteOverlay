@@ -49,12 +49,18 @@ namespace FortniteOverlay
 
         public void MinimizeToTray()
         {
-            if (WindowState == FormWindowState.Minimized && Program.config.MinimizeToTray)
-            {
-                Hide();
-                ShowInTaskbar = false;
-                notifyIcon.Visible = true;
-            }
+            Hide();
+            ShowInTaskbar = false;
+            notifyIcon.Visible = true;
+            WindowState = FormWindowState.Minimized;
+        }
+
+        public void UnminimizeFromTray()
+        {
+            Show();
+            ShowInTaskbar = true;
+            notifyIcon.Visible = false;
+            WindowState = FormWindowState.Normal;
         }
 
         public static void SetControlProperty(Control control, string propertyName, object data)
@@ -172,7 +178,10 @@ namespace FortniteOverlay
         }
         private void Form1_Resize(object sender, EventArgs e)
         {
-            MinimizeToTray();
+            if (WindowState == FormWindowState.Minimized && Program.config.MinimizeToTray)
+            {
+                MinimizeToTray();
+            }
         }
 
         private void editConfigButton_Click(object sender, EventArgs e)
@@ -193,9 +202,7 @@ namespace FortniteOverlay
         {
             if(e.Button == MouseButtons.Left)
             {
-                Show();
-                this.WindowState = FormWindowState.Normal;
-                notifyIcon.Visible = false;
+                UnminimizeFromTray();
             }
         }
         private void previewLabel_DoubleClick(object sender, EventArgs e)
