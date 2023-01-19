@@ -7,6 +7,7 @@ namespace FortniteOverlay
     public partial class Form1 : Form
     {
         private int consoleHeight;
+        private bool firstShow;
 
         public Form1()
         {
@@ -15,11 +16,20 @@ namespace FortniteOverlay
             Text += " v" + Application.ProductVersion;
             Icon = Icon.ExtractAssociatedIcon(AppDomain.CurrentDomain.FriendlyName);
             notifyIcon.Icon = Icon.ExtractAssociatedIcon(AppDomain.CurrentDomain.FriendlyName);
+            firstShow = true;
         }
         
         protected override bool ShowWithoutActivation
         {
-            get { return Program.config.StartMinimized; }
+            get
+            {
+                if(firstShow)
+                {
+                    firstShow = false;
+                    return Program.config.StartMinimized;
+                }
+                return false;
+            }
         }
 
         // ****************************************************************************************************
