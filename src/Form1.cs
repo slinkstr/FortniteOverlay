@@ -49,10 +49,10 @@ namespace FortniteOverlay
 
         public void MinimizeToTray()
         {
-            Hide();
             ShowInTaskbar = false;
             notifyIcon.Visible = true;
             WindowState = FormWindowState.Minimized;
+            Hide();
         }
 
         public void UnminimizeFromTray()
