@@ -62,6 +62,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.startMinimizedCheckBox = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.alwaysOnTopCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.hudScaleNumericUpDown)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.secretKeyPanel.SuspendLayout();
@@ -214,6 +215,7 @@
             this.tableLayoutPanel1.Controls.Add(this.panel3, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.minimizeToTrayCheckBox, 0, 6);
             this.tableLayoutPanel1.Controls.Add(this.startMinimizedCheckBox, 1, 6);
+            this.tableLayoutPanel1.Controls.Add(this.alwaysOnTopCheckBox, 0, 7);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
@@ -508,6 +510,17 @@
             this.toolTip1.InitialDelay = 500;
             this.toolTip1.ReshowDelay = 0;
             // 
+            // alwaysOnTopCheckBox
+            // 
+            this.alwaysOnTopCheckBox.AutoSize = true;
+            this.alwaysOnTopCheckBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.alwaysOnTopCheckBox.Location = new System.Drawing.Point(8, 358);
+            this.alwaysOnTopCheckBox.Name = "alwaysOnTopCheckBox";
+            this.alwaysOnTopCheckBox.Size = new System.Drawing.Size(231, 44);
+            this.alwaysOnTopCheckBox.TabIndex = 17;
+            this.alwaysOnTopCheckBox.Text = "Always On Top";
+            this.alwaysOnTopCheckBox.UseVisualStyleBackColor = true;
+            // 
             // ConfigForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -578,5 +591,6 @@
         private System.Windows.Forms.NumericUpDown overlayOpacityNumericUpDown;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.CheckBox startMinimizedCheckBox;
+        private System.Windows.Forms.CheckBox alwaysOnTopCheckBox;
     }
 }

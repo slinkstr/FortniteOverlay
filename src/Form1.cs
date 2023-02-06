@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 namespace FortniteOverlay
@@ -71,6 +72,11 @@ namespace FortniteOverlay
             ShowInTaskbar = true;
             notifyIcon.Visible = false;
             WindowState = FormWindowState.Normal;
+        }
+
+        public void SetAlwaysOnTop(bool ontop)
+        {
+            TopMost = ontop;
         }
 
         public static void SetControlProperty(Control control, string propertyName, object data)
@@ -180,6 +186,7 @@ namespace FortniteOverlay
         private void Form1_Load(object sender, EventArgs e)
         {
             ShowHideConsole(Program.config.ShowConsole);
+            SetAlwaysOnTop(Program.config.AlwaysOnTop);
             if(Program.config.StartMinimized)
             {
                 WindowState = FormWindowState.Minimized;

@@ -29,6 +29,7 @@ namespace FortniteOverlay
         {
             ConfigLoadFromFile();
             autorunCheckBox.Checked = AutorunEnabled();
+            Program.form.SetAlwaysOnTop(false);
         }
 
         // ****************************************************************************************************
@@ -89,6 +90,7 @@ namespace FortniteOverlay
             enableOverlayCheckBox.Checked       = cfg.EnableOverlay;
             minimizeToTrayCheckBox.Checked      = cfg.MinimizeToTray;
             startMinimizedCheckBox.Checked      = cfg.StartMinimized;
+            alwaysOnTopCheckBox.Checked         = cfg.AlwaysOnTop;
         }
 
         private void ConfigSaveToFile()
@@ -106,6 +108,7 @@ namespace FortniteOverlay
                 EnableOverlay     = enableOverlayCheckBox.Checked,
                 MinimizeToTray    = minimizeToTrayCheckBox.Checked,
                 StartMinimized    = startMinimizedCheckBox.Checked,
+                AlwaysOnTop       = alwaysOnTopCheckBox.Checked,
             };
 
             MiscUtil.ConfigSave(cfg);
@@ -165,6 +168,7 @@ namespace FortniteOverlay
         private void ConfigForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Program.form.ShowHideConsole(Program.config.ShowConsole);
+            Program.form.SetAlwaysOnTop(Program.config.AlwaysOnTop);
         }
 
         private void ConfigForm_FormClosing(object sender, FormClosingEventArgs e)

@@ -368,6 +368,7 @@ namespace FortniteOverlay
         public bool EnableOverlay { get; set; } = true;
         public bool MinimizeToTray { get; set; } = true;
         public bool StartMinimized { get; set; } = false;
+        public bool AlwaysOnTop { get; set; } = false;
         // run at startup is handled by the config form
     }
 }
