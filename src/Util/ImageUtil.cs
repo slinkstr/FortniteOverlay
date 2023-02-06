@@ -48,7 +48,7 @@ namespace FortniteOverlay.Util
             if (screenshot == null) { return false; }
             var scaledPos = ScalePositions(positions, hudScale);
             var pix = screenshot.GetPixel(scaledPos.GoldBars[0], scaledPos.GoldBars[1]);
-            if (pix.GetHue() > 52
+            if (pix.GetHue() > 50
              && pix.GetHue() < 62
              && pix.GetBrightness() > 0.70
              && pix.GetBrightness() < 0.95)
