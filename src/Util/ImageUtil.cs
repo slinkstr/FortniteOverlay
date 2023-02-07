@@ -16,28 +16,6 @@ namespace FortniteOverlay.Util
             return dsrpos;
         }
 
-        public static bool IsMapVisible(Bitmap screenshot, List<PixelPositions> positions, int hudScale)
-        {
-            return IsMapVisible(screenshot, MatchingPosition(screenshot, positions), hudScale);
-        }
-
-        public static bool IsMapVisible(Bitmap screenshot, PixelPositions positions, int hudScale)
-        {
-            if (screenshot == null) { return false; }
-            var scaledPos = ScalePositions(positions, hudScale);
-            var pix = screenshot.GetPixel(scaledPos.Map[0], scaledPos.Map[1]);
-            
-            //if (pix.R < 250 || pix.G < 250 || pix.B < 250)
-            if (pix.R != 255 || pix.G != 255 || pix.B != 255)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
         public static bool IsGoldBarsVisible(Bitmap screenshot, List<PixelPositions> positions, int hudScale)
         {
             return IsGoldBarsVisible(screenshot, MatchingPosition(screenshot, positions), hudScale);
@@ -47,18 +25,19 @@ namespace FortniteOverlay.Util
         {
             if (screenshot == null) { return false; }
             var scaledPos = ScalePositions(positions, hudScale);
-            var pix = screenshot.GetPixel(scaledPos.GoldBars[0], scaledPos.GoldBars[1]);
-            if (pix.GetHue() > 50
-             && pix.GetHue() < 62
-             && pix.GetBrightness() > 0.70
-             && pix.GetBrightness() < 0.95)
+            var pixelBrightness = screenshot.GetPixel(scaledPos.GoldBars[0][0], scaledPos.GoldBars[0][1]).GetBrightness();
+            if(pixelBrightness < 0.58 || pixelBrightness > 0.75)
             {
-                return true;
-            }
-            else
-            {
+                Program.form.LogDebug($"Gold bar not detected (Check #1, val: {pixelBrightness})");
                 return false;
             }
+            pixelBrightness = screenshot.GetPixel(scaledPos.GoldBars[1][0], scaledPos.GoldBars[1][1]).GetBrightness();
+            if(pixelBrightness < 0.15 || pixelBrightness > 0.32)
+            {
+                Program.form.LogDebug($"Gold bar not detected (Check #2, val: {pixelBrightness})");
+                return false;
+            }
+            return true;
         }
 
         public static bool IsSpectatingTextVisible(Bitmap screenshot, List<PixelPositions> positions, int hudScale)
@@ -72,21 +51,20 @@ namespace FortniteOverlay.Util
             var scaledPos = ScalePositions(positions, hudScale);
 
             var pix = screenshot.GetPixel(scaledPos.SpectatingText[0][0], scaledPos.SpectatingText[0][1]);
-
-            //if (pix.R < 250 || pix.G < 250 || pix.B < 250)
             if (pix.R != 255 || pix.G != 255 || pix.B != 255)
             {
+                Program.form.LogDebug("Spectating text not detected (Check 1)");
                 return false;
             }
 
             pix = screenshot.GetPixel(scaledPos.SpectatingText[1][0], scaledPos.SpectatingText[1][1]);
-
-            //if (pix.R < 250 || pix.G < 250 || pix.B < 250)
             if (pix.R != 255 || pix.G != 255 || pix.B != 255)
             {
+                Program.form.LogDebug("Spectating text not detected (Check 2)");
                 return false;
             }
 
+            Program.form.LogDebug("Detected spectating text.");
             return true;
         }
 
@@ -145,6 +123,8 @@ namespace FortniteOverlay.Util
                 break;
             }
 
+            Program.form.LogDebug("Selected slot: " + slotSelected);
+
             Bitmap bitmap = new Bitmap((scaledPos.SlotSize * 6), scaledPos.SlotSize);
             using (Graphics g = Graphics.FromImage(bitmap))
             {
@@ -188,7 +168,8 @@ namespace FortniteOverlay.Util
 
                 // Other points
                 g.DrawEllipse(pen, scaledPos.Map[0] - 1, scaledPos.Map[1] - 1, 2, 2);
-                g.DrawEllipse(pen, scaledPos.GoldBars[0] - 1, scaledPos.GoldBars[1] - 1, 2, 2);
+                g.DrawEllipse(pen, scaledPos.GoldBars[0][0] - 1, scaledPos.GoldBars[0][1] - 1, 2, 2);
+                g.DrawEllipse(pen, scaledPos.GoldBars[1][0] - 1, scaledPos.GoldBars[1][1] - 1, 2, 2);
                 g.DrawEllipse(pen, scaledPos.SpectatingText[0][0] - 1, scaledPos.SpectatingText[0][1] - 1, 2, 2);
                 g.DrawEllipse(pen, scaledPos.SpectatingText[1][0] - 1, scaledPos.SpectatingText[1][1] - 1, 2, 2);
             }
@@ -231,10 +212,10 @@ namespace FortniteOverlay.Util
                     (int)((double)reference.Map[0] / (double)reference.Resolution[0] * width),
                     (int)((double)reference.Map[1] / (double)reference.Resolution[1] * height),
                 },
-                GoldBars = new int[2]
+                GoldBars = new int[2][]
                 {
-                    (int)((double)reference.GoldBars[0] / (double)reference.Resolution[0] * width),
-                    (int)((double)reference.GoldBars[1] / (double)reference.Resolution[1] * height),
+                    new int[] { (int)((double)reference.GoldBars[0][0] / (double)reference.Resolution[0] * width), (int)((double)reference.GoldBars[0][1] / (double)reference.Resolution[1] * height) },
+                    new int[] { (int)((double)reference.GoldBars[1][0] / (double)reference.Resolution[0] * width), (int)((double)reference.GoldBars[1][1] / (double)reference.Resolution[1] * height) },
                 },
                 SpectatingText = new int[2][]
                 {
@@ -305,7 +286,11 @@ namespace FortniteOverlay.Util
                     ScaleAboutBottomRight(pos.Slots[4][0], pos.Slots[4][1], pos.Resolution[0], pos.Resolution[1], scale)
                 },
                 Map = ScaleAboutTopRight(pos.Map[0], pos.Map[1], pos.Resolution[0], pos.Resolution[1], scale),
-                GoldBars = ScaleAboutBottomRight(pos.GoldBars[0], pos.GoldBars[1], pos.Resolution[0], pos.Resolution[1], scale),
+                GoldBars = new int[2][]
+                {
+                    ScaleAboutBottomRight(pos.GoldBars[0][0], pos.GoldBars[0][1], pos.Resolution[0], pos.Resolution[1], scale),
+                    ScaleAboutBottomRight(pos.GoldBars[1][0], pos.GoldBars[1][1], pos.Resolution[0], pos.Resolution[1], scale),
+                },
                 SpectatingText = new int[2][]
                 {
                     ScaleAboutTopMiddle(pos.SpectatingText[0][0], pos.SpectatingText[0][1], pos.Resolution[0], pos.Resolution[1], scale),
@@ -336,7 +321,7 @@ namespace FortniteOverlay.Util
             public int[][] Slots { get; set; }
 
             public int[] Map { get; set; }
-            public int[] GoldBars { get; set; }
+            public int[][] GoldBars { get; set; }
             public int[][] SpectatingText { get; set; }
 
             public int[] Keys { get; set; }
@@ -359,7 +344,11 @@ namespace FortniteOverlay.Util
                 };
 
                 Map                   = new int[2] { 2512, 47 };
-                GoldBars              = new int[2] { 2518, 1153 };
+                GoldBars              = new int[2][]
+                {
+                    new int[] { 2518, 1149 },
+                    new int[] { 2512, 1157 },
+                };
                 SpectatingText        = new int[2][]
                 {
                     new int[] { 1181, 26 },
@@ -387,7 +376,11 @@ namespace FortniteOverlay.Util
                 };
 
                 Map                   = new int[2] { 1884, 35  };
-                GoldBars              = new int[2] { 1889, 866 };
+                GoldBars              = new int[2][]
+                {
+                    new int[] { 1889, 866 },
+                    new int[] { 1885, 871 },
+                };
                 SpectatingText        = new int[2][]
                 {
                     new int[] { 885, 20 },

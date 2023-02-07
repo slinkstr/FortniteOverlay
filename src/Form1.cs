@@ -58,6 +58,25 @@ namespace FortniteOverlay
             Console.Write(message);
         }
 
+        public void LogDebug(string message)
+        {
+            if(!(CurrentProgramOptions().DebugOverlay))
+            {
+                return;
+            }
+
+            message = $"[{DateTime.Now}] {message.Replace("\n", Environment.NewLine)}" + Environment.NewLine;
+            if (consoleLogTextBox.InvokeRequired)
+            {
+                consoleLogTextBox.Invoke(new MethodInvoker(delegate { consoleLogTextBox.AppendText(message); }));
+            }
+            else
+            {
+                consoleLogTextBox.AppendText(message);
+            }
+            Console.Write(message);
+        }
+
         public void MinimizeToTray()
         {
             ShowInTaskbar = false;
