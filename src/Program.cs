@@ -232,7 +232,7 @@ namespace FortniteOverlay
                 DateTime lastMod = DateTime.Parse(match["mtime"].ToString().Substring(5)).ToUniversalTime();
                 if (lastMod != fort.GearModified)
                 {
-                    string gearUrl = config.ImageLocation + "/" + match["name"];
+                    string gearUrl = config.ImageLocation.TrimEnd('/') + "/" + match["name"];
                     try
                     {
                         response = await httpClient.GetAsync(gearUrl);
