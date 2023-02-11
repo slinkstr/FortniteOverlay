@@ -60,16 +60,8 @@ namespace FortniteOverlay
                 ConfigSave(new ProgramConfig());
                 new ConfigForm().ShowDialog();
             }
-
-            try
-            {
-                config = ConfigLoad();
-                ConfigVerify(config);
-            }
-            catch (Exception exc)
-            {
-                new Thread(() => MessageBox.Show(exc.Message, "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Error)).Start();
-            }
+            
+            config = ConfigLoad();
 
             // Hardcoded order
             _ = GetOrder();
@@ -357,13 +349,85 @@ namespace FortniteOverlay
 
     public class ProgramConfig
     {
-        public string SecretKey { get; set; } = "SECRET_KEY_HERE";
-        public string UploadEndpoint { get; set; } = "https://example.com/fortnitegear/upload.php";
-        public string ImageLocation { get; set; } = "http://example.com/fortnitegear/images/";
-        public int UploadInterval { get; set; } = 5;
-        public int DownloadInterval { get; set; } = 5;
-        public int HUDScale { get; set; } = 100;
-        public int OverlayOpacity { get; set; } = 80;
+        private string _secretKey = "SECRET_KEY_HERE";
+        public string SecretKey 
+        { 
+            get => _secretKey;
+            set
+            {
+                if(string.IsNullOrWhiteSpace(value)) { throw new ArgumentException("Secret key cannot be blank."); }
+                _secretKey = value;
+            }
+        }
+
+        private string _uploadEndpoint = "https://example.com/fortnitegear/upload.php";
+        public string UploadEndpoint
+        {
+            get => _uploadEndpoint;
+            set
+            {
+                if(string.IsNullOrWhiteSpace(value))             { throw new ArgumentException("Upload endpoint cannot be blank."); }
+                if(!MiscUtil.uploadEndpointRegex.IsMatch(value)) { throw new ArgumentException("Upload endpoint invalid."); }
+                _uploadEndpoint = value;
+            }
+        }
+
+        private string _imageLocation = "http://example.com/fortnitegear/images/";
+        public string ImageLocation
+        {
+            get => _imageLocation;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))            { throw new ArgumentException("Image location cannot be blank."); }
+                if (!MiscUtil.imageLocationRegex.IsMatch(value)) { throw new ArgumentException("Image location invalid."); }
+                _imageLocation = value;
+            }
+        }
+
+        private int _uploadInterval = 5;
+        public int UploadInterval
+        {
+            get => _uploadInterval;
+            set
+            {
+                if (value < 1) { throw new ArgumentException("Upload interval must be positive."); }
+                _uploadInterval = value;
+            }
+        }
+
+        private int _downloadInterval = 5;
+        public int DownloadInterval
+        {
+            get => _downloadInterval;
+            set
+            {
+                if (value < 1) { throw new ArgumentException("Download interval must be positive."); }
+                _downloadInterval = value;
+            }
+        }
+
+        private int _HUDScale = 100;
+        public int HUDScale
+        {
+            get => _HUDScale;
+            set
+            {
+                if (value < 25 || value > 150) { throw new ArgumentException("HUD scale must be between 25 and 150 inclusive."); }
+                _HUDScale = value;
+            }
+        }
+
+        private int _overlayOpacity = 85;
+        public int OverlayOpacity
+        {
+            get => _overlayOpacity;
+            set
+            {
+                if (value < 0 || value > 100) { throw new ArgumentException("Overlay opacity must be between 0 and 100 inclusive."); }
+                _overlayOpacity = value;
+            }
+        }
+
         public bool ShowConsole { get; set; } = true;
         public bool EnableOverlay { get; set; } = true;
         public bool MinimizeToTray { get; set; } = true;

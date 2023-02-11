@@ -114,11 +114,14 @@ namespace FortniteOverlay.Util
         public static ProgramConfig ConfigLoad()
         {
             var configText = string.Join("\n", File.ReadAllText(fullConfigPath));
-            ProgramConfig cfg = JsonConvert.DeserializeObject<ProgramConfig>(configText);
-            if (cfg == null)
+            ProgramConfig cfg = JsonConvert.DeserializeObject<ProgramConfig>(configText, new JsonSerializerSettings
             {
-                throw new Exception($"Error deserializing {fullConfigPath}.");
-            }
+                Error = (sender, args) =>
+                {
+                    MessageBox.Show(args.ErrorContext.Error.GetBaseException().Message, "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    args.ErrorContext.Handled = true;
+                }
+            });
 
             return cfg;
         }
@@ -132,41 +135,6 @@ namespace FortniteOverlay.Util
                 var cfgBytes = Encoding.UTF8.GetBytes(cfgString);
                 var cfgBytesLen = Encoding.UTF8.GetByteCount(cfgString);
                 stream.Write(cfgBytes, 0, cfgBytesLen);
-            }
-        }
-
-        public static void ConfigVerify(ProgramConfig cfg)
-        {
-            // verify all properties
-            string invalidProperties = "";
-            if (string.IsNullOrWhiteSpace(cfg.SecretKey))
-            {
-                invalidProperties += "SecretKey cannot be empty.\n";
-            }
-            if (cfg.HUDScale < 25 || cfg.HUDScale > 150)
-            {
-                invalidProperties += "Invalid HUD scale (must be between 25 and 150).\n";
-            }
-            if (string.IsNullOrWhiteSpace(cfg.ImageLocation))
-            {
-                invalidProperties += "ImageLocation cannot be empty.\n";
-            }
-            if (!imageLocationRegex.Match(cfg.ImageLocation).Success)
-            {
-                invalidProperties += "ImageLocation URL is invalid.\n";
-            }
-            if (string.IsNullOrWhiteSpace(cfg.UploadEndpoint))
-            {
-                invalidProperties += "UploadEndpoint cannot be empty.\n";
-            }
-            if (!uploadEndpointRegex.Match(cfg.UploadEndpoint).Success)
-            {
-                invalidProperties += "UploadEndpoint URL is invalid.\n";
-            }
-
-            if (!string.IsNullOrWhiteSpace(invalidProperties))
-            {
-                throw new Exception(invalidProperties);
             }
         }
 

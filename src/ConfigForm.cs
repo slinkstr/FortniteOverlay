@@ -68,16 +68,7 @@ namespace FortniteOverlay
 
         private void ConfigLoadFromFile()
         {
-            ProgramConfig cfg;
-            try
-            {
-                cfg = MiscUtil.ConfigLoad();
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message, "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
+            ProgramConfig cfg = MiscUtil.ConfigLoad();
 
             secretKeyTextBoxEx.Text             = cfg.SecretKey;
             uploadEndpointTextBoxEx.Text        = cfg.UploadEndpoint;
@@ -169,21 +160,6 @@ namespace FortniteOverlay
         {
             Program.form.ShowHideConsole(Program.config.ShowConsole);
             Program.form.SetAlwaysOnTop(Program.config.AlwaysOnTop);
-        }
-
-        private void ConfigForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            try
-            {
-                var cfg = MiscUtil.ConfigLoad();
-                MiscUtil.ConfigVerify(cfg);
-                Program.config = cfg;
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show(exc.Message, "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                e.Cancel = true;
-            }
         }
 
         private void autostartCheckBox_CheckedChanged(object sender, EventArgs e)
