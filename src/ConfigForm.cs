@@ -27,7 +27,7 @@ namespace FortniteOverlay
 
         private void ConfigForm_Load(object sender, EventArgs e)
         {
-            ConfigLoadFromFile();
+            ConfigLoadFields();
             autorunCheckBox.Checked = AutorunEnabled();
             Program.form.SetAlwaysOnTop(false);
         }
@@ -66,9 +66,9 @@ namespace FortniteOverlay
             }
         }
 
-        private void ConfigLoadFromFile()
+        private void ConfigLoadFields()
         {
-            ProgramConfig cfg = MiscUtil.ConfigLoad();
+            ProgramConfig cfg = Program.config;
 
             secretKeyTextBoxEx.Text             = cfg.SecretKey;
             uploadEndpointTextBoxEx.Text        = cfg.UploadEndpoint;
@@ -191,9 +191,10 @@ namespace FortniteOverlay
             }
         }
 
-        private void resetButton_Click(object sender, EventArgs e)
+        private void loadButton_Click(object sender, EventArgs e)
         {
-            ConfigLoadFromFile();
+            Program.config = MiscUtil.ConfigLoad();
+            ConfigLoadFields();
         }
 
         private void saveButton_Click(object sender, EventArgs e)
