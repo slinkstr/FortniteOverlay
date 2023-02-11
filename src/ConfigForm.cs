@@ -84,7 +84,7 @@ namespace FortniteOverlay
             alwaysOnTopCheckBox.Checked         = cfg.AlwaysOnTop;
         }
 
-        private void ConfigSaveToFile()
+        private void ConfigSaveFields()
         {
             ProgramConfig cfg = new ProgramConfig()
             {
@@ -199,7 +199,8 @@ namespace FortniteOverlay
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            ConfigSaveToFile();
+            ConfigSaveFields();
+            Program.config = MiscUtil.ConfigLoad();
             Close();
         }
 
