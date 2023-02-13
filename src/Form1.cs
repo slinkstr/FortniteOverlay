@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace FortniteOverlay
@@ -110,14 +113,19 @@ namespace FortniteOverlay
             }
         }
 
-        public void SetHostName(string text)
+        public void SetSelfName(string name)
         {
-            SetControlProperty(previewLabel, "Text", text);
+            SetControlProperty(previewLabel, "Text", name);
+            if(string.IsNullOrWhiteSpace(name)) { SetControlProperty(previewLabel, "ContextMenuStrip", null); }
+            else                                { SetControlProperty(previewLabel, "ContextMenuStrip", contextMenuStrip1); }
+
         }
 
         public void SetSelfGear(Bitmap bmp)
         {
-            SetControlProperty(selfGearPictureBox1, "Image", bmp);
+            SetControlProperty(previewPictureBox, "Image", bmp);
+            if(bmp == null) { SetControlProperty(previewPictureBox, "ContextMenuStrip", null); }
+            else            { SetControlProperty(previewPictureBox, "ContextMenuStrip", contextMenuStrip1); }
         }
 
         public void SetSquadGear(int index, Bitmap bmp)
@@ -126,12 +134,18 @@ namespace FortniteOverlay
             {
                 case 0:
                     SetControlProperty(squadmate1GearPictureBox, "Image", bmp);
+                    if(bmp == null) { SetControlProperty(squadmate1GearPictureBox, "ContextMenuStrip", null); }
+                    else            { SetControlProperty(squadmate1GearPictureBox, "ContextMenuStrip", contextMenuStrip1); }
                     break;
                 case 1:
                     SetControlProperty(squadmate2GearPictureBox, "Image", bmp);
+                    if(bmp == null) { SetControlProperty(squadmate2GearPictureBox, "ContextMenuStrip", null); }
+                    else            { SetControlProperty(squadmate2GearPictureBox, "ContextMenuStrip", contextMenuStrip1); }
                     break;
                 case 2:
                     SetControlProperty(squadmate3GearPictureBox, "Image", bmp);
+                    if(bmp == null) { SetControlProperty(squadmate3GearPictureBox, "ContextMenuStrip", null); }
+                    else            { SetControlProperty(squadmate3GearPictureBox, "ContextMenuStrip", contextMenuStrip1); }
                     break;
                 default:
                     throw new Exception("Invalid index in SetSquadGear");
@@ -144,12 +158,18 @@ namespace FortniteOverlay
             {
                 case 0:
                     SetControlProperty(squadmate1NameLabel, "Text", name);
+                    if(string.IsNullOrWhiteSpace(name)) { SetControlProperty(squadmate1NameLabel, "ContextMenuStrip", null); }
+                    else                                { SetControlProperty(squadmate1NameLabel, "ContextMenuStrip", contextMenuStrip1); }
                     break;
                 case 1:
                     SetControlProperty(squadmate2NameLabel, "Text", name);
+                    if(string.IsNullOrWhiteSpace(name)) { SetControlProperty(squadmate2NameLabel, "ContextMenuStrip", null); }
+                    else                                { SetControlProperty(squadmate2NameLabel, "ContextMenuStrip", contextMenuStrip1); }
                     break;
                 case 2:
                     SetControlProperty(squadmate3NameLabel, "Text", name);
+                    if(string.IsNullOrWhiteSpace(name)) { SetControlProperty(squadmate3NameLabel, "ContextMenuStrip", null); }
+                    else                                { SetControlProperty(squadmate3NameLabel, "ContextMenuStrip", contextMenuStrip1); }
                     break;
                 default:
                     throw new Exception("Invalid index in SetSquadName");
@@ -241,16 +261,6 @@ namespace FortniteOverlay
                 UnminimizeFromTray();
             }
         }
-        private void previewLabel_DoubleClick(object sender, EventArgs e)
-        {
-            var label = (Label)sender;
-            if (!string.IsNullOrWhiteSpace(label.Text)) { Clipboard.SetText(label.Text); }
-        }
-        private void selfGearPictureBox1_DoubleClick(object sender, EventArgs e)
-        {
-            var box = (PictureBox)sender;
-            if (box.Image != null) { Clipboard.SetDataObject(box.Image); }
-        }
         private void showConsoleCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             var visible = ((CheckBox)sender).Checked;
@@ -259,50 +269,17 @@ namespace FortniteOverlay
             Size = new Size(Size.Width, Size.Height + (visible ? consoleHeight : consoleHeight * -1));
         }
 
-
         private void squadmate1DownButton_Click(object sender, EventArgs e)
         {
             SwapSquad(0, 1);
         }
-        private void squadmate1GearPictureBox_DoubleClick(object sender, EventArgs e)
-        {
-            var box = (PictureBox)sender;
-            if (box.Image != null) { Clipboard.SetDataObject(box.Image); }
-        }
-        private void squadmate1NameLabel_DoubleClick(object sender, EventArgs e)
-        {
-            var label = (Label)sender;
-            if(!string.IsNullOrWhiteSpace(label.Text)) { Clipboard.SetText(label.Text); }
-        }
-
         private void squadmate2DownButton_Click(object sender, EventArgs e)
         {
             SwapSquad(1, 2);
         }
-        private void squadmate2GearPictureBox_DoubleClick(object sender, EventArgs e)
-        {
-            var box = (PictureBox)sender;
-            if (box.Image != null) { Clipboard.SetDataObject(box.Image); }
-        }
-        private void squadmate2NameLabel_DoubleClick(object sender, EventArgs e)
-        {
-            var label = (Label)sender;
-            if (!string.IsNullOrWhiteSpace(label.Text)) { Clipboard.SetText(label.Text); }
-        }
         private void squadmate2UpButton_Click(object sender, EventArgs e)
         {
             SwapSquad(0, 1);
-        }
-
-        private void squadmate3GearPictureBox_DoubleClick(object sender, EventArgs e)
-        {
-            var box = (PictureBox)sender;
-            if (box.Image != null) { Clipboard.SetDataObject(box.Image); }
-        }
-        private void squadmate3NameLabel_DoubleClick(object sender, EventArgs e)
-        {
-            var label = (Label)sender;
-            if (!string.IsNullOrWhiteSpace(label.Text)) { Clipboard.SetText(label.Text); }
         }
         private void squadmate3UpButton_Click(object sender, EventArgs e)
         {
@@ -314,6 +291,99 @@ namespace FortniteOverlay
             var label = (LinkLabel)sender;
             updateNoticeLinkLabel.LinkVisited = true;
             System.Diagnostics.Process.Start(label.Tag.ToString());
+        }
+
+        private Fortniter FortniterAtUiIndex(int uiIndex)
+        {
+            Label control = null;
+            switch (uiIndex)
+            {
+                case 0:
+                    control = previewLabel;
+                    break;
+                case 1:
+                    control = squadmate1NameLabel;
+                    break;
+                case 2:
+                    control = squadmate2NameLabel;
+                    break;
+                case 3:
+                    control = squadmate3NameLabel;
+                    break;
+                default:
+                    throw new Exception("Invalid index given to CopyName");
+            }
+            if(control == previewLabel)
+            {
+                return Program.localPlayer;
+            }
+            var fortniter = Program.fortniters.FirstOrDefault(x => x.Name == control.Text);
+            return fortniter;
+        }
+
+        private void CopyName(object sender, EventArgs e, int index)
+        {
+            var fortniter = FortniterAtUiIndex(index);
+            if (fortniter == null)
+            {
+                return;
+            }
+            Clipboard.SetText(fortniter.Name);
+        }
+
+        private void CopyUID(object sender, EventArgs e, int index)
+        {
+            var fortniter = FortniterAtUiIndex(index);
+            if (fortniter == null)
+            {
+                return;
+            }
+            Clipboard.SetText(fortniter.UserId);
+        }
+
+        private void CopyImage(object sender, EventArgs e, int index)
+        {
+            var fortniter = FortniterAtUiIndex(index);
+            if (fortniter == null)
+            {
+                return;
+            }
+            Clipboard.SetDataObject(fortniter.GearImage);
+        }
+
+        private void OpenTracker(object sender, EventArgs e, int index)
+        {
+            var fortniter = FortniterAtUiIndex(index);
+            if (fortniter == null)
+            {
+                return;
+            }
+            System.Diagnostics.Process.Start("https://fortnitetracker.com/profile/search?q=" + fortniter.UserId);
+        }
+
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            ToolStripMenuItem copyName    = new ToolStripMenuItem("Copy &name");
+            ToolStripMenuItem copyUid     = new ToolStripMenuItem("Copy &UID");
+            ToolStripMenuItem copyImage   = new ToolStripMenuItem("Copy &image");
+            ToolStripMenuItem openTracker = new ToolStripMenuItem("Open in &FortniteTracker");
+
+            var src = contextMenuStrip1.SourceControl;
+            var index = src.Name.StartsWith("preview") ? 0 : int.Parse(src.Name.Substring(9, 1));
+
+            copyName.Click += (snd, evtargs) => CopyName(snd, evtargs, index);
+            copyUid.Click += (snd, evtargs) => CopyUID(snd, evtargs, index);
+            copyImage.Click += (snd, evtargs) => CopyImage(snd, evtargs, index);
+            openTracker.Click += (snd, evtargs) => OpenTracker(snd, evtargs, index);
+
+            contextMenuStrip1.Items.Clear();
+            contextMenuStrip1.Items.Add(copyName);
+            contextMenuStrip1.Items.Add(copyUid);
+            if (src is PictureBox && ((PictureBox)src).Image != null)
+            {
+                contextMenuStrip1.Items.Add(copyImage);
+            }
+            contextMenuStrip1.Items.Add(openTracker);
         }
     }
 

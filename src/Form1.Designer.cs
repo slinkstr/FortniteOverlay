@@ -32,7 +32,7 @@ namespace FortniteOverlay
         {
             this.components = new System.ComponentModel.Container();
             this.consoleLogTextBox = new System.Windows.Forms.TextBox();
-            this.selfGearPictureBox1 = new System.Windows.Forms.PictureBox();
+            this.previewPictureBox = new System.Windows.Forms.PictureBox();
             this.previewLabel = new System.Windows.Forms.Label();
             this.squadmate1GearPictureBox = new System.Windows.Forms.PictureBox();
             this.squadmate2GearPictureBox = new System.Windows.Forms.PictureBox();
@@ -55,7 +55,9 @@ namespace FortniteOverlay
             this.squadmate3ArrowTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.squadmate3UpButton = new System.Windows.Forms.Button();
             this.mainTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            ((System.ComponentModel.ISupportInitialize)(this.selfGearPictureBox1)).BeginInit();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            ((System.ComponentModel.ISupportInitialize)(this.previewPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmate1GearPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmate2GearPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmate3GearPictureBox)).BeginInit();
@@ -66,6 +68,7 @@ namespace FortniteOverlay
             this.squadmate1ArrowTableLayoutPanel.SuspendLayout();
             this.squadmate3ArrowTableLayoutPanel.SuspendLayout();
             this.mainTableLayoutPanel.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // consoleLogTextBox
@@ -82,18 +85,17 @@ namespace FortniteOverlay
             this.consoleLogTextBox.TabIndex = 2;
             this.consoleLogTextBox.WordWrap = false;
             // 
-            // selfGearPictureBox1
+            // previewPictureBox
             // 
-            this.selfGearPictureBox1.BackColor = System.Drawing.SystemColors.Control;
-            this.selfGearPictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.selfGearPictureBox1.Location = new System.Drawing.Point(70, 0);
-            this.selfGearPictureBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.selfGearPictureBox1.Name = "selfGearPictureBox1";
-            this.selfGearPictureBox1.Size = new System.Drawing.Size(280, 80);
-            this.selfGearPictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.selfGearPictureBox1.TabIndex = 12;
-            this.selfGearPictureBox1.TabStop = false;
-            this.selfGearPictureBox1.DoubleClick += new System.EventHandler(this.selfGearPictureBox1_DoubleClick);
+            this.previewPictureBox.BackColor = System.Drawing.SystemColors.Control;
+            this.previewPictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.previewPictureBox.Location = new System.Drawing.Point(70, 0);
+            this.previewPictureBox.Margin = new System.Windows.Forms.Padding(0);
+            this.previewPictureBox.Name = "previewPictureBox";
+            this.previewPictureBox.Size = new System.Drawing.Size(280, 80);
+            this.previewPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.previewPictureBox.TabIndex = 12;
+            this.previewPictureBox.TabStop = false;
             // 
             // previewLabel
             // 
@@ -104,7 +106,6 @@ namespace FortniteOverlay
             this.previewLabel.TabIndex = 14;
             this.previewLabel.Text = "Preview:";
             this.previewLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.previewLabel.DoubleClick += new System.EventHandler(this.previewLabel_DoubleClick);
             // 
             // squadmate1GearPictureBox
             // 
@@ -117,7 +118,6 @@ namespace FortniteOverlay
             this.squadmate1GearPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.squadmate1GearPictureBox.TabIndex = 15;
             this.squadmate1GearPictureBox.TabStop = false;
-            this.squadmate1GearPictureBox.DoubleClick += new System.EventHandler(this.squadmate1GearPictureBox_DoubleClick);
             // 
             // squadmate2GearPictureBox
             // 
@@ -130,7 +130,6 @@ namespace FortniteOverlay
             this.squadmate2GearPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.squadmate2GearPictureBox.TabIndex = 16;
             this.squadmate2GearPictureBox.TabStop = false;
-            this.squadmate2GearPictureBox.DoubleClick += new System.EventHandler(this.squadmate2GearPictureBox_DoubleClick);
             // 
             // squadmate3GearPictureBox
             // 
@@ -143,7 +142,6 @@ namespace FortniteOverlay
             this.squadmate3GearPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.squadmate3GearPictureBox.TabIndex = 17;
             this.squadmate3GearPictureBox.TabStop = false;
-            this.squadmate3GearPictureBox.DoubleClick += new System.EventHandler(this.squadmate3GearPictureBox_DoubleClick);
             // 
             // squadmate1NameLabel
             // 
@@ -155,7 +153,6 @@ namespace FortniteOverlay
             this.squadmate1NameLabel.TabIndex = 19;
             this.squadmate1NameLabel.Text = "squadmate1";
             this.squadmate1NameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.squadmate1NameLabel.DoubleClick += new System.EventHandler(this.squadmate1NameLabel_DoubleClick);
             // 
             // squadmate2NameLabel
             // 
@@ -167,7 +164,6 @@ namespace FortniteOverlay
             this.squadmate2NameLabel.TabIndex = 20;
             this.squadmate2NameLabel.Text = "squadmate2";
             this.squadmate2NameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.squadmate2NameLabel.DoubleClick += new System.EventHandler(this.squadmate2NameLabel_DoubleClick);
             // 
             // squadmate3NameLabel
             // 
@@ -179,7 +175,6 @@ namespace FortniteOverlay
             this.squadmate3NameLabel.TabIndex = 21;
             this.squadmate3NameLabel.Text = "squadmate3";
             this.squadmate3NameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.squadmate3NameLabel.DoubleClick += new System.EventHandler(this.squadmate3NameLabel_DoubleClick);
             // 
             // notifyIcon
             // 
@@ -232,7 +227,7 @@ namespace FortniteOverlay
             this.infoTableLayoutPanel.SetColumnSpan(this.previewTableLayoutPanel, 2);
             this.previewTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.previewTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80F));
-            this.previewTableLayoutPanel.Controls.Add(this.selfGearPictureBox1, 1, 0);
+            this.previewTableLayoutPanel.Controls.Add(this.previewPictureBox, 1, 0);
             this.previewTableLayoutPanel.Controls.Add(this.previewLabel, 0, 0);
             this.previewTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.previewTableLayoutPanel.Location = new System.Drawing.Point(0, 158);
@@ -404,6 +399,20 @@ namespace FortniteOverlay
             this.mainTableLayoutPanel.Size = new System.Drawing.Size(784, 464);
             this.mainTableLayoutPanel.TabIndex = 29;
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(94, 26);
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(93, 22);
+            this.toolStripMenuItem1.Text = "test";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -416,7 +425,7 @@ namespace FortniteOverlay
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);
-            ((System.ComponentModel.ISupportInitialize)(this.selfGearPictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.previewPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmate1GearPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmate2GearPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.squadmate3GearPictureBox)).EndInit();
@@ -429,13 +438,14 @@ namespace FortniteOverlay
             this.squadmate3ArrowTableLayoutPanel.ResumeLayout(false);
             this.mainTableLayoutPanel.ResumeLayout(false);
             this.mainTableLayoutPanel.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
         private TextBox consoleLogTextBox;
-        private PictureBox selfGearPictureBox1;
+        private PictureBox previewPictureBox;
         private Label previewLabel;
         private PictureBox squadmate1GearPictureBox;
         private PictureBox squadmate2GearPictureBox;
@@ -458,6 +468,8 @@ namespace FortniteOverlay
         private TableLayoutPanel squadmate3ArrowTableLayoutPanel;
         private Button squadmate3UpButton;
         private Button editConfigButton;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem toolStripMenuItem1;
     }
 }
 

@@ -57,8 +57,14 @@ namespace FortniteOverlay.Util
             if (match.Success)
             {
                 string name = match.Groups["DisplayName"].ToString();
-                Program.hostName = name;
-                Program.form.SetHostName(name);
+                string userId = match.Groups["UserId"].ToString();
+                Fortniter self = new Fortniter()
+                {
+                    Name = name,
+                    UserId = userId,
+                };
+                Program.localPlayer = self;
+                Program.form.SetSelfName(self.Name);
                 Program.form.Log("[LoggedIn] Display name: " + name);
                 return;
             }
@@ -69,7 +75,7 @@ namespace FortniteOverlay.Util
                 string name = match.Groups["DisplayName"].ToString();
                 string userId = match.Groups["UserId"].ToString();
 
-                if (Program.hostName == name) { return; }
+                if (Program.localPlayer.Name == name) { return; }
                 if (Program.fortniters.Any(x => x.Name == name)) { return; }
 
                 Fortniter newJoin = new Fortniter()
@@ -126,7 +132,7 @@ namespace FortniteOverlay.Util
             private static readonly string Timestamp = @"\[\d{4}\.\d{2}\.\d{2}\-\d{2}\.\d{2}\.\d{2}:\d{3}]";
             private static readonly string UnknownId = @"\[[\d ]{3}\]";
             private static readonly string LineStart = "^" + Timestamp + UnknownId;
-            public static readonly Regex LoggedIn               = new Regex(LineStart + @"LogOnlineAccount: Display: \[UOnlineAccountCommon::ProcessUserLogin\] Successfully logged in user\. UserId=\[[0-9a-fA-F]{32}\] DisplayName=\[(?<DisplayName>.{1,16})\] EpicAccountId=\[MCP:[0-9a-fA-F]{32}\] AuthTicket=\[<Redacted>\]$", RegexOptions.Compiled | RegexOptions.Singleline);
+            public static readonly Regex LoggedIn               = new Regex(LineStart + @"LogOnlineAccount: Display: \[UOnlineAccountCommon::ProcessUserLogin\] Successfully logged in user\. UserId=\[(?<UserId>[0-9a-fA-F]{32})\] DisplayName=\[(?<DisplayName>.{1,16})\] EpicAccountId=\[MCP:[0-9a-fA-F]{32}\] AuthTicket=\[<Redacted>\]$", RegexOptions.Compiled | RegexOptions.Singleline);
             public static readonly Regex PartyMemberJoined      = new Regex(LineStart + @"LogParty: Display: New party member state for \[(?<DisplayName>.{1,16})\] Id \[MCP:(?<UserId>[0-9a-fA-F]{5}[0-9a-fA-F\.]{3,22}[0-9a-fA-F]{5})\] added to the local player's party \[V2:[0-9a-fA-F]{32}\]\.$", RegexOptions.Compiled | RegexOptions.Singleline);
             public static readonly Regex PartyMemberLeft        = new Regex(LineStart + @"LogParty: Display: Party member state for \[(?<DisplayName>.{1,16})\] Id \[MCP:[0-9a-fA-F]{5}[0-9a-fA-F\.]{3,22}[0-9a-fA-F]{5}\] removed from \[.{1,16}\]'s party\.$", RegexOptions.Compiled | RegexOptions.Singleline);
             public static readonly Regex StartedGame            = new Regex(LineStart + @"LogDemo: UReplaySubsystem::RecordReplay: Starting recording with demo driver\.  Name:  FriendlyName: Unsaved Replay$", RegexOptions.Compiled | RegexOptions.Singleline);

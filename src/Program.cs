@@ -24,6 +24,7 @@ namespace FortniteOverlay
 
         public static DateTime lastDown;
         public static DateTime lastUp;
+        public static Fortniter localPlayer;
         public static Form1 form;
         public static HttpClient httpClient = new HttpClient();
         public static List<Fortniter> fortniters = new List<Fortniter>();
@@ -32,7 +33,6 @@ namespace FortniteOverlay
         public static OverlayForm overlayForm;
         public static ProcMon procMon = new ProcMon("FortniteClient-Win64-Shipping");
         public static ProgramConfig config;
-        public static string hostName;
         public static System.Windows.Forms.Timer getNewestVersionTimer = new System.Windows.Forms.Timer();
         public static System.Windows.Forms.Timer updateTimer = new System.Windows.Forms.Timer();
         public static string[] order = new string[0];
@@ -163,7 +163,7 @@ namespace FortniteOverlay
             var formData = new MultipartFormDataContent
             {
                 { new StringContent(config.SecretKey), "secret" },
-                { new StringContent(hostName), "filename" },
+                { new StringContent(localPlayer.Name), "filename" },
                 { new ByteArrayContent(stream.ToArray()), "gear", "image.jpg" }
             };
 
