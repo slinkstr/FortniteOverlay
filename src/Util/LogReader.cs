@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 
@@ -61,66 +63,49 @@ namespace FortniteOverlay.Util
                 return;
             }
 
-            //match = FortniteLogRegex.PartyMemberJoined.Match(line);
-            //if (match.Success)
-            //{
-            //    string name = match.Groups["DisplayName"].ToString();
-            //
-            //    if (Program.hostName == name)                    { return; }
-            //    if (Program.fortniters.Any(x => x.Name == name)) { return; }
-            //
-            //    Fortniter newJoin = new Fortniter()
-            //    {
-            //        Name = name,
-            //    };
-            //    Program.fortniters.Add(newJoin);
-            //    Program.form.Log("[PartyMemberJoined] Name: " + name);
-            //    return;
-            //}
-
-            match = FortniteLogRegex.PartyMemberJoinedAlt.Match(line);
+            match = FortniteLogRegex.PartyMemberJoined.Match(line);
             if (match.Success)
             {
                 string name = match.Groups["DisplayName"].ToString();
-                int partyIndex = Int32.Parse(match.Groups["PartyIndex"].ToString());
+                string userId = match.Groups["UserId"].ToString();
 
                 if (Program.hostName == name) { return; }
-
-                var matchingPlayer = Program.fortniters.FirstOrDefault(x => x.Name == name);
-                if (matchingPlayer != null)
-                {
-                    matchingPlayer.PartyIndex = partyIndex;
-                    return;
-                }
+                if (Program.fortniters.Any(x => x.Name == name)) { return; }
 
                 Fortniter newJoin = new Fortniter()
                 {
                     Name = name,
-                    PartyIndex = partyIndex,
-                    Index = Array.IndexOf(Program.order, name)
+                    UserId = userId,
                 };
-                    
+                newJoin.Index = Array.IndexOf(Program.order, newJoin.UserIdTruncated);
                 Program.fortniters.Add(newJoin);
                 Program.fortniters.Sort(MiscUtil.SortFortniters);
-                Program.form.Log("[PartyMemberJoinedAlt] Name: " + newJoin.Name + ", index: " + newJoin.Index);
+                Program.form.Log("[PartyMemberJoined] Name: " + name + ", index: " + newJoin.Index);
                 return;
             }
 
-            match = FortniteLogRegex.PartyMemberUpdated.Match(line);
+            match = FortniteLogRegex.TeamMemberId.Match(line);
             if (match.Success)
             {
-                string name = match.Groups["DisplayName"].ToString();
-                int index = Int32.Parse(match.Groups["PartyIndex"].ToString());
+                string userid = match.Groups["UserId"].ToString();
 
-                if (Program.hostName == name) { return; }
-
-                var matchingPlayer = Program.fortniters.FirstOrDefault(x => x.Name == name);
-                if (matchingPlayer != null)
+                foreach (var fortniter in Program.fortniters)
                 {
-                    matchingPlayer.PartyIndex = index;
+                    if (fortniter.UserId.IndexOf("...") == -1)
+                    {
+                        continue;
+                    }
+                    if (!fortniter.UserId.StartsWith(userid.Substring(0, 5)))
+                    {
+                        continue;
+                    }
+                    if (!fortniter.UserId.EndsWith(userid.Substring(userid.Length - 5, 5)))
+                    {
+                        continue;
+                    }
+
+                    fortniter.UserId = userid;
                 }
-                //Program.form.Log("[PartyMemberUpdated] Name: " + name + ", index: " + index);
-                return;
             }
 
             match = FortniteLogRegex.PartyMemberLeft.Match(line);
@@ -133,21 +118,6 @@ namespace FortniteOverlay.Util
                 Program.form.Log("[PartyMemberLeft] Name: " + name);
                 return;
             }
-
-            //match = FortniteLogRegex.StartedGame.Match(line);
-            //if (match.Success)
-            //{
-            //    Program.form.Log("[StartedGame]");
-            //    Program.inGame = true;
-            //    return;
-            //}
-            //match = FortniteLogRegex.LeftGame.Match(line);
-            //if (match.Success)
-            //{
-            //    Program.form.Log("[LeftGame]");
-            //    Program.inGame = false;
-            //    return;
-            //}
         }
 
         //language=regex
@@ -157,13 +127,11 @@ namespace FortniteOverlay.Util
             private static readonly string UnknownId = @"\[[\d ]{3}\]";
             private static readonly string LineStart = "^" + Timestamp + UnknownId;
             public static readonly Regex LoggedIn               = new Regex(LineStart + @"LogOnlineAccount: Display: \[UOnlineAccountCommon::ProcessUserLogin\] Successfully logged in user\. UserId=\[[0-9a-fA-F]{32}\] DisplayName=\[(?<DisplayName>.{1,16})\] EpicAccountId=\[MCP:[0-9a-fA-F]{32}\] AuthTicket=\[<Redacted>\]$", RegexOptions.Compiled | RegexOptions.Singleline);
-            public static readonly Regex PartyMemberJoined      = new Regex(LineStart + @"LogParty: Display: New party member state for \[(?<DisplayName>.{1,16})\] Id \[MCP:[0-9a-fA-F]{5}[0-9a-fA-F\.]{3,22}[0-9a-fA-F]{5}\] added to the local player's party \[V2:[0-9a-fA-F]{32}\]\.$", RegexOptions.Compiled | RegexOptions.Singleline);
-            public static readonly Regex PartyMemberJoinedAlt   = new Regex(LineStart + @"LogParty: Verbose: \[(?<DisplayName>.{1,16})\] Id \[MCP:[0-9a-fA-F]{5}[0-9a-fA-F\.]{3,22}[0-9a-fA-F]{5}\] added to team \[\w+\] at index \[(?<PartyIndex>\d+)\] in \[.{1,16}\]'s game.$", RegexOptions.Compiled | RegexOptions.Singleline);
-            public static readonly Regex PartyMemberUpdated     = new Regex(LineStart + @"LogParty: Verbose: \[(?<DisplayName>.{1,16})\] Id \[MCP:[0-9a-fA-F]{5}[0-9a-fA-F\.]{3,22}[0-9a-fA-F]{5}\] team member data updated, team \[\w+\] at index \[(?<PartyIndex>\d+)\] in \[.{1,16}\]'s game\.", RegexOptions.Compiled | RegexOptions.Singleline);
+            public static readonly Regex PartyMemberJoined      = new Regex(LineStart + @"LogParty: Display: New party member state for \[(?<DisplayName>.{1,16})\] Id \[MCP:(?<UserId>[0-9a-fA-F]{5}[0-9a-fA-F\.]{3,22}[0-9a-fA-F]{5})\] added to the local player's party \[V2:[0-9a-fA-F]{32}\]\.$", RegexOptions.Compiled | RegexOptions.Singleline);
             public static readonly Regex PartyMemberLeft        = new Regex(LineStart + @"LogParty: Display: Party member state for \[(?<DisplayName>.{1,16})\] Id \[MCP:[0-9a-fA-F]{5}[0-9a-fA-F\.]{3,22}[0-9a-fA-F]{5}\] removed from \[.{1,16}\]'s party\.$", RegexOptions.Compiled | RegexOptions.Singleline);
             public static readonly Regex StartedGame            = new Regex(LineStart + @"LogDemo: UReplaySubsystem::RecordReplay: Starting recording with demo driver\.  Name:  FriendlyName: Unsaved Replay$", RegexOptions.Compiled | RegexOptions.Singleline);
-            public static readonly Regex StartedGameAlt         = new Regex(LineStart + @"LogLocalFileReplay: Writing replay to '.*' with \d+\.\d{2}MB free$", RegexOptions.Compiled | RegexOptions.Singleline);
             public static readonly Regex LeftGame               = new Regex(LineStart + @"LogDemo: StopDemo: Demo  stopped at frame \d+$", RegexOptions.Compiled | RegexOptions.Singleline);
+            public static readonly Regex TeamMemberId           = new Regex(LineStart + @"LogTeamPedestal: Verbose: AFortTeamMemberPedestal::SetTeamMember - Assigning Team Member \S+ \((?<UserId>[0-9a-fA-F]{32})\) to pedestal \S+ \(VisualOrderIndex:\d+\). Pedestal was empty = \d+", RegexOptions.Compiled | RegexOptions.Singleline);
         }
     }
 }

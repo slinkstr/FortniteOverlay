@@ -334,13 +334,9 @@ namespace FortniteOverlay
 
     public class Fortniter
     {
-        public Fortniter(string name = null)
-        {
-            Name = name;
-        }
-
         public string Name { get; set; }
-        public int PartyIndex { get; set; }
+        public string UserId { get; set; }
+        public string UserIdTruncated => UserId.Substring(0, 5) + "..." + UserId.Substring(UserId.Length - 5, 5);
         public int Index { get; set; }
         public Bitmap GearImage { get; set; }
         public DateTime GearModified { get; set; }

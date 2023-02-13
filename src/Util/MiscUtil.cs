@@ -46,7 +46,7 @@ namespace FortniteOverlay.Util
 
         public static async Task GetOrder()
         {
-            string url = "https://raw.githubusercontent.com/slinkstr/FortniteOverlay/master/order.json";
+            string url = "https://raw.githubusercontent.com/slinkstr/FortniteOverlay/master/order-id.json";
             try
             {
                 var response = await Program.httpClient.GetAsync(url);
@@ -57,7 +57,7 @@ namespace FortniteOverlay.Util
                 Program.order = jarr.ToObject<string[]>();
                 foreach (var fortniter in Program.fortniters)
                 {
-                    fortniter.Index = Array.IndexOf(Program.order, fortniter.Name);
+                    fortniter.Index = Array.IndexOf(Program.order, fortniter.UserIdTruncated);
                 }
                 Program.fortniters.Sort(MiscUtil.SortFortniters);
             }
