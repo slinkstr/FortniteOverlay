@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace FortniteOverlay
@@ -116,16 +113,14 @@ namespace FortniteOverlay
         public void SetSelfName(string name)
         {
             SetControlProperty(previewLabel, "Text", name);
-            if(string.IsNullOrWhiteSpace(name)) { SetControlProperty(previewLabel, "ContextMenuStrip", null); }
-            else                                { SetControlProperty(previewLabel, "ContextMenuStrip", contextMenuStrip1); }
+            SetControlProperty(previewLabel, "ContextMenuStrip", string.IsNullOrWhiteSpace(name) ? null : contextMenuStrip1);
 
         }
 
         public void SetSelfGear(Bitmap bmp)
         {
             SetControlProperty(previewPictureBox, "Image", bmp);
-            if(bmp == null) { SetControlProperty(previewPictureBox, "ContextMenuStrip", null); }
-            else            { SetControlProperty(previewPictureBox, "ContextMenuStrip", contextMenuStrip1); }
+            SetControlProperty(previewPictureBox, "ContextMenuStrip", bmp == null ? null : contextMenuStrip1);
         }
 
         public void SetSquadGear(int index, Bitmap bmp)
@@ -134,18 +129,15 @@ namespace FortniteOverlay
             {
                 case 0:
                     SetControlProperty(squadmate1GearPictureBox, "Image", bmp);
-                    if(bmp == null) { SetControlProperty(squadmate1GearPictureBox, "ContextMenuStrip", null); }
-                    else            { SetControlProperty(squadmate1GearPictureBox, "ContextMenuStrip", contextMenuStrip1); }
+                    SetControlProperty(squadmate1GearPictureBox, "ContextMenuStrip", bmp == null ? null : contextMenuStrip1);
                     break;
                 case 1:
                     SetControlProperty(squadmate2GearPictureBox, "Image", bmp);
-                    if(bmp == null) { SetControlProperty(squadmate2GearPictureBox, "ContextMenuStrip", null); }
-                    else            { SetControlProperty(squadmate2GearPictureBox, "ContextMenuStrip", contextMenuStrip1); }
+                    SetControlProperty(squadmate2GearPictureBox, "ContextMenuStrip", bmp == null ? null : contextMenuStrip1);
                     break;
                 case 2:
                     SetControlProperty(squadmate3GearPictureBox, "Image", bmp);
-                    if(bmp == null) { SetControlProperty(squadmate3GearPictureBox, "ContextMenuStrip", null); }
-                    else            { SetControlProperty(squadmate3GearPictureBox, "ContextMenuStrip", contextMenuStrip1); }
+                    SetControlProperty(squadmate3GearPictureBox, "ContextMenuStrip", bmp == null ? null : contextMenuStrip1);
                     break;
                 default:
                     throw new Exception("Invalid index in SetSquadGear");
@@ -158,18 +150,15 @@ namespace FortniteOverlay
             {
                 case 0:
                     SetControlProperty(squadmate1NameLabel, "Text", name);
-                    if(string.IsNullOrWhiteSpace(name)) { SetControlProperty(squadmate1NameLabel, "ContextMenuStrip", null); }
-                    else                                { SetControlProperty(squadmate1NameLabel, "ContextMenuStrip", contextMenuStrip1); }
+                    SetControlProperty(squadmate1NameLabel, "ContextMenuStrip", string.IsNullOrWhiteSpace(name) ? null : contextMenuStrip1);
                     break;
                 case 1:
                     SetControlProperty(squadmate2NameLabel, "Text", name);
-                    if(string.IsNullOrWhiteSpace(name)) { SetControlProperty(squadmate2NameLabel, "ContextMenuStrip", null); }
-                    else                                { SetControlProperty(squadmate2NameLabel, "ContextMenuStrip", contextMenuStrip1); }
+                    SetControlProperty(squadmate2NameLabel, "ContextMenuStrip", string.IsNullOrWhiteSpace(name) ? null : contextMenuStrip1);
                     break;
                 case 2:
                     SetControlProperty(squadmate3NameLabel, "Text", name);
-                    if(string.IsNullOrWhiteSpace(name)) { SetControlProperty(squadmate3NameLabel, "ContextMenuStrip", null); }
-                    else                                { SetControlProperty(squadmate3NameLabel, "ContextMenuStrip", contextMenuStrip1); }
+                    SetControlProperty(squadmate3NameLabel, "ContextMenuStrip", string.IsNullOrWhiteSpace(name) ? null : contextMenuStrip1);
                     break;
                 default:
                     throw new Exception("Invalid index in SetSquadName");
@@ -295,12 +284,14 @@ namespace FortniteOverlay
 
         private Fortniter FortniterAtUiIndex(int uiIndex)
         {
+            if (uiIndex == 0)
+            {
+                return Program.localPlayer;
+            }
+
             Label control = null;
             switch (uiIndex)
             {
-                case 0:
-                    control = previewLabel;
-                    break;
                 case 1:
                     control = squadmate1NameLabel;
                     break;
@@ -312,10 +303,6 @@ namespace FortniteOverlay
                     break;
                 default:
                     throw new Exception("Invalid index given to CopyName");
-            }
-            if(control == previewLabel)
-            {
-                return Program.localPlayer;
             }
             var fortniter = Program.fortniters.FirstOrDefault(x => x.Name == control.Text);
             return fortniter;
