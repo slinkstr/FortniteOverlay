@@ -104,11 +104,11 @@ namespace FortniteOverlay
             updateTimer.Interval = 500 * (procMon.ValidHandle ? 1 : 20);
 
             var tasks = new List<Task>();
-            if (lastUp.AddSeconds(config.UploadInterval) - DateTime.Now <= TimeSpan.FromSeconds(0.2))
+            if (lastUp.AddSeconds(config.UploadInterval) - DateTime.UtcNow <= TimeSpan.FromSeconds(0.2))
             {
                 tasks.Add(UploadGear());
             }
-            if (lastDown.AddSeconds(config.DownloadInterval) - DateTime.Now <= TimeSpan.FromSeconds(0.2))
+            if (lastDown.AddSeconds(config.DownloadInterval) - DateTime.UtcNow <= TimeSpan.FromSeconds(0.2))
             {
                 tasks.Add(DownloadGear());
             }
@@ -183,15 +183,17 @@ namespace FortniteOverlay
                 return;
             }
 
-            form.SetSelfGear(new Bitmap(stream));
-            lastUp = DateTime.Now;
+            localPlayer.GearImage = new Bitmap(stream);
+            localPlayer.GearModified = DateTime.UtcNow;
+            localPlayer.IsFaded = false;
+            lastUp = DateTime.UtcNow;
         }
 
         public static async Task DownloadGear()
         {
             if (!procMon.ValidHandle && !enableInOtherWindows)  { return; }
             if (fortniters.Count == 0)                          { return; }
-            lastDown = DateTime.Now;
+            lastDown = DateTime.UtcNow;
 
             // get list of all users
             HttpResponseMessage response = null;
@@ -289,7 +291,7 @@ namespace FortniteOverlay
 
         public static void UpdateFormElements()
         {
-            // Gray out stale pics
+            // Fade out of date images
             for (int i = 0; i < 3; i++)
             {
                 if (fortniters.Count > i)
@@ -301,6 +303,14 @@ namespace FortniteOverlay
                         fortniters[i].GearImage = MarkStaleImage(fortniters[i].GearImage);
                         fortniters[i].IsFaded = true;
                     }
+                }
+            }
+            if (localPlayer.GearModified.AddSeconds(20) < DateTime.UtcNow && localPlayer.GearImage != null)
+            {
+                if(!localPlayer.IsFaded)
+                {
+                    localPlayer.GearImage = MarkStaleImage(localPlayer.GearImage);
+                    localPlayer.IsFaded = true;
                 }
             }
 
@@ -326,6 +336,8 @@ namespace FortniteOverlay
                     form.SetSquadName(i, "");
                 }
             }
+            form.SetSelfName(localPlayer.Name);
+            form.SetSelfGear(localPlayer.GearImage);
 
             form.ShowHideSortButtons(fortniters.Count);
         }

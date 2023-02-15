@@ -64,7 +64,6 @@ namespace FortniteOverlay.Util
                     UserId = userId,
                 };
                 Program.localPlayer = self;
-                Program.form.SetSelfName(self.Name);
                 Program.form.Log("[LoggedIn] Display name: " + name);
                 return;
             }
