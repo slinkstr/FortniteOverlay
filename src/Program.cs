@@ -56,7 +56,8 @@ namespace FortniteOverlay
 
             if (!ConfigFileExists())
             {
-                ConfigSave(new ProgramConfig());
+                Program.config = new ProgramConfig();
+                ConfigSave(Program.config);
                 new ConfigForm().ShowDialog();
             }
             
