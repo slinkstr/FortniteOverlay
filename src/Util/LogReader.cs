@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace FortniteOverlay.Util
 {
@@ -23,7 +24,16 @@ namespace FortniteOverlay.Util
         public void ReadLogFile(object sender, DoWorkEventArgs e)
         {
             //LogFile = "Test-3teammates.log";
-            var fs = new FileStream(LogDir + "\\" + LogFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            FileStream fs = null;
+            try
+            {
+                fs = new FileStream(LogDir + "\\" + LogFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message, "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Environment.Exit(1);
+            }
             long totalLenCached = 0;
             using (var sr = new StreamReader(fs))
             {
