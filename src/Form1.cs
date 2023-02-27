@@ -175,6 +175,10 @@ namespace FortniteOverlay
 
         public void ShowHideConsole(bool showConsole)
         {
+            if(!Visible)
+            {
+                return;
+            }
             if (consoleLogTextBox.Visible == showConsole)
             {
                 return;
