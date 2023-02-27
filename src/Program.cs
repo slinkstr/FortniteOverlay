@@ -140,6 +140,7 @@ namespace FortniteOverlay
 
         public static async Task UploadGear()
         {
+            if (localPlayer == null)                       { return; }
             if (!procMon.Focused && !enableInOtherWindows) { return; }
             if (fortniters.Count == 0)                     { return; }
 
@@ -306,7 +307,7 @@ namespace FortniteOverlay
                     }
                 }
             }
-            if (localPlayer.GearModified.AddSeconds(20) < DateTime.UtcNow && localPlayer.GearImage != null)
+            if (localPlayer?.GearModified.AddSeconds(20) < DateTime.UtcNow && localPlayer?.GearImage != null)
             {
                 if(!localPlayer.IsFaded)
                 {
@@ -337,8 +338,8 @@ namespace FortniteOverlay
                     form.SetSquadName(i, "");
                 }
             }
-            form.SetSelfName(localPlayer.Name);
-            form.SetSelfGear(localPlayer.GearImage);
+            form.SetSelfName(localPlayer?.Name);
+            form.SetSelfGear(localPlayer?.GearImage);
 
             form.ShowHideSortButtons(fortniters.Count);
         }
