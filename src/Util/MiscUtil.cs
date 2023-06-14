@@ -36,6 +36,10 @@ namespace FortniteOverlay.Util
                 {
                     Program.form.SetUpdateNotice($"New update available (v{latestVersion})", latest["html_url"].ToString());
                 }
+                else
+                {
+                    Program.form.SetUpdateNotice("");
+                }
             }
             catch (Exception exc)
             {
