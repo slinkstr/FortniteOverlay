@@ -23,7 +23,6 @@ namespace FortniteOverlay.Util
             _parseLineCallback = parseLineCallback;
             _logFileResetCallback = logFileResetCallback;
             _sleepDurationMs = sleepDurationMs;
-            _logFile = Path.Combine(Path.GetDirectoryName(logFile), "test-2players.log");
         }
 
         public async Task BeginReading()
