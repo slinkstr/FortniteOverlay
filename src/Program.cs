@@ -21,6 +21,14 @@ namespace FortniteOverlay
         // debugging
         public static bool enableInOtherWindows = false;
 
+        private static readonly string _logFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\FortniteGame\\Saved\\Logs", "FortniteGame.log");
+        private static readonly LogReader _logReader = new LogReader(_logFile, LogParser.ProcessLine, ResetProgramState);
+        private static readonly ProcMon _procMon = new ProcMon("FortniteClient-Win64-Shipping");
+        private static Bitmap _screenBitmap = null;
+        private static int _debugOverlayLastWidth;
+        private static int _debugOverlayLastHeight;
+        private static int _debugOverlayLastScale;
+
         public static DateTime lastDown;
         public static DateTime lastUp;
         public static Fortniter localPlayer;
@@ -28,18 +36,11 @@ namespace FortniteOverlay
         public static HttpClient httpClient = new HttpClient();
         public static List<Fortniter> fortniters = new List<Fortniter>();
         public static List<PixelPositions> pixelPositions = KnownPositions();
-        public static LogReader logReader = new LogReader(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\FortniteGame\\Saved\\Logs", "FortniteGame.log");
         public static OverlayForm overlayForm;
-        public static ProcMon procMon = new ProcMon("FortniteClient-Win64-Shipping");
         public static ProgramConfig config;
-        public static System.Windows.Forms.Timer getNewestVersionTimer = new System.Windows.Forms.Timer();
-        public static System.Windows.Forms.Timer updateTimer = new System.Windows.Forms.Timer();
+        public static Timer getNewestVersionTimer = new Timer();
+        public static Timer updateTimer = new Timer();
         public static string[] order = new string[0];
-
-        private static Bitmap screenBitmap;
-        private static int debugOverlayLastWidth;
-        private static int debugOverlayLastHeight;
-        private static int debugOverlayLastScale;
 
         [STAThread]
         static void Main()
@@ -63,7 +64,7 @@ namespace FortniteOverlay
             
             config = ConfigLoad();
 
-            // Hardcoded order
+            // Squadmate order
             _ = GetOrder();
 
             // Rendering and upload/download events
@@ -72,13 +73,11 @@ namespace FortniteOverlay
             updateTimer.Start();
 
             // Log reader
-            BackgroundWorker logReaderWorker = new BackgroundWorker();
-            logReaderWorker.DoWork += new DoWorkEventHandler(logReader.ReadLogFile);
-            logReaderWorker.RunWorkerAsync();
+            _ = Task.Run(_logReader.BeginReading);
 
             // Process Monitor
             BackgroundWorker procMonWorker = new BackgroundWorker();
-            procMonWorker.DoWork += new DoWorkEventHandler(procMon.UpdateProcessStatus);
+            procMonWorker.DoWork += new DoWorkEventHandler(_procMon.UpdateProcessStatus);
             procMonWorker.RunWorkerAsync();
 
             // Update checking
@@ -88,6 +87,12 @@ namespace FortniteOverlay
             getNewestVersionTimer.Start();
 
             Application.Run(form);
+        }
+
+        public static void ResetProgramState()
+        {
+            form.Log("Fortnite restarted, resetting log file.");
+            fortniters.Clear();
         }
 
         public static async void GetNewestVersionEvent(Object obj, EventArgs evtargs)
@@ -102,7 +107,7 @@ namespace FortniteOverlay
         public static async void UpdateEvent(Object obj, EventArgs evtargs)
         {
             updateTimer.Stop();
-            updateTimer.Interval = 500 * (procMon.ValidHandle ? 1 : 20);
+            updateTimer.Interval = 500 * (_procMon.ValidHandle ? 1 : 20);
 
             var tasks = new List<Task>();
             if (lastUp.AddSeconds(config.UploadInterval) - DateTime.UtcNow <= TimeSpan.FromSeconds(0.2))
@@ -115,7 +120,7 @@ namespace FortniteOverlay
             }
             await Task.WhenAll(tasks);
 
-            if (config.EnableOverlay && (procMon.Focused || enableInOtherWindows))
+            if (config.EnableOverlay && (_procMon.Focused || enableInOtherWindows))
             {
                 ShowOverlay();
                 overlayForm.SetOverlayOpacity(config.OverlayOpacity);
@@ -133,6 +138,12 @@ namespace FortniteOverlay
                 overlayForm.Hide();
             }
 
+            if (!_procMon.ValidHandle)
+            {
+                // will eventually get GC'd
+                _screenBitmap = null;
+            }
+
             UpdateFormElements();
 
             updateTimer.Start();
@@ -140,22 +151,22 @@ namespace FortniteOverlay
 
         public static async Task UploadGear()
         {
-            if (localPlayer == null)                       { return; }
-            if (!procMon.Focused && !enableInOtherWindows) { return; }
-            if (fortniters.Count == 0)                     { return; }
+            if (localPlayer == null)                        { return; }
+            if (!_procMon.Focused && !enableInOtherWindows) { return; }
+            if (fortniters.Count == 0)                      { return; }
 
-            TakeScreenshot(ref screenBitmap, procMon.WindowSize);
+            TakeScreenshot(ref _screenBitmap, _procMon.WindowSize);
 
-            if (!IsGoldBarsVisible(screenBitmap, pixelPositions, config.HUDScale))
+            if (!IsGoldBarsVisible(_screenBitmap, pixelPositions, config.HUDScale))
             {
                 return;
             }
-            if (IsSpectatingTextVisible(screenBitmap, pixelPositions, config.HUDScale))
+            if (IsSpectatingTextVisible(_screenBitmap, pixelPositions, config.HUDScale))
             {
                 return;
             }
 
-            var gearBitmap = RenderGear(screenBitmap, pixelPositions, config.HUDScale);
+            var gearBitmap = RenderGear(_screenBitmap, pixelPositions, config.HUDScale);
 
             var stream = new MemoryStream();
             gearBitmap.Save(stream, ImageFormat.Jpeg);
@@ -193,7 +204,7 @@ namespace FortniteOverlay
 
         public static async Task DownloadGear()
         {
-            if (!procMon.ValidHandle && !enableInOtherWindows)  { return; }
+            if (!_procMon.ValidHandle && !enableInOtherWindows) { return; }
             if (fortniters.Count == 0)                          { return; }
             lastDown = DateTime.UtcNow;
 
@@ -258,7 +269,7 @@ namespace FortniteOverlay
 
         private static void ShowOverlay()
         {
-            Rectangle bounds = procMon.WindowSize;
+            Rectangle bounds = _procMon.WindowSize;
             if (bounds.Width <= 0 || bounds.Height <= 0)
             {
                 bounds = Screen.GetBounds(Point.Empty);
@@ -270,20 +281,20 @@ namespace FortniteOverlay
 
         private static void ShowDebugOverlay()
         {
-            Rectangle bounds = procMon.WindowSize;
+            Rectangle bounds = _procMon.WindowSize;
             if (bounds.Width <= 0 || bounds.Height <= 0)
             {
                 bounds = Screen.GetBounds(Point.Empty);
             }
 
             if (overlayForm.GetDebugOverlay() == null ||
-                debugOverlayLastWidth != bounds.Width ||
-                debugOverlayLastHeight != bounds.Height ||
-                debugOverlayLastScale != config.HUDScale)
+                _debugOverlayLastWidth  != bounds.Width ||
+                _debugOverlayLastHeight != bounds.Height ||
+                _debugOverlayLastScale  != config.HUDScale)
             {
-                debugOverlayLastWidth = bounds.Width;
-                debugOverlayLastHeight = bounds.Height;
-                debugOverlayLastScale = config.HUDScale;
+                _debugOverlayLastWidth  = bounds.Width;
+                _debugOverlayLastHeight = bounds.Height;
+                _debugOverlayLastScale  = config.HUDScale;
 
                 var debugBitmap = new Bitmap(bounds.Width, bounds.Height);
                 RenderGearDebug(ref debugBitmap, pixelPositions, config.HUDScale);
