@@ -109,18 +109,45 @@ namespace FortniteOverlay.Util
                 },
             };
 
+            public static LogAction PartyMemberReadyState = new LogAction(new Regex(LineStart + @"LogMatchmakingUtility: \[HandlePartyMemberReadinessChanged called\] MCP:(?<UserId>[0-9a-fA-F]{5}[0-9a-fA-F\.]{3,22}[0-9a-fA-F]{5}), Party \(V2:[0-9a-fA-F]{32}\) readiness changed to: (?<State>.*)$", regexOptions))
+            {
+                Action = (match) =>
+                {
+                    string userId = match.Groups["UserId"].ToString();
+                    if (userId == Program.localPlayer.UserId)
+                    {
+                        return;
+                    }
+
+                    string state  = match.Groups["State"].ToString();
+                    var    user   = Program.fortniters.Find(x => x.UserIdTruncated == userId) ?? throw new Exception("Unable to find player with ID: " + userId);
+
+                    switch(state)
+                    {
+                        case "Ready":
+                            user.State = Fortniter.ReadyState.Ready;
+                            break;
+                        case "Not Ready":
+                            user.State = Fortniter.ReadyState.NotReady;
+                            break;
+                        case "Sitting Out":
+                            user.State = Fortniter.ReadyState.SittingOut;
+                            break;
+                    }
+                },
+                SuppressLog = true,
+            };
+
             public static LogAction StartedGame = new LogAction(new Regex(LineStart + @"LogDemo: UReplaySubsystem::RecordReplay: Starting recording with demo driver\.  Name:  FriendlyName: Unsaved Replay$", regexOptions))
             {
                 // No longer used
                 Action = (match) => { },
-                SuppressLog = true,
             };
 
             public static LogAction LeftGame = new LogAction(new Regex(LineStart + @"LogDemo: StopDemo: Demo  stopped at frame \d+$", regexOptions))
             {
                 // No longer used
                 Action = (match) => { },
-                SuppressLog = true,
             };
 
             public static LogAction TeamMemberId = new LogAction(new Regex(LineStart + @"LogTeamPedestal: Verbose: AFortTeamMemberPedestal::SetTeamMember - Assigning Team Member \S+ \((?<UserId>[0-9a-fA-F]{32})\) to pedestal \S+ \(VisualOrderIndex:\d+\). Pedestal was empty = \d+", regexOptions))

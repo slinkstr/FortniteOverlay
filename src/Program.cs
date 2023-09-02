@@ -304,29 +304,18 @@ namespace FortniteOverlay
 
         public static void UpdateFormElements()
         {
-            // Fade out of date images
-            for (int i = 0; i < 3; i++)
+            var gearFadeTargets = new List<Fortniter>() { localPlayer }.Concat(fortniters);
+            foreach (var fortniter in gearFadeTargets)
             {
-                if (fortniters.Count > i)
-                {
-                    if (fortniters[i].GearModified.AddSeconds(20) > DateTime.UtcNow) { continue; }
-                    if (fortniters[i].GearImage == null) { continue; }
-                    if (!fortniters[i].IsFaded)
-                    {
-                        fortniters[i].GearImage = MarkStaleImage(fortniters[i].GearImage);
-                        fortniters[i].IsFaded = true;
-                    }
-                }
-            }
-            if (localPlayer?.GearModified.AddSeconds(20) < DateTime.UtcNow && localPlayer?.GearImage != null)
-            {
-                if(!localPlayer.IsFaded)
-                {
-                    localPlayer.GearImage = MarkStaleImage(localPlayer.GearImage);
-                    localPlayer.IsFaded = true;
-                }
+                if (fortniter.GearImage == null)                             { continue; }
+                if (fortniter.IsFaded)                                       { continue; }
+                if (fortniter.GearModified.AddSeconds(20) > DateTime.UtcNow) { continue; }
+
+                fortniter.GearImage = MarkStaleImage(fortniter.GearImage);
+                fortniter.IsFaded   = true;
             }
 
+            var activePlayers = fortniters.Where(x => x.State != Fortniter.ReadyState.SittingOut);
             for (int i = 0; i < 3; i++)
             {
                 if (fortniters.Count > i)
@@ -349,6 +338,7 @@ namespace FortniteOverlay
                     form.SetSquadName(i, "");
                 }
             }
+
             form.SetSelfName(localPlayer?.Name);
             form.SetSelfGear(localPlayer?.GearImage);
 
@@ -358,13 +348,22 @@ namespace FortniteOverlay
 
     public class Fortniter
     {
-        public string Name { get; set; }
-        public string UserId { get; set; }
-        public string UserIdTruncated => UserId.Substring(0, 5) + "..." + UserId.Substring(UserId.Length - 5, 5);
-        public int Index { get; set; }
-        public Bitmap GearImage { get; set; }
-        public DateTime GearModified { get; set; }
-        public bool IsFaded { get; set; } = false;
+        public string     Name         { get; set; }
+        public string     UserId       { get; set; }
+        public ReadyState State        { get; set; }
+        public int        Index        { get; set; } = -1;
+        public Bitmap     GearImage    { get; set; }
+        public DateTime   GearModified { get; set; }
+        public bool       IsFaded      { get; set; } = false;
+
+        public string     UserIdTruncated => UserId.Substring(0, 5) + "..." + UserId.Substring(UserId.Length - 5, 5);
+
+        public enum ReadyState
+        {
+            NotReady,
+            Ready,
+            SittingOut,
+        }
     }
 
     public class ProgramConfig
