@@ -35,12 +35,14 @@ if(!isset($_FILES["gear"])) {
     }
 
 //Prepares for upload
-$filename = $_POST['filename'];
+$filename    = $_POST['filename'];
 $target_file = $_FILES["gear"]["name"];
-$fileType = pathinfo($target_file, PATHINFO_EXTENSION);
+$fileType    = pathinfo($target_file, PATHINFO_EXTENSION);
+$tmpName     = $_FILES["gear"]["tmp_name"];
+$destination = $sharexdir . basename($filename) . '.' . $fileType;
 
 //Accepts and moves to directory
-if (move_uploaded_file($_FILES["gear"]["tmp_name"], $sharexdir.$filename.'.'.$fileType)) {
+if (move_uploaded_file($tmpName, $destination)) {
     $json = ['status' => 'OK','errormsg' => '','url' => $filename . '.' . $fileType];
     }
 else {

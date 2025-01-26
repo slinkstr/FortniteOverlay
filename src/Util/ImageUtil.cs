@@ -16,6 +16,27 @@ namespace FortniteOverlay.Util
             return dsrpos;
         }
 
+        public static bool IsInGame(Bitmap screenshot, List<PixelPositions> positions, int hudScale)
+        {
+            return IsInGame(screenshot, MatchingPosition(screenshot, positions), hudScale);
+        }
+
+        public static bool IsInGame(Bitmap screenshot, PixelPositions positions, int hudScale)
+        {
+            if (screenshot == null) { return false; }
+            var scaledPos = ScalePositions(positions, hudScale);
+            var pix = screenshot.GetPixel(scaledPos.ShieldIndicator[0], scaledPos.ShieldIndicator[1]);
+            if (pix.R > 190 && pix.G > 190 && pix.B > 190)
+            {
+                return true;
+            }
+            else
+            {
+                Program.form.LogDebug($"Shield indicator not detected (vals: {pix.R}, {pix.G}, {pix.B})");
+                return false;
+            }
+        }
+
         public static bool IsGoldBarsVisible(Bitmap screenshot, List<PixelPositions> positions, int hudScale)
         {
             return IsGoldBarsVisible(screenshot, MatchingPosition(screenshot, positions), hudScale);
@@ -322,6 +343,7 @@ namespace FortniteOverlay.Util
 
             public int[] Map { get; set; }
             public int[][] GoldBars { get; set; }
+            public int[] ShieldIndicator { get; set; }
             public int[][] SpectatingText { get; set; }
 
             public int[] Keys { get; set; }
@@ -336,11 +358,11 @@ namespace FortniteOverlay.Util
                 SlotSize              = 104;
                 Slots                 = new int[5][]
                 {
-                    new int[] { 2009, 1227 },
-                    new int[] { 2118, 1227 },
-                    new int[] { 2227, 1227 },
-                    new int[] { 2336, 1227 },
-                    new int[] { 2444, 1227 }
+                    new int[] { 1994, 1227 },
+                    new int[] { 2103, 1227 },
+                    new int[] { 2212, 1227 },
+                    new int[] { 2321, 1227 },
+                    new int[] { 2429, 1227 }
                 };
 
                 Map                   = new int[2] { 2512, 47 };
@@ -349,6 +371,7 @@ namespace FortniteOverlay.Util
                     new int[] { 2518, 1149 },
                     new int[] { 2512, 1157 },
                 };
+                ShieldIndicator       = new int[2] { 45, 1267 };
                 SpectatingText        = new int[2][]
                 {
                     new int[] { 1181, 26 },
@@ -368,11 +391,11 @@ namespace FortniteOverlay.Util
                 SlotSize              = 78;
                 Slots                 = new int[5][]
                 {
-                    new int[] { 1507, 920 },
-                    new int[] { 1589, 920 },
-                    new int[] { 1670, 920 },
-                    new int[] { 1752, 920 },
-                    new int[] { 1833, 920 }
+                    new int[] { 1496, 920 },
+                    new int[] { 1577, 920 },
+                    new int[] { 1659, 920 },
+                    new int[] { 1741, 920 },
+                    new int[] { 1822, 920 }
                 };
 
                 Map                   = new int[2] { 1884, 35  };
@@ -381,6 +404,7 @@ namespace FortniteOverlay.Util
                     new int[] { 1889, 866 },
                     new int[] { 1885, 871 },
                 };
+                ShieldIndicator       = new int[2] { 33, 950 };
                 SpectatingText        = new int[2][]
                 {
                     new int[] { 885, 20 },

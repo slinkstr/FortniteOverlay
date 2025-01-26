@@ -157,7 +157,7 @@ namespace FortniteOverlay
 
             TakeScreenshot(ref _screenBitmap, _procMon.WindowSize);
 
-            if (!IsGoldBarsVisible(_screenBitmap, pixelPositions, config.HUDScale))
+            if (!IsInGame(_screenBitmap, pixelPositions, config.HUDScale))
             {
                 return;
             }
