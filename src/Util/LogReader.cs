@@ -8,81 +8,81 @@ namespace FortniteOverlay.Util
 {
     internal class LogReader
     {
-        public delegate void ParseLine(string line);
-        public delegate void LogFileReset();
-        private readonly string _logFile;
-        private readonly ParseLine _parseLineCallback;
-        private readonly LogFileReset _logFileResetCallback;
-        private int _sleepDurationMs;
-        private bool _readingPaused = false;
-        private int[] _newlineChars = new int[] { 10, 13 };
+        private static readonly int[] _newlineChars = new int[] { 10, 13 };
 
-        public LogReader(string logFile, ParseLine parseLineCallback, LogFileReset logFileResetCallback, int sleepDurationMs = 1000)
+        public bool Active { get; private set; } = false;
+        public int  SleepDurationMs { get; set; } = 1000;
+
+        private readonly string _logFile;
+        private Action<string>  _onLine;
+        private Action          _onReset;
+
+        public LogReader(string logFile, Action<string> onLine, Action onReset, bool autostart = false)
         {
             _logFile = logFile;
-            _parseLineCallback = parseLineCallback;
-            _logFileResetCallback = logFileResetCallback;
-            _sleepDurationMs = sleepDurationMs;
+            _onLine  = onLine;
+            _onReset = onReset;
+
+            if (autostart)
+            {
+                Start();
+            }
         }
 
-        public async Task BeginReading()
+        public void Start()
+        {
+            Active = true;
+            Task.Run(ReadLoop);
+        }
+
+        public void Stop()
+        {
+            Active = false;
+        }
+
+        private async Task ReadLoop()
         {
             FileStream fileStream = new FileStream(_logFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             StreamReader streamReader = new StreamReader(fileStream);
-            long lastTotalLength = 0;
             StringBuilder lineBuilder = new StringBuilder();
+            long lastLength = 0;
 
             while (true)
             {
-                if (_readingPaused)
+                if (!Active)
                 {
-                    await Task.Delay(_sleepDurationMs);
-                    continue;
+                    return;
                 }
 
                 int nextChar = streamReader.Read();
-                if (nextChar != -1)
+                if (nextChar == -1)
                 {
-                    if (_newlineChars.Contains(nextChar))
+                    if (fileStream.Length < lastLength)
                     {
-                        if (lineBuilder.Length > 0)
-                        {
-                            _parseLineCallback(lineBuilder.ToString());
-                            lineBuilder.Clear();
-                        }
+                        _onReset();
+                        fileStream.Seek(0, SeekOrigin.Begin);
+                        streamReader.DiscardBufferedData();
+                        lineBuilder.Clear();
+                        lastLength = 0;
                     }
-                    else
+
+                    await Task.Delay(SleepDurationMs);
+                    continue;
+                }
+
+                if (_newlineChars.Contains(nextChar))
+                {
+                    if (lineBuilder.Length > 0)
                     {
-                        lineBuilder.Append(Convert.ToChar(nextChar));
+                        _onLine(lineBuilder.ToString());
+                        lineBuilder.Clear();
                     }
                 }
                 else
                 {
-                    if (fileStream.Length < lastTotalLength)
-                    {
-                        _logFileResetCallback();
-                        fileStream.Seek(0, SeekOrigin.Begin);
-                        streamReader.DiscardBufferedData();
-                        lineBuilder.Clear();
-                        lastTotalLength = 0;
-                    }
-                    else
-                    {
-                        lastTotalLength = fileStream.Length;
-                        await Task.Delay(_sleepDurationMs);
-                    }
+                    lineBuilder.Append(Convert.ToChar(nextChar));
                 }
             }
-        }
-
-        public void Pause()
-        {
-            _readingPaused = true;
-        }
-
-        public void Resume()
-        {
-            _readingPaused = false;
         }
     }
 }

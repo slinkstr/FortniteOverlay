@@ -21,9 +21,9 @@ namespace FortniteOverlay
         // debugging
         public static bool enableInOtherWindows = false;
 
-        private static readonly string _logFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\FortniteGame\\Saved\\Logs", "FortniteGame.log");
+        private static readonly string    _logFile   = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\FortniteGame\\Saved\\Logs", "FortniteGame.log");
         private static readonly LogReader _logReader = new LogReader(_logFile, LogParser.ProcessLine, ResetProgramState);
-        private static readonly ProcMon _procMon = new ProcMon("FortniteClient-Win64-Shipping");
+        private static readonly ProcMon   _procMon   = new ProcMon("FortniteClient-Win64-Shipping");
         private static Bitmap _screenBitmap = null;
         private static int _debugOverlayLastWidth;
         private static int _debugOverlayLastHeight;
@@ -72,13 +72,9 @@ namespace FortniteOverlay
             updateTimer.Interval = 250;
             updateTimer.Start();
 
-            // Log reader
-            _ = Task.Run(_logReader.BeginReading);
-
-            // Process Monitor
-            BackgroundWorker procMonWorker = new BackgroundWorker();
-            procMonWorker.DoWork += new DoWorkEventHandler(_procMon.UpdateProcessStatus);
-            procMonWorker.RunWorkerAsync();
+            // Background tasks
+            _logReader.Start();
+            _procMon.Start();
 
             // Update checking
             _ = CheckForUpdates();
@@ -107,7 +103,7 @@ namespace FortniteOverlay
         public static async void UpdateEvent(Object obj, EventArgs evtargs)
         {
             updateTimer.Stop();
-            updateTimer.Interval = 500 * (_procMon.ValidHandle ? 1 : 20);
+            updateTimer.Interval = 500 * (_procMon.ValidHandle() ? 1 : 20);
 
             var tasks = new List<Task>();
             if (lastUp.AddSeconds(config.UploadInterval) - DateTime.UtcNow <= TimeSpan.FromSeconds(0.2))
@@ -138,7 +134,7 @@ namespace FortniteOverlay
                 overlayForm.Hide();
             }
 
-            if (!_procMon.ValidHandle)
+            if (!_procMon.ValidHandle())
             {
                 // will eventually get GC'd
                 _screenBitmap = null;
@@ -204,8 +200,8 @@ namespace FortniteOverlay
 
         public static async Task DownloadGear()
         {
-            if (!_procMon.ValidHandle && !enableInOtherWindows) { return; }
-            if (fortniters.Count == 0)                          { return; }
+            if (!_procMon.ValidHandle() && !enableInOtherWindows) { return; }
+            if (fortniters.Count == 0)                            { return; }
             lastDown = DateTime.UtcNow;
 
             // get list of all users
@@ -307,6 +303,8 @@ namespace FortniteOverlay
             var gearFadeTargets = new List<Fortniter>() { localPlayer }.Concat(fortniters);
             foreach (var fortniter in gearFadeTargets)
             {
+                if (fortniter == null) { continue; }
+
                 if (fortniter.GearImage == null)                             { continue; }
                 if (fortniter.IsFaded)                                       { continue; }
                 if (fortniter.GearModified.AddSeconds(20) > DateTime.UtcNow) { continue; }

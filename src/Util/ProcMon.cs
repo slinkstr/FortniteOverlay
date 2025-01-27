@@ -10,44 +10,81 @@ namespace FortniteOverlay.Util
 {
     internal class ProcMon
     {
+        public bool      Active      { get; private set; } = false;
         public string    ProcessName { get; private set; }
         public IntPtr    Handle      { get; private set; }
-        public bool      ValidHandle => !Handle.Equals(IntPtr.Zero);
         public bool      Focused     { get; private set; }
         public Rectangle WindowSize  { get; private set; }
 
-        public ProcMon(string processName)
+        public int IntervalHandleCheck { get; set; } = 10_000;
+        public int IntervalFocusCheck  { get; set; } = 250;
+
+        private Action   _onChange;
+        private Timer    _handleTimer;
+        private Timer    _focusTimer;
+
+        public ProcMon(string processName, Action onChange = null, bool autostart = false)
         {
-            Focused = false;
             ProcessName = processName;
-            Handle = IntPtr.Zero;
-            WindowSize = new Rectangle();
+            _onChange   = onChange;
+
+            _handleTimer = new Timer((e) => UpdateHandle(), null, 0, Timeout.Infinite);
+            _focusTimer  = new Timer((e) => UpdateFocus() , null, 0, Timeout.Infinite);
+
+            if (autostart)
+            {
+                Start();
+            }
         }
 
-        public void UpdateProcessStatus(object sender, DoWorkEventArgs e)
+        public void Start()
         {
-            int openCheckDelay = 10_000;
-            int focusCheckDelay = 250;
+            Active = true;
+            _handleTimer.Change(0, IntervalHandleCheck);
+        }
 
-            while (true)
+        public void Stop()
+        {
+            Active = false;
+            _handleTimer.Change(0, Timeout.Infinite);
+            _focusTimer.Change(0, Timeout.Infinite);
+        }
+
+        public bool ValidHandle()
+        {
+            return !Handle.Equals(IntPtr.Zero);
+        }
+
+        private void UpdateFocus()
+        {
+            if (!ValidHandle()) { return; }
+            var newFocus = IsFocused(Handle);
+            if (newFocus != Focused)
             {
-                Handle = GetHandle(ProcessName);
-                if (ValidHandle)
-                {
-                    for (int i = 0; i < openCheckDelay / focusCheckDelay; i++)
-                    {
-                        Focused = IsFocused(Handle);
-                        Rect procRect = new Rect();
-                        GetWindowRect(Handle, ref procRect);
-                        WindowSize = new Rectangle(procRect.Left, procRect.Top, procRect.Right - procRect.Left, procRect.Bottom - procRect.Top);
-                        Thread.Sleep(focusCheckDelay);
-                    }
-                }
-                else
-                {
-                    Focused = false;
-                    Thread.Sleep(openCheckDelay);
-                }
+                _onChange?.Invoke();
+            }
+            Focused = newFocus;
+        }
+
+        private void UpdateHandle()
+        {
+            var newHandle = GetHandle(ProcessName);
+            if (newHandle != Handle)
+            {
+                _onChange?.Invoke();
+            }
+            Handle = newHandle;
+
+            if (ValidHandle())
+            {
+                Rect procRect = new Rect();
+                GetWindowRect(Handle, ref procRect);
+                WindowSize = new Rectangle(procRect.Left, procRect.Top, procRect.Right - procRect.Left, procRect.Bottom - procRect.Top);
+                _focusTimer.Change(0, IntervalFocusCheck);
+            }
+            else
+            {
+                _focusTimer.Change(0, Timeout.Infinite);
             }
         }
 
