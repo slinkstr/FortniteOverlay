@@ -69,12 +69,12 @@ namespace FortniteOverlay.Util
                 {
                     string name = match.Groups["DisplayName"].ToString();
                     string userId = match.Groups["UserId"].ToString();
-                    Fortniter self = new Fortniter()
+                    FortnitePlayer self = new FortnitePlayer()
                     {
                         Name = name,
                         UserId = userId,
                     };
-                    Program.localPlayer = self;
+                    Program.LocalPlayer = self;
                 },
             };
 
@@ -85,17 +85,17 @@ namespace FortniteOverlay.Util
                     string name = match.Groups["DisplayName"].ToString();
                     string userId = match.Groups["UserId"].ToString();
 
-                    if (Program.localPlayer.Name == name) { return; }
-                    if (Program.fortniters.Any(x => x.Name == name)) { return; }
+                    if (Program.LocalPlayer.Name == name) { return; }
+                    if (Program.CurrentSquad.Any(x => x.Name == name)) { return; }
 
-                    Fortniter newJoin = new Fortniter()
+                    FortnitePlayer newJoin = new FortnitePlayer()
                     {
                         Name = name,
                         UserId = userId,
                     };
-                    newJoin.Index = Array.IndexOf(Program.order, newJoin.UserIdTruncated);
-                    Program.fortniters.Add(newJoin);
-                    Program.fortniters.Sort(MiscUtil.SortFortniters);
+                    newJoin.Index = Program.UserIdOrder.IndexOf(newJoin.UserIdTruncated);
+                    Program.CurrentSquad.Add(newJoin);
+                    Program.CurrentSquad.Sort(MiscUtil.SortFortniters);
                 },
             };
 
@@ -104,8 +104,8 @@ namespace FortniteOverlay.Util
                 Action = (match) =>
                 {
                     string name = match.Groups["DisplayName"].ToString();
-                    var leaver = Program.fortniters.Find(x => x.Name == name);
-                    if (leaver != null) { Program.fortniters.Remove(leaver); };
+                    var leaver = Program.CurrentSquad.Find(x => x.Name == name);
+                    if (leaver != null) { Program.CurrentSquad.Remove(leaver); };
                 },
             };
 
@@ -114,24 +114,24 @@ namespace FortniteOverlay.Util
                 Action = (match) =>
                 {
                     string userId = match.Groups["UserId"].ToString();
-                    if (userId == Program.localPlayer.UserId)
+                    if (userId == Program.LocalPlayer.UserId)
                     {
                         return;
                     }
 
                     string state  = match.Groups["State"].ToString();
-                    var    user   = Program.fortniters.Find(x => x.UserIdTruncated == userId) ?? throw new Exception("Unable to find player with ID: " + userId);
+                    var    user   = Program.CurrentSquad.Find(x => x.UserIdTruncated == userId) ?? throw new Exception("Unable to find player with ID: " + userId);
 
                     switch(state)
                     {
                         case "Ready":
-                            user.State = Fortniter.ReadyState.Ready;
+                            user.State = FortnitePlayer.ReadyState.Ready;
                             break;
                         case "Not Ready":
-                            user.State = Fortniter.ReadyState.NotReady;
+                            user.State = FortnitePlayer.ReadyState.NotReady;
                             break;
                         case "Sitting Out":
-                            user.State = Fortniter.ReadyState.SittingOut;
+                            user.State = FortnitePlayer.ReadyState.SittingOut;
                             break;
                     }
                 },
@@ -156,7 +156,7 @@ namespace FortniteOverlay.Util
                 {
                     string userid = match.Groups["UserId"].ToString();
 
-                    foreach (var fortniter in Program.fortniters)
+                    foreach (var fortniter in Program.CurrentSquad)
                     {
                         if (fortniter.UserId.IndexOf("...") == -1)
                         {

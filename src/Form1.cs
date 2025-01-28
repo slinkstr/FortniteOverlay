@@ -167,10 +167,10 @@ namespace FortniteOverlay
 
         public void SetUpdateNotice(string text, string url = "")
         {
-            updateNoticeLinkLabel.Text = text;
-            updateNoticeLinkLabel.LinkArea = string.IsNullOrWhiteSpace(url) ? new LinkArea(0, 0) : new LinkArea(0, updateNoticeLinkLabel.Text.Length);
-            updateNoticeLinkLabel.Tag = url;
-            updateNoticeLinkLabel.LinkVisited = false;
+            SetControlProperty(updateNoticeLinkLabel, "Text", text);
+            SetControlProperty(updateNoticeLinkLabel, "LinkArea", string.IsNullOrWhiteSpace(url) ? new LinkArea(0, 0) : new LinkArea(0, updateNoticeLinkLabel.Text.Length));
+            SetControlProperty(updateNoticeLinkLabel, "Tag", url);
+            SetControlProperty(updateNoticeLinkLabel, "LinkVisited", false);
         }
 
         public void ShowHideConsole(bool showConsole)
@@ -187,7 +187,7 @@ namespace FortniteOverlay
             int tableRow = mainTableLayoutPanel.GetRow(consoleLogTextBox);
             consoleLogTextBox.Visible = showConsole;
             mainTableLayoutPanel.RowStyles[tableRow].Height = showConsole ? consoleHeight : 0;
-            Size = new Size(Size.Width, Size.Height + (showConsole ? consoleHeight : consoleHeight * -1));
+            Size = new System.Drawing.Size(Size.Width, Size.Height + (showConsole ? consoleHeight : consoleHeight * -1));
         }
 
         public void ShowHideSortButtons(int squadmates)
@@ -201,10 +201,10 @@ namespace FortniteOverlay
         private static void SwapSquad(int indexA, int indexB)
         {
             var max = indexA > indexB ? indexA : indexB;
-            if (Program.fortniters.Count < max + 1) { return; }
-            var temp = Program.fortniters[indexA];
-            Program.fortniters[indexA] = Program.fortniters[indexB];
-            Program.fortniters[indexB] = temp;
+            if (Program.CurrentSquad.Count < max + 1) { return; }
+            var temp = Program.CurrentSquad[indexA];
+            Program.CurrentSquad[indexA] = Program.CurrentSquad[indexB];
+            Program.CurrentSquad[indexB] = temp;
             Program.UpdateFormElements();
         }
 
@@ -259,7 +259,7 @@ namespace FortniteOverlay
             var visible = ((CheckBox)sender).Checked;
 
             mainTableLayoutPanel.RowStyles[1].Height = (visible ? consoleHeight : 0);
-            Size = new Size(Size.Width, Size.Height + (visible ? consoleHeight : consoleHeight * -1));
+            Size = new System.Drawing.Size(Size.Width, Size.Height + (visible ? consoleHeight : consoleHeight * -1));
         }
 
         private void squadmate1DownButton_Click(object sender, EventArgs e)
@@ -286,11 +286,11 @@ namespace FortniteOverlay
             System.Diagnostics.Process.Start(label.Tag.ToString());
         }
 
-        private Fortniter FortniterAtUiIndex(int uiIndex)
+        private FortnitePlayer FortniterAtUiIndex(int uiIndex)
         {
             if (uiIndex == 0)
             {
-                return Program.localPlayer;
+                return Program.LocalPlayer;
             }
 
             Label control = null;
@@ -308,7 +308,7 @@ namespace FortniteOverlay
                 default:
                     throw new Exception("Invalid index given to CopyName");
             }
-            var fortniter = Program.fortniters.FirstOrDefault(x => x.Name == control.Text);
+            var fortniter = Program.CurrentSquad.FirstOrDefault(x => x.Name == control.Text);
             return fortniter;
         }
 
