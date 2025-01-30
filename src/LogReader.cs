@@ -65,6 +65,10 @@ namespace FortniteOverlay.Util
                         lineBuilder.Clear();
                         lastLength = 0;
                     }
+                    else
+                    {
+                        lastLength = fileStream.Length;
+                    }
 
                     await Task.Delay(SleepDurationMs);
                     continue;
