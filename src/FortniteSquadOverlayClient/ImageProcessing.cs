@@ -3,18 +3,31 @@ using FortniteSquadOverlayClient.Properties;
 
 namespace FortniteSquadOverlayClient
 {
-    internal class ImageProcessing
+    public static class ImageProcessing
     {
         public static bool IsPlaying(Bitmap screenshot, PixelPositions positions)
         {
-            if (screenshot == null) { return false; }
-            var pix = screenshot.GetPixel(positions.ShieldIcon.X, positions.ShieldIcon.Y);
-            if (pix.R < 190 || pix.G < 190 || pix.B < 190)
-            {
-                // debug: Shield indicator not detected (vals: {pix.R},{pix.G},{pix.B})
-                return false;
-            }
+            if (screenshot == null) { return false; };
 
+            foreach (var pos in positions.ShieldIcon)
+            {
+                var pix = screenshot.GetPixel(pos.X, pos.Y);
+                if (BrightEnough(pix, 190)) { return true; }
+            }
+            // debug: All shield indicator checks failed
+            return false;
+        }
+
+        public static bool IsDriving(Bitmap screenshot, PixelPositions positions)
+        {
+            if (screenshot == null) { return false; };
+
+            foreach (var pos in positions.FuelIcon)
+            {
+                var pix = screenshot.GetPixel(pos.X, pos.Y);
+                if (!BrightEnough(pix, 255)) { return false; }
+            }
+            // debug: All fuel icon checks failed
             return true;
         }
 
@@ -22,19 +35,12 @@ namespace FortniteSquadOverlayClient
         {
             if (screenshot == null) { return false; };
 
-            var pix = screenshot.GetPixel(positions.SpectatingText[0].X, positions.SpectatingText[0].Y);
-            if (pix.R < 255 || pix.G < 255 || pix.B < 255)
+            foreach (var pos in positions.SpectatingText)
             {
-                return false;
+                var pix = screenshot.GetPixel(pos.X, pos.Y);
+                if (!BrightEnough(pix, 255)) { return false; }
             }
 
-            pix = screenshot.GetPixel(positions.SpectatingText[1].X, positions.SpectatingText[1].Y);
-            if (pix.R < 255 || pix.G < 255 || pix.B < 255)
-            {
-                return false;
-            }
-
-            // debug: Detected spectating text.
             return true;
         }
 
@@ -64,7 +70,7 @@ namespace FortniteSquadOverlayClient
             }
             return bmp;
         }
-
+            
         public static Bitmap CropGear(Bitmap bmp, PixelPositions positions)
         {
             int slotSelected = -1;
@@ -115,18 +121,40 @@ namespace FortniteSquadOverlayClient
 
             using (Graphics g = Graphics.FromImage(blankScreenshot))
             {
-                for (int i = 0; i < positions.Slots.Length; i++)
+                foreach (var slot in positions.Slots)
                 {
-                    g.DrawRectangle(pen, new Rectangle(positions.Slots[i].X - 1, positions.Slots[i].Y - 1, positions.SlotSize.Width + 1, positions.SlotSize.Height + 1));
+                    g.DrawRectangle(pen, new Rectangle(slot.X - 1, slot.Y - 1, positions.SlotSize.Width + 1, positions.SlotSize.Height + 1));
                 }
 
                 // keys are defunct
                 //g.DrawRectangle(pen, new Rectangle(positions.Keys.X - 1, positions.Keys.Y - 1, positions.SlotSize.Width + 1, positions.SlotSize.Height + 1));
 
-                g.DrawEllipse(pen, positions.ShieldIcon.X - 1, positions.ShieldIcon.Y - 1, 2, 2);
+                foreach (var pos in positions.ShieldIcon)
+                {
+                    g.DrawEllipse(pen, pos.X - 1, pos.Y - 1, 2, 2);
+                }
 
-                g.DrawEllipse(pen, positions.SpectatingText[0].X - 1, positions.SpectatingText[0].Y - 1, 2, 2);
-                g.DrawEllipse(pen, positions.SpectatingText[1].X - 1, positions.SpectatingText[1].Y - 1, 2, 2);
+                foreach (var pos in positions.FuelIcon)
+                {
+                    g.DrawEllipse(pen, pos.X - 1, pos.Y - 1, 2, 2);
+                }
+
+                foreach (var pos in positions.SpectatingText)
+                {
+                    g.DrawEllipse(pen, pos.X - 1, pos.Y - 1, 2, 2);
+                }
+            }
+        }
+
+        private static bool BrightEnough(Color color, int threshold)
+        {
+            if (color.R < threshold || color.G < threshold || color.B < threshold)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
     }

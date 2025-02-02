@@ -2,19 +2,20 @@
 
 namespace FortniteSquadOverlayClient
 {
-    internal class PixelPositions
+    public class PixelPositions
     {
         public Size Resolution          { get; set; }
         public int SelectedSlotOffset   { get; set; }
         public Size SlotSize            { get; set; }
         public Coord[] Slots            { get; set; }
-        public Coord ShieldIcon         { get; set; }
+        public Coord[] ShieldIcon       { get; set; }
+        public Coord[] FuelIcon         { get; set; }
         public Coord[] SpectatingText   { get; set; }
         public Coord Keys               { get; set; }
 
         public PixelPositions Scale(int scale)
         {
-            double scaleMult = scale / 100;
+            double scaleMult = (double)scale / 100;
 
             return new PixelPositions()
             {
@@ -22,7 +23,8 @@ namespace FortniteSquadOverlayClient
                 SelectedSlotOffset = (int)(SelectedSlotOffset * scaleMult),
                 SlotSize           = new Size((int)(SlotSize.Width * scaleMult), (int)(SlotSize.Height * scaleMult)),
                 Slots              = Slots.Select(x => ScaleAboutBottomRight(x, Resolution, scale)).ToArray(),
-                ShieldIcon         = ScaleAboutBottomLeft(ShieldIcon, Resolution, scale),
+                ShieldIcon         = ShieldIcon.Select(x => ScaleAboutBottomLeft(x, Resolution, scale)).ToArray(),
+                FuelIcon           = FuelIcon.Select(x => ScaleAboutBottomRight(x, Resolution, scale)).ToArray(),
                 SpectatingText     = SpectatingText.Select(x => ScaleAboutTopMiddle(x, Resolution, scale)).ToArray(),
                 Keys               = ScaleAboutTopRight(Keys, Resolution, scale),
             };
@@ -36,7 +38,8 @@ namespace FortniteSquadOverlayClient
                 SelectedSlotOffset = ScaleLength(SelectedSlotOffset, Resolution.Height, newResolution.Height),
                 SlotSize           = ScaleSize(SlotSize, Resolution, newResolution),
                 Slots              = Slots.Select(x => ScalePoint(x, Resolution, newResolution)).ToArray(),
-                ShieldIcon         = ScalePoint(ShieldIcon, Resolution, newResolution),
+                ShieldIcon         = ShieldIcon.Select(x => ScalePoint(x, Resolution, newResolution)).ToArray(),
+                FuelIcon           = FuelIcon.Select(x => ScalePoint(x, Resolution, newResolution)).ToArray(),
                 SpectatingText     = SpectatingText.Select(x => ScalePoint(x, Resolution, newResolution)).ToArray(),
                 Keys               = ScalePoint(Keys, Resolution, newResolution),
             };
@@ -51,6 +54,7 @@ namespace FortniteSquadOverlayClient
                 if (position.Resolution.Width == width && position.Resolution.Height == height)
                 {
                     retval = position;
+                    break;
                 }
             }
 
@@ -62,28 +66,6 @@ namespace FortniteSquadOverlayClient
             retval = retval.Scale(scale);
             return retval;
         }
-
-        public static readonly PixelPositions Known1080p = new PixelPositions()
-        {
-            Resolution         = new Size(1920, 1080),
-            SelectedSlotOffset = -11,
-            SlotSize           = new Size(78, 78),
-            Slots              = new Coord[]
-            {
-                new Coord(1495, 920),
-                new Coord(1576, 920),
-                new Coord(1658, 920),
-                new Coord(1740, 920),
-                new Coord(1821, 920),
-            },
-            ShieldIcon         = new Coord(33, 950),
-            SpectatingText     = new Coord[]
-            {
-                new Coord(885, 20),
-                new Coord(900, 20),
-            },
-            Keys               = new Coord(1842, 765),
-        };
 
         public static readonly PixelPositions Known1440p = new PixelPositions()
         {
@@ -98,13 +80,54 @@ namespace FortniteSquadOverlayClient
                 new Coord(2320, 1227),
                 new Coord(2428, 1227),
             },
-            ShieldIcon         = new Coord(45, 1267),
+            ShieldIcon = new Coord[]
+            {
+                new Coord(44, 1267), // normal
+                new Coord(98, 1320), // ranked/rumble
+                new Coord(66, 1267), // creative
+            },
+            FuelIcon = new Coord[]
+            {
+                new Coord(1534, 933)
+            },
             SpectatingText     = new Coord[]
             {
                 new Coord(1181, 26),
                 new Coord(1200, 26),
             },
             Keys               = new Coord(2456, 1021),
+        };
+
+        public static readonly PixelPositions Known1080p = new PixelPositions()
+        {
+            Resolution         = new Size(1920, 1080),
+            SelectedSlotOffset = -11,
+            SlotSize           = new Size(78, 78),
+            Slots              = new Coord[]
+            {
+                new Coord(1495, 920),
+                new Coord(1576, 920),
+                new Coord(1658, 920),
+                new Coord(1740, 920),
+                new Coord(1821, 920),
+            },
+            ShieldIcon         = new Coord[]
+            {
+                new Coord(33, 950),
+                new Coord(74, 990),
+                new Coord(50, 950),
+
+            },
+            FuelIcon           = new Coord[]
+            {
+                new Coord(1534, 933)
+            },
+            SpectatingText     = new Coord[]
+            {
+                new Coord(885, 20),
+                new Coord(900, 20),
+            },
+            Keys               = new Coord(1842, 765),
         };
 
         private static int ScaleLength(int position, int size, int newSize)
@@ -153,7 +176,7 @@ namespace FortniteSquadOverlayClient
 
         private static Coord ScaleAboutPoint(Coord point, Coord scalePoint, int scale)
         {
-            double scaleMult = scale / 100;
+            double scaleMult = (double)scale / 100;
 
             int diffX = point.X - scalePoint.X;
             int diffY = point.Y - scalePoint.Y;
@@ -166,7 +189,7 @@ namespace FortniteSquadOverlayClient
         }
     }
 
-    internal struct Coord
+    public struct Coord
     {
         public int X;
         public int Y;
@@ -178,7 +201,7 @@ namespace FortniteSquadOverlayClient
         }
     }
 
-    internal struct Size
+    public struct Size
     {
         public int Width;
         public int Height;

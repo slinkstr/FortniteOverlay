@@ -127,6 +127,7 @@ namespace FortniteSquadOverlayClient
             else
             {
                 overlayForm.Hide();
+                _debugBuffer = null;
             }
 
             if (!_procMon.ValidHandle())
@@ -148,14 +149,9 @@ namespace FortniteSquadOverlayClient
 
             TakeScreenshot(ref _screenBuffer, _procMon.WindowSize);
 
-            if (!ImageProcessing.IsPlaying(_screenBuffer, _pixelPositions))
-            {
-                return;
-            }
-            if (ImageProcessing.IsSpectating(_screenBuffer, _pixelPositions))
-            {
-                return;
-            }
+            if (!ImageProcessing.IsPlaying   (_screenBuffer, _pixelPositions)) { return; }
+            if ( ImageProcessing.IsSpectating(_screenBuffer, _pixelPositions)) { return; }
+            if ( ImageProcessing.IsDriving   (_screenBuffer, _pixelPositions)) { return; }
 
             var gearBitmap  = ImageProcessing.CropGear(_screenBuffer, _pixelPositions);
             var gearResized = new Bitmap(gearBitmap, new System.Drawing.Size(312, 52));
