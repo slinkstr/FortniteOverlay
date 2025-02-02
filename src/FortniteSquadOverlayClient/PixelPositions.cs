@@ -88,7 +88,7 @@ namespace FortniteSquadOverlayClient
             },
             FuelIcon = new Coord[]
             {
-                new Coord(1534, 933)
+                new Coord(2047, 1244)
             },
             SpectatingText     = new Coord[]
             {
@@ -120,7 +120,7 @@ namespace FortniteSquadOverlayClient
             },
             FuelIcon           = new Coord[]
             {
-                new Coord(1534, 933)
+                new Coord(1535, 933)
             },
             SpectatingText     = new Coord[]
             {
