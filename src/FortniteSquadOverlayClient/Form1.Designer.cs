@@ -178,7 +178,7 @@ namespace FortniteSquadOverlayClient
             // 
             // notifyIcon
             // 
-            this.notifyIcon.Text = "FortniteOverlay";
+            this.notifyIcon.Text = "FortniteSquadOverlay";
             this.notifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseClick);
             // 
             // debugOverlayCheckbox
@@ -421,7 +421,7 @@ namespace FortniteSquadOverlayClient
             this.ClientSize = new System.Drawing.Size(784, 464);
             this.Controls.Add(this.mainTableLayoutPanel);
             this.Name = "Form1";
-            this.Text = "FortniteOverlay";
+            this.Text = "FortniteSquadOverlay";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);

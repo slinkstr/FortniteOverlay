@@ -28,7 +28,7 @@ namespace FortniteSquadOverlayClient
         private static readonly LogReader _logReader  = new LogReader(_logFile, LogParser.ProcessLine, ResetProgramState);
         private static readonly ProcMon   _procMon    = new ProcMon("FortniteClient-Win64-Shipping");
         private static HttpClient         _httpClient = new HttpClient();
-        
+
         private static Timer      _updateTimer        = new Timer();
         private static PixelPositions _pixelPositions = null;
         private static Bitmap     _screenBuffer       = null;
@@ -47,8 +47,7 @@ namespace FortniteSquadOverlayClient
             form = new Form1();
             overlayForm = new OverlayForm();
 
-            _httpClient.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("FortniteOverlay", Application.ProductVersion));
-            _httpClient.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("(+https://github.com/slinkstr/FortniteOverlay)"));
+            _httpClient.DefaultRequestHeaders.Add("User-Agent", $"FortniteSquadOverlay {CurrentVersion()} (+https://github.com/slinkstr/FortniteOverlay)");
 
             if (!ConfigFileExists())
             {

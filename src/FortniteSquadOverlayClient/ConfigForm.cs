@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -11,7 +12,7 @@ namespace FortniteSquadOverlayClient
         public ConfigForm()
         {
             InitializeComponent();
-            Icon = Icon.ExtractAssociatedIcon(AppDomain.CurrentDomain.FriendlyName);
+            Icon = Icon.ExtractAssociatedIcon(System.Reflection.Assembly.GetExecutingAssembly().Location);
             PropagateTooltips(this.Controls);
         }
 
@@ -222,6 +223,7 @@ namespace FortniteSquadOverlayClient
         [DllImport("user32.dll")]
         static extern bool RedrawWindow(IntPtr hWnd, IntPtr lprc, IntPtr hrgn, uint flags);
         Color borderColor = Color.Blue;
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Color BorderColor
         {
             get { return borderColor; }

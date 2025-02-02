@@ -2,10 +2,10 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "FortniteSquadOverlay"
-#define MyAppVersion "v1.7.15"
+#define MyAppVersion "v1.8.0"
 #define MyAppPublisher "slinkstr"
 #define MyAppURL "https://github.com/slinkstr/FortniteSquadOverlay"
-#define MyAppExeName "FortniteSquadOverlay.exe"
+#define MyAppExeName "FortniteSquadOverlayClient.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.

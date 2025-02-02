@@ -70,7 +70,7 @@ namespace FortniteSquadOverlayClient
             }
             return bmp;
         }
-            
+
         public static Bitmap CropGear(Bitmap bmp, PixelPositions positions)
         {
             int slotSelected = -1;

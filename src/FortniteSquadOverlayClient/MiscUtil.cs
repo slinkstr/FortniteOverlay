@@ -25,7 +25,7 @@ namespace FortniteSquadOverlayClient
             if (httpClient == null) { httpClient = new HttpClient(); }
 
             string host = "https://api.github.com";
-            string path = "/repos/slinkstr/FortniteOverlay/releases";
+            string path = "/repos/slinkstr/FortniteSquadOverlay/releases";
             try
             {
                 var response = await httpClient.GetAsync(host + path);
@@ -34,7 +34,7 @@ namespace FortniteSquadOverlayClient
                 string content = await response.Content.ReadAsStringAsync();
                 var latest = JArray.Parse(content)[0];
                 Version latestVersion = Version.Parse(latest["tag_name"].ToString().Substring(1));
-                Version currentVersion = Version.Parse(Application.ProductVersion);
+                Version currentVersion = Version.Parse(CurrentVersion());
 
                 if (latestVersion.CompareTo(currentVersion) > 0)
                 {
@@ -52,13 +52,19 @@ namespace FortniteSquadOverlayClient
             }
         }
 
+        public static string CurrentVersion()
+        {
+            Version ver = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            return $"{ver.Major}.{ver.Minor}.{ver.Build}";
+        }
+
         public static async Task<List<string>> GetOrder(HttpClient httpClient = null)
         {
             if (httpClient == null) { httpClient = new HttpClient(); }
 
             List<string> order = new List<string>();
 
-            string url = "https://raw.githubusercontent.com/slinkstr/FortniteOverlay/master/order-id.json";
+            string url = "https://raw.githubusercontent.com/slinkstr/FortniteSquadOverlay/master/order-id.json";
             try
             {
                 var response = await httpClient.GetAsync(url);
@@ -127,7 +133,7 @@ namespace FortniteSquadOverlayClient
             {
                 Error = (sender, args) =>
                 {
-                    MessageBox.Show(args.ErrorContext.Error.GetBaseException().Message, "FortniteOverlay", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(args.ErrorContext.Error.GetBaseException().Message, "FortniteSquadOverlay", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     args.ErrorContext.Handled = true;
                 }
             });
